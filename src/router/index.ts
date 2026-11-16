@@ -90,6 +90,18 @@ const router = createRouter({
           meta: { titleKey: 'nav.customers' },
         },
         {
+          path: 'customers/:contactId',
+          name: 'customer-detail',
+          component: () => import('@/features/customers/CustomerDetailView.vue'),
+          meta: { titleKey: 'customers.statement' },
+        },
+        {
+          path: 'customers/:contactId/payment',
+          name: 'record-payment',
+          component: () => import('@/features/customers/RecordPaymentView.vue'),
+          meta: { titleKey: 'collection.record' },
+        },
+        {
           path: 'reports',
           name: 'reports',
           component: () => import('@/features/reports/ReportsView.vue'),
