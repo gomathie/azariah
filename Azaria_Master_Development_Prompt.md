@@ -3,7 +3,7 @@
 **Product:** Azaria  
 **Tagline:** *Record Today. Grow Tomorrow.*  
 **Document type:** Build specification and execution instructions for an AI coding agent  
-**Version:** 1.0 · 13 November 2026  
+**Version:** 1.1 · 16 November 2026 (renamed from Steady Book to Azaria)  
 **Primary audience:** Small-business owners and entrepreneurs in Africa, including participants in Academy for Creating Enterprises (ACE)  
 **Technology:** Vue 3 + TypeScript + Vite, Supabase (PostgreSQL, Auth, RLS, Storage, Edge Functions), Tailwind CSS, Pinia, Vue Router, IndexedDB/Dexie, PWA  
 **Project boundary:** **Azaria is a completely independent application. It is NOT part of DEKA ERP and must not depend on its code, database, authentication, APIs, tenants, modules, or deployment.**
