@@ -46,7 +46,8 @@ orioledb_version = ""
 [db.pooler]
 enabled = false
 # Port to use for the local connection pooler.
-port = 54329
+# 54429, not 54329: Windows reserves 54323–54422 on this machine.
+port = 54429
 # Specifies when a server connection can be reused by other clients.
 # Configure one of the supported pooler modes: `transaction`, `session`.
 pool_mode = "transaction"
@@ -96,7 +97,8 @@ enabled = true
 [studio]
 enabled = true
 # Port to use for Supabase Studio.
-port = 54323
+# 54423, not 54323: Windows reserves 54323–54422 on this machine.
+port = 54423
 # External URL of the API server that frontend connects to.
 api_url = "http://127.0.0.1"
 # OpenAI API Key to use for Supabase AI in the Supabase Studio.
@@ -107,7 +109,8 @@ openai_api_key = "env(OPENAI_API_KEY)"
 [local_smtp]
 enabled = true
 # Port to use for the email testing server web interface.
-port = 54324
+# 54424, not 54324: Windows reserves 54323–54422 on this machine.
+port = 54424
 # Uncomment to expose additional ports for testing user applications that send emails.
 # smtp_port = 54325
 # pop3_port = 54326
@@ -408,8 +411,9 @@ deno_version = 2
 # secret_key = "env(SECRET_VALUE)"
 
 [analytics]
-enabled = true
-port = 54327
+# Off: the app does not use analytics, and Windows reserves its old port 54327.
+enabled = false
+port = 54427
 # Configure one of the supported backends: `postgres`, `bigquery`.
 backend = "postgres"
 

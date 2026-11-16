@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, useId } from 'vue'
+import { getCurrentInstance, ref, useId } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { parseMoney } from '@/utils/money'
 
@@ -14,6 +14,7 @@ const props = withDefaults(
 )
 
 const model = defineModel<bigint | null>({ default: null })
+const instance = getCurrentInstance()
 const { t } = useI18n()
 const id = useId()
 const text = ref('')
@@ -28,7 +29,11 @@ function onInput(event: Event) {
   }
   const parsed = parseMoney(text.value, props.minorUnit)
   invalid.value = parsed === null
+  // defineModel does not emit when the value stays null. An invalid amount
+  // must still publish null so the form does not keep a previous number.
+  const unchanged = model.value === parsed
   model.value = parsed
+  if (unchanged) instance?.emit('update:modelValue', parsed)
 }
 </script>
 
