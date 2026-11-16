@@ -2,7 +2,7 @@
 
 Change-rationale entries for guards, constraints, refusals and defaults that a later agent might
 be tempted to undo. Format: Why / How / Benefit / Trade-off / Verification / Rollback. Newest first.
-Protected decisions are listed in `CLAUDE.md`; design context is in `docs/architecture/ADR.md`.
+Protected decisions are listed in `AGENTS.md`; design context is in `docs/architecture/ADR.md`.
 
 ## 2026-11-16 — `auto_expose_new_tables = false` and explicit grants
 

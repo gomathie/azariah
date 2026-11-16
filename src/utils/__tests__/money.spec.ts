@@ -14,6 +14,7 @@ describe('parseMoney', () => {
     expect(parseMoney('1 250,50', 2)).toBe(125050n)
     expect(parseMoney('1.250,50', 2)).toBe(125050n)
     expect(parseMoney('1,250', 2)).toBe(125000n)
+    expect(parseMoney('1.250', 2)).toBeNull() // a dot is always a decimal point
     expect(parseMoney('1,250,000', 2)).toBe(125000000n)
     expect(parseMoney('1,25', 2)).toBe(125n)
   })

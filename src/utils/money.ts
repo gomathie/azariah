@@ -27,8 +27,9 @@ export function parseMoney(text: string, minorUnit: number): bigint | null {
     const occurrences = cleaned.split(sepChar).length - 1
     const after = cleaned.slice(sepIndex + 1)
     const otherSepPresent = sepChar === ',' ? lastDot !== -1 : lastComma !== -1
-    // A lone separator followed by exactly three digits is a thousands separator ("1,250").
-    const isThousands = !otherSepPresent && occurrences === 1 && after.length === 3
+    // A dot is always a decimal point. A lone comma followed by exactly three digits is a
+    // thousands separator ("1,250"); any other comma is a decimal comma ("1,25").
+    const isThousands = sepChar === ',' && !otherSepPresent && occurrences === 1 && after.length === 3
     if (isThousands || occurrences > 1) {
       if (otherSepPresent || /[.,]/.test(after)) return null
       integerPart = cleaned.replace(/[.,]/g, '')

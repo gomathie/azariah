@@ -5,7 +5,7 @@ description: Work in the Azaria bookkeeping PWA — Vue 3 + TypeScript + Vite, P
 
 # Azaria — Vue + Supabase stack skill
 
-Read `CLAUDE.md`, `docs/architecture/ADR.md` and the task in
+Read `AGENTS.md`, `docs/architecture/ADR.md` and the task in
 `docs/superpowers/plans/2026-11-16-azaria-mvp.md` before acting.
 
 ## Detection
@@ -87,7 +87,7 @@ Keep docs consistent with the code that actually exists (spec §15). Update in t
 
 | Doc | Update when |
 |---|---|
-| `CLAUDE.md` → *Status checkpoint* | End of every work session: done, in progress, blockers, next action |
+| `AGENTS.md` → *Status checkpoint* | End of every work session: done, in progress, blockers, next action |
 | `docs/architecture/ADR.md` | A design decision is made or changed (append an ADR; never silently edit a protected one) |
 | `docs/ARCHITECTURE.md` | Stack, deployment, schema diagram, API/function boundaries change |
 | `docs/DATA_DICTIONARY.md` | A table, column, enum or status transition is added or changed |
@@ -104,17 +104,17 @@ date research claims, and prefer updating an existing doc over creating a new on
 
 ### Project context (from the library's project-context-management workflow)
 
-- **Entry point:** `CLAUDE.md` is the context entry point (architecture, terminology, decisions,
+- **Entry point:** `AGENTS.md` is the context entry point (architecture, terminology, decisions,
   verified commands, status, known issues). `AGENTS.md` points every runtime at it. It is a
   navigation aid; the code and migrations are the truth when they disagree.
-- **Session startup:** read `CLAUDE.md` → ADRs → the plan task; run `git status` and `git log -5`;
+- **Session startup:** read `AGENTS.md` → ADRs → the plan task; run `git status` and `git log -5`;
   reconcile the status checkpoint with the actual code before doing anything.
-- **Checkpoint (end of session):** replace the *Status checkpoint* in `CLAUDE.md` with a few
+- **Checkpoint (end of session):** replace the *Status checkpoint* in `AGENTS.md` with a few
   bullets: completed, in progress, blockers, next action. No transcripts.
 - **Change rationale:** every guard, constraint, refusal or default gets a *why* comment at the
   code, a test named after the behaviour, and an entry in `docs/HANDOFF.md` using
   `Why / How / Benefit / Trade-off / Verification / Rollback`. If others will be tempted to undo
-  it, add it to *Protected decisions* in `CLAUDE.md`. Read all three before changing such code;
+  it, add it to *Protected decisions* in `AGENTS.md`. Read all three before changing such code;
   disagreements go to the owner, never into a silent revert.
 - Mark hypotheses as such; never claim the knowledge base guarantees memory across sessions.
 

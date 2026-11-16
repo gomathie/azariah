@@ -1,6 +1,6 @@
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(19);
+select plan(18);
 
 create schema if not exists tests;
 grant usage on schema tests to anon, authenticated;
