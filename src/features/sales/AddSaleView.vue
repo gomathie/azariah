@@ -32,6 +32,7 @@ const note = ref('')
 const when = ref(nowLocalInput())
 const showMore = ref(false)
 const error = ref<string | null>(null)
+const notice = ref<string | null>(null)
 const loading = ref(false)
 
 const minorUnit = computed(() => business.current?.minor_unit ?? 2)
@@ -80,7 +81,13 @@ async function submit() {
     return
   }
   if (receivedMinor.value > 0n && !accountId.value) {
-    if (current.id) await catalog.load(current.id)
+    if (current.id) {
+      try {
+        await catalog.load(current.id)
+      } catch {
+        // A failed refresh must not block a sale when the accounts are already loaded.
+      }
+    }
     if (!accountId.value && catalog.accounts[0]) accountId.value = catalog.accounts[0].id
   }
   if (receivedMinor.value > 0n && !accountId.value) {
@@ -101,7 +108,14 @@ async function submit() {
       description: description.value.trim() || null,
       note: note.value.trim() || null,
     })
-    await router.push({ name: 'daybook', query: { saved: isSavedOnDevice(result) ? 'offline' : 'sale' } })
+    const offline = isSavedOnDevice(result)
+    if (offline) notice.value = t('sync.savedOnDevice')
+    try {
+      await router.push({ name: 'daybook', query: { saved: offline ? 'offline' : 'sale' } })
+    } catch {
+      // Offline, the next screen may not be downloaded yet. The note stays on this page.
+      if (!offline) error.value = t('errors.generic')
+    }
   } catch (e) {
     error.value = e instanceof RpcError ? t(e.i18nKey) : t('errors.generic')
   } finally {
@@ -119,6 +133,7 @@ function nowLocalInput(): string {
 <template>
   <PageHeader :title="t('sale.add')" back />
   <form class="p-4 space-y-4 max-w-lg" @submit.prevent="submit">
+    <AppAlert v-if="notice" kind="success">{{ notice }}</AppAlert>
     <MoneyInput v-model="amount" :label="t('sale.amount')" :currency="currency" :minor-unit="minorUnit" />
     <fieldset class="space-y-2">
       <legend class="text-sm font-medium text-slate-700">{{ t('sale.received') }}</legend>

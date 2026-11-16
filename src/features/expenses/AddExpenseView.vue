@@ -27,6 +27,7 @@ const description = ref('')
 const note = ref('')
 const when = ref(nowLocalInput())
 const error = ref<string | null>(null)
+const notice = ref<string | null>(null)
 const loading = ref(false)
 
 const minorUnit = computed(() => business.current?.minor_unit ?? 2)
@@ -78,7 +79,13 @@ async function submit() {
       },
       kind.value,
     )
-    await router.push({ name: 'daybook', query: { saved: isSavedOnDevice(result) ? 'offline' : 'expense' } })
+    const offline = isSavedOnDevice(result)
+    if (offline) notice.value = t('sync.savedOnDevice')
+    try {
+      await router.push({ name: 'daybook', query: { saved: offline ? 'offline' : 'expense' } })
+    } catch {
+      if (!offline) error.value = t('errors.generic')
+    }
   } catch (e) {
     error.value = e instanceof RpcError ? t(e.i18nKey) : t('errors.generic')
   } finally {
@@ -96,6 +103,7 @@ function nowLocalInput(): string {
 <template>
   <PageHeader :title="t('expense.add')" back />
   <form class="p-4 space-y-4 max-w-lg" @submit.prevent="submit">
+    <AppAlert v-if="notice" kind="success">{{ notice }}</AppAlert>
     <fieldset class="space-y-2">
       <legend class="text-sm font-medium text-slate-700">{{ t('expense.kind') }}</legend>
       <label class="flex items-center gap-2 min-h-12">

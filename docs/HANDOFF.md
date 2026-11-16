@@ -3,6 +3,15 @@
 Change-rationale entries for guards, constraints, refusals and defaults that a later agent might
 be tempted to undo. Format: Why / How / Benefit / Trade-off / Verification / Rollback. Newest first.
 
+## 2026-11-16 — Local Supabase ports sit above the Windows reserved range
+
+- **Why:** Windows on this machine reserves TCP 54323–54422. Supabase's Studio, mail, and analytics ports are inside that range, so `supabase start` failed before the API came up.
+- **How:** `supabase/config.toml` moves Studio to 54423, mail to 54424, the pooler to 54429, and analytics to 54427. Analytics stays off because the app does not use it. The start command excludes Studio, storage, realtime, and the other unused containers, and it is run as `node_modules\.bin\supabase.cmd` so npm does not eat `-x`.
+- **Benefit:** the database, auth, and API start, and the SQL suite can run.
+- **Trade-off:** a machine without that reserved range still uses the higher ports. Analytics logs are not collected locally.
+- **Verification:** `supabase test db` PASS, 13 files, 134 tests.
+- **Rollback:** put the ports back to 54323–54329 and set analytics `enabled = true`.
+
 ## 2026-11-16 — The app mark is the furnace tile
 
 - **Why:** the name Azaria comes from Azariah in Daniel, who stood in the fire and was not burned. The owner chose the tile: a teal square, the letter A, and the flame in the opening.

@@ -5,7 +5,7 @@ test('a sale saved offline syncs once and stays a single daybook row', async ({ 
   await signUpAndCreateBusiness(page)
   await page.getByRole('link', { name: 'Add' }).click()
   await page.getByRole('link', { name: 'Add sale' }).click()
-  await expect(page.getByLabel('Received into')).toBeVisible()
+  await expect(page.getByRole('option', { name: 'Cash' })).toBeAttached()
 
   await page.context().setOffline(true)
   await page.getByLabel('Sale amount').fill('15')
@@ -13,6 +13,7 @@ test('a sale saved offline syncs once and stays a single daybook row', async ({ 
   await expect(page.getByText('Saved on this device')).toBeVisible()
 
   await page.context().setOffline(false)
+  await page.goto('/daybook')
   await page.getByRole('button', { name: 'Sync' }).click()
   await expect(page.getByRole('status')).toContainText('Synced')
   await expect(page.getByRole('listitem')).toHaveCount(1)

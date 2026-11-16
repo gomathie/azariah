@@ -195,6 +195,12 @@ router.beforeEach(async (to) => {
   return true
 })
 
+router.onError((error) => {
+  // A lazy screen can fail to download while offline. The save screen already shows the result.
+  if (error instanceof Error && /Failed to fetch|dynamically imported module/i.test(error.message)) return
+  console.error(error)
+})
+
 router.afterEach((to) => {
   const suffix = ' · Azaria'
   document.title = to.meta.titleKey ? `${to.meta.titleKey}${suffix}` : 'Azaria'

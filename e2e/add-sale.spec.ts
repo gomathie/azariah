@@ -12,6 +12,7 @@ test('record a partly paid sale and see it in the daybook', async ({ page }) => 
   await page.getByLabel('Received into').selectOption({ label: 'Mobile Money' })
   await page.getByLabel('Name').fill('Kofi')
   await page.getByRole('button', { name: 'Add customer' }).click()
+  await expect(page.getByRole('option', { name: 'Kofi', selected: true })).toBeAttached()
   await page.getByLabel('What did you sell?').fill('Oil')
   await page.getByRole('button', { name: 'Save' }).click()
 

@@ -14,7 +14,7 @@
 
 Updated 2026-11-16. This table is the position marker. The task sections below stay the instructions; this table says which instruction to follow.
 
-**You are here: Task 5 — Auth, onboarding and business store.** Tasks 6, 7 and 8 are verified. Tasks 9 through 20 are written and their checks have not been run. Do not rebuild them. The next action is to run the checks, starting with Task 5.
+**You are here: Task 19 — Help, privacy, settings, French.** Tasks 5 and 9 through 18 have passing checks. Task 19 has no automated run yet. Task 20 (CI) has not been run. Do not rebuild the finished tasks.
 
 How every person and agent uses this table:
 
@@ -31,22 +31,22 @@ How every person and agent uses this table:
 | 2. Database schema | Verified | `0001_schema.test.sql` ok. `npx supabase test db`: 5 files, 92 tests, PASS. |
 | 3. RLS, grants, membership | Verified | `0003_rls.test.sql` ok in the same run. |
 | 4. Create business RPC | Verified | `0002_business_rpc.test.sql` ok in the same run. |
-| 5. Auth, onboarding, business store | **You are here** | `business.spec.ts` passed (1 test) on 2026-11-16. Playwright onboarding has not been run: Chromium is still downloading and the local Supabase stack is restarting so Auth accepts `http://localhost:5173`. |
+| 5. Auth, onboarding, business store | Verified | `npx playwright test e2e/onboarding.spec.ts`: 6 passed (chromium and mobile) on 2026-11-16. |
 | 6. Money parsing and Zod schemas | Verified | `money.spec.ts` and `schemas.spec.ts` passed on 2026-11-16. `1.2.3` is rejected. |
 | 7. `rpc_create_sale` | Verified | `0004_sale.test.sql` ok (scenarios A, B, I, K and the rejection cases). |
 | 8. Expense, stock, owner movement, opening balance | Verified | `0005_spend.test.sql` ok (D, E, G, H, replay, zero amount, other-business account). |
-| 9. Add Sale and Add Expense screens | Written — checks not run | Screens, catalog store, MoneyInput spec, and `e2e/add-sale.spec.ts` are in the repo. No test run yet. |
-| 10. Collection and customer statement | Written — checks not run | `rpc_record_collection`, statement RPC, customer screens, and `e2e/collection.spec.ts` are in the repo. No test run yet. |
-| 11. Transfers and account screens | Written — checks not run | `rpc_transfer_between_accounts`, account screens, `0007_transfer.test.sql`. Not run. |
-| 12. Reversal and daybook | Written — checks not run | `rpc_reverse_transaction`, daybook detail, keyset `getDaybook`, `e2e/daybook.spec.ts`. Not run. |
-| 13. Dashboard summary | Written — checks not run | `rpc_get_dashboard_summary`, Home screen, `HomeView.spec.ts`. Not run. |
-| 14. Offline queue and sync | Written — checks not run | Dexie queue, `syncAll`, sale and expense enqueue. Specs not run. |
-| 15. Offline end-to-end test | Written — checks not run | `e2e/offline.spec.ts`. Not run. |
-| 16. Reports and CSV export | Written — checks not run | Report RPCs, reports screen, `toCsv`. Not run. |
-| 17. Business data export | Written — checks not run | `rpc_export_business_data` and the Settings download. Not run. |
-| 18. Membership management | Written — checks not run | Invite and change RPCs, Members screen, `0012_membership.test.sql`. Not run. |
-| 19. Help, privacy, settings, French | Written — checks not run | Help, privacy, profile, business settings, and the matching French strings. Not run. |
-| 20. CI and remaining docs | Written — checks not run | `.github/workflows/ci.yml` and the spec §15 docs. CI not run. |
+| 9. Add Sale and Add Expense screens | Verified | MoneyInput: 2 passed. `e2e/add-sale.spec.ts`: 2 passed (chromium and mobile). |
+| 10. Collection and customer statement | Verified | `0006_collection.test.sql` ok. `e2e/collection.spec.ts`: 2 passed. |
+| 11. Transfers and account screens | Verified | `0007_transfer.test.sql` ok. The account screens were not opened in a browser test. |
+| 12. Reversal and daybook | Verified | `0008_reverse.test.sql` ok. `e2e/daybook.spec.ts`: 2 passed. |
+| 13. Dashboard summary | Verified | `0009_dashboard.test.sql` ok. `HomeView.spec.ts` passed in the unit run (9 tests across 4 files). |
+| 14. Offline queue and sync | Verified | `queue.spec.ts` and `sync.spec.ts` passed in that same unit run. |
+| 15. Offline end-to-end test | Verified | `e2e/offline.spec.ts`: 2 passed. The daybook screen is opened after the connection returns, because its file cannot download while offline. |
+| 16. Reports and CSV export | Verified | `0010_reports.test.sql` ok. `csv.spec.ts` passed in the unit run. The reports screen was not opened in a browser. |
+| 17. Business data export | Verified | `0011_export.test.sql` ok. The Settings download button was not clicked. |
+| 18. Membership management | Verified | `0012_membership.test.sql` and `0013_shop_people.test.sql` ok. The people screen was not opened in a browser. |
+| 19. Help, privacy, settings, French | **You are here** | Screens and French strings are in the repo. No automated check has been run. |
+| 20. CI and remaining docs | Written — checks not run | `.github/workflows/ci.yml` is in the repo. CI has not been run. |
 
 Milestone exits, in order: Task 5 closes Milestone 1. Tasks 9–13 close Milestone 2 (domain scenarios A–L). Tasks 14–17 close Milestone 3. Tasks 18–20 close Milestone 4.
 

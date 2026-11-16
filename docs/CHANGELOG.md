@@ -9,6 +9,8 @@
 ### Changed
 
 - The app icon is a teal tile: the letter A, with a flame standing in it.
+- A sale saved without a connection says so on the same screen. The daybook opens when the connection is back.
+- Recording a payment waits until the amount the customer owes has loaded, so the exact amount owed is accepted.
 
 ### Added
 
