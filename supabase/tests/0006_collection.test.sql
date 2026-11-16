@@ -68,9 +68,13 @@ select throws_like(
   format($$select public.rpc_record_collection(gen_random_uuid(), %L, now(), %L, 1, %L, null)$$, :'biz', :'kofi', :'cash'),
   '%AZ_EXCEEDS_DEBT%', 'overpayment rejected');
 
--- Oldest debt is settled first
+-- Oldest debt is settled first. now() does not move inside one transaction, so the
+-- first receivable is stamped earlier before the payment.
 select (public.rpc_create_sale(gen_random_uuid(), :'biz', now(), 3000, 0, null, :'abena', null, 'First', null) ->> 'receivable_id') as older \gset
 select public.rpc_create_sale(gen_random_uuid(), :'biz', now(), 5000, 0, null, :'abena', null, 'Second', null);
+select tests.clear_auth();
+update public.receivables set created_at = created_at - interval '1 minute' where id = :'older';
+select tests.authenticate(:'uid');
 select public.rpc_record_collection(gen_random_uuid(), :'biz', now(), :'abena', 4000, :'cash', null);
 select is((select status from public.receivables where id = :'older'), 'settled', 'FIFO: oldest debt settled');
 select is((select outstanding_minor from public.v_customer_balances where contact_id = :'abena'), 4000::bigint, 'FIFO: newest debt still 40');

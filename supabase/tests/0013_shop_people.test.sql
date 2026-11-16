@@ -25,8 +25,7 @@ select tests.create_user('owner-shop@example.test') as uid \gset
 select tests.create_user('staff-shop@example.test') as uid_staff \gset
 select tests.authenticate(:'uid');
 select (public.rpc_create_business_and_owner(gen_random_uuid(), 'Ama Shop', 'retail', 'GH', 'Africa/Accra', 'GHS') ->> 'business_id') as biz \gset
-insert into public.business_memberships (business_id, user_id, role, status)
-values (:'biz', :'uid_staff', 'staff', 'active');
+select public.rpc_invite_member(gen_random_uuid(), :'biz', 'staff-shop@example.test', 'staff');
 
 select public.rpc_add_shop_person(gen_random_uuid(), :'biz', 'Kofi', 'Counter phone', 'staff') as added \gset
 select is(((:'added')::jsonb ->> 'role'), 'staff', 'a helper is staff');

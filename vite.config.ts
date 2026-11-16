@@ -16,7 +16,8 @@ export default defineConfig({
       registerType: 'prompt',
       injectRegister: null,
       includeAssets: ['favicon.svg', 'icons/icon-192.png', 'icons/icon-512.png'],
-      devOptions: { enabled: true },
+      // The dev service worker serves a stale shell and blocks the app. Install is verified on the production build.
+      devOptions: { enabled: false },
       manifest: {
         name: 'Azaria',
         short_name: 'Azaria',

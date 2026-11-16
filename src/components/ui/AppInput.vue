@@ -22,9 +22,12 @@ const id = useId()
 
 <template>
   <div class="space-y-1">
-    <label :for="id" class="block text-sm font-medium text-slate-700">
-      {{ label }}<span v-if="required" class="text-red-600" aria-hidden="true"> *</span>
-    </label>
+    <label
+      :for="id"
+      class="block text-sm font-medium text-slate-700"
+      :class="required ? `after:content-['*'] after:ml-0.5 after:text-red-600` : ''"
+      >{{ label }}</label
+    >
     <input
       :id="id"
       v-model="model"

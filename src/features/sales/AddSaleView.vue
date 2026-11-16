@@ -80,6 +80,10 @@ async function submit() {
     return
   }
   if (receivedMinor.value > 0n && !accountId.value) {
+    if (current.id) await catalog.load(current.id)
+    if (!accountId.value && catalog.accounts[0]) accountId.value = catalog.accounts[0].id
+  }
+  if (receivedMinor.value > 0n && !accountId.value) {
     error.value = t('errors.required')
     return
   }

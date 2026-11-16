@@ -33,7 +33,7 @@ select (public.rpc_transfer_between_accounts(gen_random_uuid(), :'biz', now(), :
 
 select is((select balance_minor from public.v_account_balances where money_account_id = :'cash'), 0::bigint, 'F: cash down 50');
 select is((select balance_minor from public.v_account_balances where money_account_id = :'momo'), 5000::bigint, 'F: MoMo up 50');
-select is((select sum(amount_minor) from public.money_movements where transaction_id = :'tx'), 0::bigint, 'F: transfer movements sum to 0');
+select is((select sum(amount_minor)::bigint from public.money_movements where transaction_id = :'tx'), 0::bigint, 'F: transfer movements sum to 0');
 select is((select coalesce(sum(amount_minor), 0) from public.transactions where business_id = :'biz' and kind = 'sale'), 0::numeric, 'F: not a sale');
 select throws_like(format($$select public.rpc_transfer_between_accounts(gen_random_uuid(), %L, now(), %L, %L, 100, null)$$, :'biz', :'cash', :'cash'), '%AZ_SAME_ACCOUNT%', 'same account rejected');
 select throws_like(format($$select public.rpc_transfer_between_accounts(gen_random_uuid(), %L, now(), %L, %L, 0, null)$$, :'biz', :'cash', :'momo'), '%AZ_INVALID_AMOUNT%', 'zero amount rejected');

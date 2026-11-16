@@ -19,16 +19,22 @@ begin
   perform set_config('request.jwt.claim.sub', p_uid::text, true);
   perform set_config('role', 'authenticated', true);
 end $$;
+create or replace function tests.clear_auth() returns void language plpgsql as $$
+begin
+  execute 'reset role';
+  perform set_config('request.jwt.claims', '', true);
+  perform set_config('request.jwt.claim.sub', '', true);
+end $$;
 grant execute on all functions in schema tests to anon, authenticated;
 
 select tests.create_user('owner-export@example.test') as uid \gset
 select tests.create_user('staff-export@example.test') as uid_staff \gset
 select tests.authenticate(:'uid');
 select (public.rpc_create_business_and_owner(gen_random_uuid(), 'Ama Shop', 'retail', 'GH', 'Africa/Accra', 'GHS') ->> 'business_id') as biz \gset
-insert into public.business_memberships (business_id, user_id, role, status)
-values (:'biz', :'uid_staff', 'staff', 'active');
+select public.rpc_invite_member(gen_random_uuid(), :'biz', 'staff-export@example.test', 'staff');
 select public.rpc_export_business_data(:'biz') as exported \gset
 select is(((:'exported')::jsonb -> 'business' ->> 'name'), 'Ama Shop', 'owner export includes the business');
+select tests.clear_auth();
 select is((select count(*) from public.audit_events where business_id = :'biz' and action = 'export.created'), 1::bigint, 'export is audited');
 select tests.authenticate(:'uid_staff');
 select throws_like(format($$select public.rpc_export_business_data(%L)$$, :'biz'), '%AZ_FORBIDDEN%', 'staff cannot export the business');
