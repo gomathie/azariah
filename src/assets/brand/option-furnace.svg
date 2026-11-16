@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">Azaria furnace mark</title>
+  <desc id="desc">A letter A with a flame standing in the opening. Azariah was kept safe in the fire.</desc>
+  <path fill="#F59E0B" d="M64 34c-12 16-16 26-16 38 0 11 7 20 16 20s16-9 16-20c0-12-4-22-16-38z"/>
+  <path fill="#FDE68A" d="M64 52c-6 8-8 13-8 19 0 5.5 3.6 10 8 10s8-4.5 8-10c0-6-2-11-8-19z"/>
+  <path fill="#0F766E" fill-rule="evenodd" d="M64 6 120 122H94l-12-28H46L34 122H8L64 6Zm0 40 18 46H46l18-46z"/>
+</svg>

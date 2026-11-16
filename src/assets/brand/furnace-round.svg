@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">Azaria  round</title>
+  <desc id="desc">A rounded letter A. The flame sits in the opening.</desc>
+  <path fill="#F59E0B" d="M64 46c-5 8-7 13-7 20 0 5 3 8.5 7 8.5s7-3.5 7-8.5c0-7-2-12-7-20z"/>
+  <path fill="#FFFBEB" d="M64 56c-2.4 4-3.4 6.5-3.4 10 0 2.4 1.4 4 3.4 4s3.4-1.6 3.4-4c0-3.5-1-6-3.4-10z"/>
+  <path d="M20 114 64 16 108 114" stroke="#0F766E" stroke-width="16" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M40 82h48" stroke="#0F766E" stroke-width="14" stroke-linecap="round"/>
+</svg>

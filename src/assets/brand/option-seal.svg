@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">Azaria seal</title>
+  <desc id="desc">A furnace door. The flame is inside, and one gold line of the book remains underneath.</desc>
+  <circle cx="64" cy="64" r="58" fill="#0F766E"/>
+  <circle cx="64" cy="64" r="48" fill="#134E4A"/>
+  <path fill="#0F766E" d="M36 96V62c0-18 12-30 28-30s28 12 28 30v34H36z"/>
+  <path fill="#F59E0B" d="M64 36c-12 16-16 25-16 36 0 10 7 18 16 18s16-8 16-18c0-11-4-20-16-36z"/>
+  <path fill="#FFFBEB" d="M64 52c-6 8-8 13-8 18 0 5 3.5 9 8 9s8-4 8-9c0-5-2-10-8-18z"/>
+  <rect x="42" y="100" width="44" height="5" rx="2.5" fill="#FDE68A"/>
+</svg>
