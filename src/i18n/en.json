@@ -216,6 +216,7 @@
     "invalid_amount": "Enter a valid amount.",
     "required": "This field is required.",
     "AZ_FORBIDDEN": "You do not have permission to do this.",
+    "AZ_INVALID_INPUT": "Some of the details are not valid. Please check and try again.",
     "AZ_INVALID_AMOUNT": "The amount is not valid.",
     "AZ_CONTACT_REQUIRED": "Choose a customer for a credit sale.",
     "AZ_EXCEEDS_DEBT": "The payment is more than what the customer owes.",

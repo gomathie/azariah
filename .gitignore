@@ -40,3 +40,8 @@ __screenshots__/
 
 test-results/
 playwright-report/
+
+# Local environment (real values never committed)
+.env
+.env.*
+!.env.example

@@ -53,9 +53,10 @@ export const useBusinessStore = defineStore('business', () => {
         )
         .eq('status', 'active')
       if (error) throw error
-      businesses.value = (data ?? [])
-        .filter((row) => row.business)
-        .map((row) => ({ ...(row.business as Omit<Business, 'role'>), role: row.role }))
+      type Row = { role: Business['role']; business: Omit<Business, 'role'> | null }
+      businesses.value = ((data ?? []) as unknown as Row[])
+        .filter((row): row is Row & { business: Omit<Business, 'role'> } => row.business !== null)
+        .map((row) => ({ ...row.business, role: row.role }))
       if (!businesses.value.some((b) => b.id === currentBusinessId.value)) {
         select(businesses.value[0]?.id ?? null)
       }

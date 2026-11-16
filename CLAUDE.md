@@ -38,6 +38,10 @@ Tests: Vitest (jsdom), Playwright, Supabase SQL tests (`supabase/tests`). Backen
   `src/components/ui/`, stores in `src/stores/`. Customer-facing copy lives in `src/i18n/*.json`
   (plain words: "Add sale", "Money received", "Customer owes"; never "credit note" or "ledger posting").
 - Never show "Sales − Spending = Profit".
+- Scalable by default: tenant-scoped indexed queries, keyset pagination, aggregation in the database,
+  short atomic RPCs, lazy-loaded routes. See "Build for scale" in the project skill.
+- Documentation lives in `docs/` per spec §15; update the matching doc in the same change (see the
+  "Documentation" table in the project skill).
 
 ## Protected decisions
 

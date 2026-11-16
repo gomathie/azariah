@@ -57,6 +57,51 @@ pgTAP test in `supabase/tests/`; wrapper in the feature `api.ts`; regenerate typ
 **Add a table:** migration with FK, checks, `(business_id, …)` index, RLS, grants, policies; pgTAP
 asserts `relrowsecurity`; add to `docs/DATA_DICTIONARY.md`.
 
+## Build for scale from the start
+
+Azaria starts with a 15–30 business pilot but must grow to thousands of businesses and millions of
+rows without a rewrite. Every change should respect these rules:
+
+- **Queries are always tenant-scoped and indexed.** Filter by `business_id` first; add a composite
+  index `(business_id, <sort or filter column>)` for any new access path. Check `explain analyze`
+  on a table with 100k+ synthetic rows before merging a new report or list query.
+- **Paginate every list.** Keyset pagination on `(business_date desc, created_at desc, id)` for the
+  daybook and statements; never `offset` on large tables; cap page size at 100.
+- **Aggregate in the database.** Dashboard and report totals come from `rpc_*` functions or
+  indexed views, never from fetching rows and summing in the browser.
+- **Keep RPCs short and atomic.** One transaction per business event; no loops over all rows of a
+  business; no long-running work inside a request (queue it as a job later if needed).
+- **Stateless frontend, thin client cache.** Dexie holds the pending queue and small read-model
+  snapshots only; it is not a mirror of the database.
+- **No per-tenant schemas or per-tenant infrastructure.** One schema, RLS isolation, `business_id`
+  everywhere; horizontal growth comes from Supabase compute tiers, read replicas and indexes.
+- **Measure, don't assume.** New performance-sensitive code ships with a note in
+  `docs/ARCHITECTURE.md` (query plan or benchmark) and, where reasonable, a pgTAP or Vitest check
+  that the index is used.
+- **Lazy-load routes and heavy libraries**; keep the initial bundle under 150 kB gzipped so the app
+  stays usable on low-end Android devices and slow networks.
+
+## Documentation: where things are written down
+
+Keep docs consistent with the code that actually exists (spec §15). Update in the same change:
+
+| Doc | Update when |
+|---|---|
+| `CLAUDE.md` → *Status checkpoint* | End of every work session: done, in progress, blockers, next action |
+| `docs/architecture/ADR.md` | A design decision is made or changed (append an ADR; never silently edit a protected one) |
+| `docs/ARCHITECTURE.md` | Stack, deployment, schema diagram, API/function boundaries change |
+| `docs/DATA_DICTIONARY.md` | A table, column, enum or status transition is added or changed |
+| `docs/SECURITY.md` | A policy, grant, role, storage rule or secret-handling step changes |
+| `docs/OFFLINE_SYNC.md` | Queue, retry, conflict or sync-state behaviour changes |
+| `docs/REPORT_DEFINITIONS.md` | A report formula, filter or date/currency rule changes |
+| `docs/TEST_REPORT.md` | After each verification run: ID, steps, expected, actual, PASS/FAIL/BLOCKED, evidence path |
+| `docs/DEPLOYMENT.md`, `docs/PILOT_GUIDE.md`, `docs/ROADMAP.md`, `docs/PRODUCT_REQUIREMENTS.md`, `docs/COMPETITOR_BENCHMARK.md` | When the related process, scope or research changes |
+| `README.md` | Setup, env vars or commands change |
+| `docs/superpowers/plans/*.md` | Tick the task checkbox when its verification passes |
+
+Rules: plain language, present tense, no aspirational features described as done, no secrets,
+date research claims, and prefer updating an existing doc over creating a new one.
+
 ## Verify before claiming done
 
 ```

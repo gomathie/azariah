@@ -1,0 +1,3 @@
+-- Local/test seed only. Never run against a remote project.
+-- Auth users cannot be seeded safely here; create them through the app or the auth admin API.
+-- Business data is created via rpc_create_business_and_owner after sign-up.
