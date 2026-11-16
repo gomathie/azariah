@@ -3,6 +3,24 @@
 Change-rationale entries for guards, constraints, refusals and defaults that a later agent might
 be tempted to undo. Format: Why / How / Benefit / Trade-off / Verification / Rollback. Newest first.
 
+## 2026-11-16 — The last active owner cannot be removed or demoted
+
+- **Why:** a business with no owner cannot invite a replacement or export its data.
+- **How:** `rpc_change_membership` counts active owners and raises `AZ_FORBIDDEN` when the change would leave fewer than one. Only an owner may grant the owner role.
+- **Benefit:** staff and managers cannot take ownership, and the shop cannot lock itself out.
+- **Trade-off:** transferring ownership needs a second owner first.
+- **Verification:** `supabase/tests/0012_membership.test.sql` (not run; the owner asked for the code before any test run).
+- **Rollback:** drop `rpc_change_membership` and `rpc_invite_member`. Do not update `business_memberships` from the client.
+
+## 2026-11-16 — A reversal keeps the original row and closes the remaining debt
+
+- **Why:** the daybook must show that a mistake happened, and a credit sale that is undone must not leave the customer owing the money.
+- **How:** `rpc_reverse_transaction` is owner/manager only. The original status becomes `reversed`. A new `reversal` transaction posts the opposite movements. Any remaining receivable is closed with a negative allocation and marked reversed, because `v_customer_balances` ignores reversed receivables.
+- **Benefit:** cash returns to where it was, the debt drops, and the audit row `transaction.reversed` remains.
+- **Trade-off:** staff who typed the entry cannot undo it themselves.
+- **Verification:** `supabase/tests/0008_reverse.test.sql` (not run).
+- **Rollback:** drop `rpc_reverse_transaction`. Do not delete the original transaction to "undo" it.
+
 ## 2026-11-16 — Customer payments settle the oldest debt first and are not sales
 
 - **Why:** a shop owner who is paid later must see the debt fall and the cash rise, without the dashboard counting that money as another sale.

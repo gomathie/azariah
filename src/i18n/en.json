@@ -143,6 +143,7 @@
     "reverse": "Reverse this entry",
     "reverseReason": "Why are you reversing it?",
     "reversed": "Reversed",
+    "more": "More entries",
     "kinds": {
       "sale": "Sale",
       "collection": "Money received",
@@ -213,6 +214,60 @@
     "members": "Staff and access",
     "privacy": "Privacy and data",
     "export": "Download all my data"
+  },
+  "businessSettings": {
+    "title": "Business settings",
+    "name": "Business name",
+    "country": "Country",
+    "currency": "Currency",
+    "timezone": "Time zone"
+  },
+  "profile": {
+    "title": "Profile",
+    "email": "Email",
+    "language": "Language"
+  },
+  "members": {
+    "title": "Staff and access",
+    "email": "Email",
+    "role": "Access",
+    "invite": "Invite",
+    "invited": "Invitation saved",
+    "owner": "Owner",
+    "manager": "Manager",
+    "staff": "Staff",
+    "viewer": "Can view",
+    "remove": "Remove access",
+    "empty": "Only you have access so far."
+  },
+  "privacy": {
+    "title": "Privacy and data",
+    "body": "People see this business only when you give them access. Download a copy from Settings. A sale or expense saved on this phone stays on this phone until it syncs."
+  },
+  "help": {
+    "title": "Help",
+    "cards": {
+      "sale": {
+        "title": "Add a sale",
+        "body": "Enter what the customer bought and how much you received. If they still owe you, pick their name so the debt is tracked."
+      },
+      "expense": {
+        "title": "Add an expense",
+        "body": "Everyday costs such as rent and transport are expenses. Goods you bought to sell are stock purchases, kept separate."
+      },
+      "debt": {
+        "title": "Customer owes",
+        "body": "A later payment reduces what they owe. It is not another sale."
+      },
+      "move": {
+        "title": "Move money",
+        "body": "Moving cash to Mobile Money changes the two accounts and does not change your sales."
+      },
+      "reverse": {
+        "title": "Fix a mistake",
+        "body": "An owner or manager can reverse an entry. The original stays, marked reversed, and the money is put back."
+      }
+    }
   },
   "errors": {
     "generic": "Something went wrong. Please try again.",

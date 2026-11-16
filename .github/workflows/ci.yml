@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run type-check
+      - run: npx vitest run
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - name: Start local Supabase
+        run: npx supabase start -x studio,imgproxy,edge-runtime,pgbouncer,realtime,storage-api,vector,logflare
+      - name: SQL tests
+        run: npx supabase test db
+      - name: Point the app at the local stack
+        run: |
+          npx supabase status -o env > /tmp/supabase.env
+          set -a
+          # Local demo keys only. This file is not committed.
+          source /tmp/supabase.env
+          set +a
+          KEY="${PUBLISHABLE_KEY:-${ANON_KEY:-}}"
+          printf 'VITE_SUPABASE_URL=%s\nVITE_SUPABASE_PUBLISHABLE_KEY=%s\nVITE_DEFAULT_LOCALE=en\n' "$API_URL" "$KEY" > .env
+      - run: npm run build-only
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test --project=chromium
+        env:
+          CI: true

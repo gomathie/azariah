@@ -52,16 +52,10 @@ RPC-only mutations (ADR-002), derived balances (ADR-003), RLS + explicit grants 
 
 ## Status checkpoint
 
-- 2026-11-16: SQL suite green after `supabase db reset` and `supabase test db` (schema, RLS,
-  create-business, sale, spend: 5 files). `rpc_record_expense`, `rpc_record_stock_purchase`,
-  `rpc_record_owner_movement` and `rpc_record_opening_balance` are in
-  `supabase/migrations/20261116000500_rpc_spend.sql`. Outflows are negative `money_movements`.
-  Money parser rejects a second decimal point (`1.2.3`). Shared Zod input schemas are in
-  `src/types/schemas.ts`. Generated `src/types/database.ts` includes the sale and spend RPCs.
-- In progress: Task 5 onboarding e2e has not been run this session (`e2e/onboarding.spec.ts` is
-  written; `src/stores/__tests__/business.spec.ts` is still missing).
-- Blockers: none. Local Supabase is the Docker stack on 127.0.0.1:54322.
-- Next: run the checks, in order, before marking anything else Verified. Task 5 Playwright onboarding, then MoneyInput unit test, `supabase test db` for collection, then `e2e/add-sale.spec.ts` and `e2e/collection.spec.ts`. Tasks 9 and 10 are written and have not been run. Owner commits and pushes; agents do not.
+- 2026-11-16: Tasks 1–4 and 6–8 are verified (SQL suite: 5 files, 92 tests, before the later migrations; money and schema unit tests passed). Tasks 5 and 9–20 are written in the repo and their checks have not been run.
+- In progress: nothing is being written. The position marker stays Task 5 until Playwright onboarding passes.
+- Blockers: none in the code. The local Supabase stack may still be mid-restart from the Auth site URL change. Do not start another restart until a check needs it.
+- Next: run checks in order, starting with Task 5 Playwright onboarding, then MoneyInput, `npx supabase db reset` and `npx supabase test db` (now includes 0006–0012), then the sale, collection, daybook, and offline Playwright specs. Owner commits and pushes; agents do not.
 
 ## Rules for every runtime
 

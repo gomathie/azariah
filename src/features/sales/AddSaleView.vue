@@ -10,6 +10,7 @@ import AppSelect from '@/components/ui/AppSelect.vue'
 import MoneyInput from '@/components/ui/MoneyInput.vue'
 import CustomerPicker from '@/features/customers/CustomerPicker.vue'
 import { createSale } from '@/features/sales/api'
+import { isSavedOnDevice } from '@/lib/offline/save'
 import { RpcError } from '@/lib/supabase/rpc'
 import { useBusinessStore } from '@/stores/business'
 import { useCatalogStore } from '@/stores/catalog'
@@ -84,7 +85,7 @@ async function submit() {
   }
   loading.value = true
   try {
-    await createSale({
+    const result = await createSale({
       clientOperationId: crypto.randomUUID(),
       businessId: current.id,
       occurredAt: new Date(when.value).toISOString(),
@@ -96,7 +97,7 @@ async function submit() {
       description: description.value.trim() || null,
       note: note.value.trim() || null,
     })
-    await router.push({ name: 'daybook', query: { saved: 'sale' } })
+    await router.push({ name: 'daybook', query: { saved: isSavedOnDevice(result) ? 'offline' : 'sale' } })
   } catch (e) {
     error.value = e instanceof RpcError ? t(e.i18nKey) : t('errors.generic')
   } finally {

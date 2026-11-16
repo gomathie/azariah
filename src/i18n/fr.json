@@ -143,6 +143,7 @@
     "reverse": "Annuler cette entrée",
     "reverseReason": "Pourquoi l'annuler ?",
     "reversed": "Annulée",
+    "more": "Plus d'entrées",
     "kinds": {
       "sale": "Vente",
       "collection": "Argent reçu",
@@ -213,6 +214,60 @@
     "members": "Personnel et accès",
     "privacy": "Confidentialité et données",
     "export": "Télécharger toutes mes données"
+  },
+  "businessSettings": {
+    "title": "Paramètres de l'entreprise",
+    "name": "Nom de l'entreprise",
+    "country": "Pays",
+    "currency": "Devise",
+    "timezone": "Fuseau horaire"
+  },
+  "profile": {
+    "title": "Profil",
+    "email": "E-mail",
+    "language": "Langue"
+  },
+  "members": {
+    "title": "Personnel et accès",
+    "email": "E-mail",
+    "role": "Accès",
+    "invite": "Inviter",
+    "invited": "Invitation enregistrée",
+    "owner": "Propriétaire",
+    "manager": "Responsable",
+    "staff": "Personnel",
+    "viewer": "Lecture seule",
+    "remove": "Retirer l'accès",
+    "empty": "Vous êtes la seule personne avec accès pour l'instant."
+  },
+  "privacy": {
+    "title": "Confidentialité et données",
+    "body": "Les gens voient cette entreprise seulement si vous leur donnez l'accès. Téléchargez une copie depuis Paramètres. Une vente ou une dépense enregistrée sur ce téléphone y reste jusqu'à la synchronisation."
+  },
+  "help": {
+    "title": "Aide",
+    "cards": {
+      "sale": {
+        "title": "Ajouter une vente",
+        "body": "Indiquez ce que le client a acheté et l'argent reçu. S'il vous doit encore, choisissez son nom pour suivre la dette."
+      },
+      "expense": {
+        "title": "Ajouter une dépense",
+        "body": "Le loyer et le transport sont des dépenses. Les marchandises achetées pour être revendues sont des achats de stock, à part."
+      },
+      "debt": {
+        "title": "Le client doit",
+        "body": "Un paiement plus tard réduit ce qu'il doit. Ce n'est pas une nouvelle vente."
+      },
+      "move": {
+        "title": "Déplacer de l'argent",
+        "body": "Déplacer du cash vers Mobile Money change les deux comptes et ne change pas vos ventes."
+      },
+      "reverse": {
+        "title": "Corriger une erreur",
+        "body": "Le propriétaire ou un responsable peut annuler une entrée. L'originale reste, marquée annulée, et l'argent est remis."
+      }
+    }
   },
   "errors": {
     "generic": "Une erreur s'est produite. Veuillez réessayer.",

@@ -14,7 +14,7 @@
 
 Updated 2026-11-16. This table is the position marker. The task sections below stay the instructions; this table says which instruction to follow.
 
-**You are here: Task 5 — Auth, onboarding and business store.** Tasks 6, 7 and 8 are verified. Tasks 9 and 10 are written and their checks have not been run. Do not rebuild 6–10. The next action is to run the checks, starting with Task 5.
+**You are here: Task 5 — Auth, onboarding and business store.** Tasks 6, 7 and 8 are verified. Tasks 9 through 20 are written and their checks have not been run. Do not rebuild them. The next action is to run the checks, starting with Task 5.
 
 How every person and agent uses this table:
 
@@ -37,16 +37,16 @@ How every person and agent uses this table:
 | 8. Expense, stock, owner movement, opening balance | Verified | `0005_spend.test.sql` ok (D, E, G, H, replay, zero amount, other-business account). |
 | 9. Add Sale and Add Expense screens | Written — checks not run | Screens, catalog store, MoneyInput spec, and `e2e/add-sale.spec.ts` are in the repo. No test run yet. |
 | 10. Collection and customer statement | Written — checks not run | `rpc_record_collection`, statement RPC, customer screens, and `e2e/collection.spec.ts` are in the repo. No test run yet. |
-| 11. Transfers and account screens | Not started | |
-| 12. Reversal and daybook | Not started | |
-| 13. Dashboard summary | Not started | |
-| 14. Offline queue and sync | Not started | |
-| 15. Offline end-to-end test | Not started | |
-| 16. Reports and CSV export | Not started | |
-| 17. Business data export | Not started | |
-| 18. Membership management | Not started | |
-| 19. Help, privacy, settings, French | Not started | |
-| 20. CI and remaining docs | Not started | |
+| 11. Transfers and account screens | Written — checks not run | `rpc_transfer_between_accounts`, account screens, `0007_transfer.test.sql`. Not run. |
+| 12. Reversal and daybook | Written — checks not run | `rpc_reverse_transaction`, daybook detail, keyset `getDaybook`, `e2e/daybook.spec.ts`. Not run. |
+| 13. Dashboard summary | Written — checks not run | `rpc_get_dashboard_summary`, Home screen, `HomeView.spec.ts`. Not run. |
+| 14. Offline queue and sync | Written — checks not run | Dexie queue, `syncAll`, sale and expense enqueue. Specs not run. |
+| 15. Offline end-to-end test | Written — checks not run | `e2e/offline.spec.ts`. Not run. |
+| 16. Reports and CSV export | Written — checks not run | Report RPCs, reports screen, `toCsv`. Not run. |
+| 17. Business data export | Written — checks not run | `rpc_export_business_data` and the Settings download. Not run. |
+| 18. Membership management | Written — checks not run | Invite and change RPCs, Members screen, `0012_membership.test.sql`. Not run. |
+| 19. Help, privacy, settings, French | Written — checks not run | Help, privacy, profile, business settings, and the matching French strings. Not run. |
+| 20. CI and remaining docs | Written — checks not run | `.github/workflows/ci.yml` and the spec §15 docs. CI not run. |
 
 Milestone exits, in order: Task 5 closes Milestone 1. Tasks 9–13 close Milestone 2 (domain scenarios A–L). Tasks 14–17 close Milestone 3. Tasks 18–20 close Milestone 4.
 

@@ -9,6 +9,7 @@ import AppInput from '@/components/ui/AppInput.vue'
 import AppSelect from '@/components/ui/AppSelect.vue'
 import MoneyInput from '@/components/ui/MoneyInput.vue'
 import { createExpense } from '@/features/expenses/api'
+import { isSavedOnDevice } from '@/lib/offline/save'
 import { RpcError } from '@/lib/supabase/rpc'
 import { useBusinessStore } from '@/stores/business'
 import { useCatalogStore } from '@/stores/catalog'
@@ -64,7 +65,7 @@ async function submit() {
   }
   loading.value = true
   try {
-    await createExpense(
+    const result = await createExpense(
       {
         clientOperationId: crypto.randomUUID(),
         businessId: current.id,
@@ -77,7 +78,7 @@ async function submit() {
       },
       kind.value,
     )
-    await router.push({ name: 'daybook', query: { saved: 'expense' } })
+    await router.push({ name: 'daybook', query: { saved: isSavedOnDevice(result) ? 'offline' : 'expense' } })
   } catch (e) {
     error.value = e instanceof RpcError ? t(e.i18nKey) : t('errors.generic')
   } finally {

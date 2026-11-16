@@ -1,3 +1,4 @@
+import { saveForLater, browserIsOffline, type SavedOnDevice } from '@/lib/offline/save'
 import { callRpc, RpcError } from '@/lib/supabase/rpc'
 import { SaleInput } from '@/types/schemas'
 import { minorForRpc } from '@/utils/money'
@@ -11,13 +12,16 @@ export interface SaleResult {
   credit_minor: number
 }
 
-export async function createSale(input: SaleInput): Promise<SaleResult> {
+export type SaleOutcome = SaleResult | SavedOnDevice
+
+export async function createSale(input: SaleInput): Promise<SaleOutcome> {
   const parsed = SaleInput.parse({
     ...input,
     clientOperationId: input.clientOperationId || crypto.randomUUID(),
   })
+  let params: Record<string, unknown>
   try {
-    return await callRpc<SaleResult>('rpc_create_sale', {
+    params = {
       p_client_operation_id: parsed.clientOperationId,
       p_business_id: parsed.businessId,
       p_occurred_at: parsed.occurredAt,
@@ -28,9 +32,23 @@ export async function createSale(input: SaleInput): Promise<SaleResult> {
       p_category_id: parsed.categoryId,
       p_description: parsed.description,
       p_note: parsed.note,
-    })
+    }
   } catch (error) {
     if (error instanceof RangeError) throw new RpcError('AZ_INVALID_AMOUNT', error.message, error)
+    throw error
+  }
+  const keep = () =>
+    saveForLater({
+      id: parsed.clientOperationId,
+      businessId: parsed.businessId,
+      kind: 'sale',
+      payload: { rpc: 'rpc_create_sale', params },
+    })
+  if (browserIsOffline()) return keep()
+  try {
+    return await callRpc<SaleResult>('rpc_create_sale', params)
+  } catch (error) {
+    if (error instanceof RpcError && error.code === 'network') return keep()
     throw error
   }
 }

@@ -445,6 +445,45 @@ isOneToOne: false
 "rpc_record_stock_purchase":
 { Args: { "p_amount_minor": number,"p_business_id": string,"p_category_id": string,"p_client_operation_id": string,"p_description"?: string,"p_money_account_id": string,"p_note"?: string,"p_occurred_at": string }; Returns: Json
                            },
+"rpc_transfer_between_accounts":
+{ Args: { "p_amount_minor": number,"p_business_id": string,"p_client_operation_id": string,"p_from_account_id": string,"p_note"?: string,"p_occurred_at": string,"p_to_account_id": string }; Returns: Json
+                           },
+"rpc_reverse_transaction":
+{ Args: { "p_business_id": string,"p_client_operation_id": string,"p_reason": string,"p_transaction_id": string }; Returns: Json
+                           },
+"rpc_get_dashboard_summary":
+{ Args: { "p_business_id": string,"p_from"?: string,"p_to"?: string }; Returns: Json
+                           },
+"rpc_report_sales":
+{ Args: { "p_business_id": string,"p_filters"?: Json,"p_from": string,"p_to": string }; Returns: Json
+                           },
+"rpc_report_money_received":
+{ Args: { "p_business_id": string,"p_filters"?: Json,"p_from": string,"p_to": string }; Returns: Json
+                           },
+"rpc_report_expenses":
+{ Args: { "p_business_id": string,"p_filters"?: Json,"p_from": string,"p_to": string }; Returns: Json
+                           },
+"rpc_report_stock_purchases":
+{ Args: { "p_business_id": string,"p_filters"?: Json,"p_from": string,"p_to": string }; Returns: Json
+                           },
+"rpc_report_account_statement":
+{ Args: { "p_business_id": string,"p_filters"?: Json,"p_from": string,"p_to": string }; Returns: Json
+                           },
+"rpc_report_cash_movement":
+{ Args: { "p_business_id": string,"p_filters"?: Json,"p_from": string,"p_to": string }; Returns: Json
+                           },
+"rpc_report_customer_debts":
+{ Args: { "p_business_id": string,"p_filters"?: Json,"p_from": string,"p_to": string }; Returns: Json
+                           },
+"rpc_export_business_data":
+{ Args: { "p_business_id": string }; Returns: Json
+                           },
+"rpc_invite_member":
+{ Args: { "p_business_id": string,"p_client_operation_id": string,"p_email": string,"p_role": string }; Returns: Json
+                           },
+"rpc_change_membership":
+{ Args: { "p_business_id": string,"p_client_operation_id": string,"p_membership_id": string,"p_role"?: string,"p_status"?: string }; Returns: Json
+                           },
 "sync_record":
 { Args: { "p_business_id": string,"p_client_operation_id": string,"p_kind": string,"p_result": Json }; Returns: Json
                            },
