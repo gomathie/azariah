@@ -10,6 +10,46 @@
 
 **Spec:** `Azaria_Master_Development_Prompt.md` (v1.1). ADRs: `docs/architecture/ADR.md`.
 
+## Where we are
+
+Updated 2026-11-16. This table is the position marker. The task sections below stay the instructions; this table says which instruction to follow.
+
+**You are here: Task 5 — Auth, onboarding and business store.** Tasks 6, 7 and 8 were built ahead of it and their checks passed. Do not rebuild them. Close Task 5, then continue at Task 9.
+
+How every person and agent uses this table:
+
+1. Work only the row marked **You are here**.
+2. Read that task's files, rules and steps further down this file.
+3. Add the missing test first when the task still lacks one.
+4. Run the check named in the task. A task is **Verified** only after that check has passed. Files existing is not enough.
+5. Change the finished row to **Verified**, put the command and result in Evidence, and move **You are here** to the next row that is not Verified.
+6. Replace the Status checkpoint in `AGENTS.md` with the same point. The owner commits; do not commit unless asked.
+
+| Task | Status | Evidence |
+|---|---|---|
+| 1. Project configuration | Verified | `client.spec.ts` passed again on 2026-11-16 (unit run: 13 tests). Production build was green in the earlier session and was not re-run today. |
+| 2. Database schema | Verified | `0001_schema.test.sql` ok. `npx supabase test db`: 5 files, 92 tests, PASS. |
+| 3. RLS, grants, membership | Verified | `0003_rls.test.sql` ok in the same run. |
+| 4. Create business RPC | Verified | `0002_business_rpc.test.sql` ok in the same run. |
+| 5. Auth, onboarding, business store | **You are here** | Screens, stores and `e2e/onboarding.spec.ts` exist. `src/stores/__tests__/business.spec.ts` is missing. Playwright has not been run. |
+| 6. Money parsing and Zod schemas | Verified | `money.spec.ts` and `schemas.spec.ts` passed on 2026-11-16. `1.2.3` is rejected. |
+| 7. `rpc_create_sale` | Verified | `0004_sale.test.sql` ok (scenarios A, B, I, K and the rejection cases). |
+| 8. Expense, stock, owner movement, opening balance | Verified | `0005_spend.test.sql` ok (D, E, G, H, replay, zero amount, other-business account). |
+| 9. Add Sale and Add Expense screens | Not started | Sale, expense, home and daybook screens are placeholders. |
+| 10. Collection and customer statement | Not started | |
+| 11. Transfers and account screens | Not started | |
+| 12. Reversal and daybook | Not started | |
+| 13. Dashboard summary | Not started | |
+| 14. Offline queue and sync | Not started | |
+| 15. Offline end-to-end test | Not started | |
+| 16. Reports and CSV export | Not started | |
+| 17. Business data export | Not started | |
+| 18. Membership management | Not started | |
+| 19. Help, privacy, settings, French | Not started | |
+| 20. CI and remaining docs | Not started | |
+
+Milestone exits, in order: Task 5 closes Milestone 1. Tasks 9–13 close Milestone 2 (domain scenarios A–L). Tasks 14–17 close Milestone 3. Tasks 18–20 close Milestone 4.
+
 ## Global Constraints
 
 - Money in `bigint` minor units everywhere; no float arithmetic on amounts (spec §4.4, ADR-001).
@@ -67,7 +107,7 @@
 - [ ] **Step 1:** Write pgTAP test: `has_table` for each table, `col_type_is(transactions, amount_minor, bigint)`, `has_index(transactions, transactions_business_date_idx)`, RLS enabled on every table (`is(relrowsecurity, true)`).
 - [ ] **Step 2:** `npx supabase test db` — expect FAIL.
 - [ ] **Step 3:** Write the migration. Key constraints: `check (amount_minor > 0)` on transactions; `unique (business_id, client_operation_id)` on sync_operations; `unique (business_id, user_id)` on memberships; `check (money_account_id_from <> money_account_id_to)` on transfers (enforced in RPC); FK all `business_id` to businesses.
-- [ ] **Step 4:** `npx supabase db reset && npx supabase test db` PASS.
+- [x] **Step 4:** `npx supabase db reset && npx supabase test db` PASS.
 - [ ] **Step 5:** Commit `feat(db): core schema`.
 
 ### Task 3: Membership helper, RLS policies, grants
@@ -82,7 +122,7 @@
 - [ ] **Step 1:** pgTAP test using `set local role authenticated; set local request.jwt.claims` for two users and two businesses: user A selects own rows, zero rows of B; insert into `transactions` as authenticated is denied; anon sees nothing.
 - [ ] **Step 2:** Run — FAIL.
 - [ ] **Step 3:** Write policies per ADR-004; grants: `select` on all tables to `authenticated`; `insert/update` on `categories, contacts, money_accounts, businesses(owner only), business_preferences` to `authenticated` under policies; nothing to `anon`; revoke all on `audit_events`, `sync_operations` writes.
-- [ ] **Step 4:** Run — PASS.
+- [x] **Step 4:** Run — PASS.
 - [ ] **Step 5:** Commit `feat(db): rls policies and grants`.
 
 ### Task 4: `rpc_create_business_and_owner`
@@ -131,7 +171,7 @@
 - `formatMoney(minor: bigint | number, currency: string, locale: string): string`.
 - Zod schemas `SaleInput`, `ExpenseInput`, `CollectionInput`, `TransferInput`, `OwnerMovementInput` mirroring the RPC parameters.
 
-- [ ] **Step 1:** Tests: `parseMoney('1,250.50', 2) === 125050n`; `parseMoney('12.345', 2) === null`; `parseMoney('1 250,50', 2) === 125050n`; `formatMoney(125050n, 'GHS', 'en-GH')` contains `1,250.50`; `parseMoney('100', 0)` for XOF `=== 100n`.
+- [x] **Step 1:** Tests: `parseMoney('1,250.50', 2) === 125050n`; `parseMoney('12.345', 2) === null`; `parseMoney('1 250,50', 2) === 125050n`; `formatMoney(125050n, 'GHS', 'en-GH')` contains `1,250.50`; `parseMoney('100', 0)` for XOF `=== 100n`.
 - [ ] **Steps 2–5:** FAIL, implement, PASS, commit `feat: money parsing and formatting`.
 
 ### Task 7: `rpc_create_sale`
@@ -144,7 +184,7 @@
 - `rpc_create_sale(p_client_operation_id uuid, p_business_id uuid, p_occurred_at timestamptz, p_amount_minor bigint, p_received_minor bigint, p_money_account_id uuid, p_contact_id uuid, p_category_id uuid, p_description text, p_note text) returns jsonb` → `{transaction_id, receivable_id|null, business_date}`.
 - Rules: `0 ≤ received ≤ amount`; if `received < amount` then `contact_id` required and a receivable of `amount − received` is created; movement row for `received` when > 0; audit event `sale.created`.
 
-- [ ] **Step 1:** pgTAP scenarios A and B from spec §12.1 plus I (replay) and K (23:30 Accra on 2026-01-01 → `business_date = 2026-01-01`; 23:30 UTC → `2026-01-01` is 23:30 Accra since Accra is UTC+0; use `America/New_York` business for a differing case: 23:30 UTC = 18:30 local). Credit without contact → error `AZ_CONTACT_REQUIRED`.
+- [x] **Step 1:** pgTAP scenarios A and B from spec §12.1 plus I (replay) and K (23:30 Accra on 2026-01-01 → `business_date = 2026-01-01`; 23:30 UTC → `2026-01-01` is 23:30 Accra since Accra is UTC+0; use `America/New_York` business for a differing case: 23:30 UTC = 18:30 local). Credit without contact → error `AZ_CONTACT_REQUIRED`.
 - [ ] **Steps 2–5:** FAIL, implement, PASS, commit `feat(db): create sale rpc`.
 
 ### Task 8: `rpc_record_expense` and `rpc_record_stock_purchase`, owner movements, opening balance
@@ -158,7 +198,7 @@
 - `rpc_record_owner_movement(op, business, occurred_at, amount_minor, money_account_id, direction 'contribution'|'withdrawal', note)`.
 - `rpc_record_opening_balance(op, business, money_account_id, amount_minor, as_of date)`.
 
-- [ ] **Step 1:** pgTAP scenarios D, E, G, H; amount `0` → `AZ_INVALID_AMOUNT`; account from another business → `AZ_FORBIDDEN`.
+- [x] **Step 1:** pgTAP scenarios D, E, G, H; amount `0` → `AZ_INVALID_AMOUNT`; account from another business → `AZ_FORBIDDEN`.
 - [ ] **Steps 2–5:** commit `feat(db): expense, stock purchase, owner movements`.
 
 ### Task 9: Contacts and categories UI, Add Sale and Add Expense screens

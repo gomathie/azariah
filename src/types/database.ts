@@ -409,14 +409,35 @@ isOneToOne: false
 "audit":
 { Args: { "p_action": string,"p_business_id": string,"p_data"?: Json,"p_entity_id": string,"p_entity_type": string }; Returns: undefined
                            },
+"business_local_date":
+{ Args: { "p_business_id": string,"p_occurred_at": string }; Returns: string
+                           },
 "currency_minor_unit":
 { Args: { "p_currency_code": string }; Returns: number
                            },
 "is_member":
 { Args: { "p_business_id": string,"p_roles"?: (Database["public"]['Enums']["business_role"])[] }; Returns: boolean
                            },
+"post_money_event":
+{ Args: { "p_amount_minor": number,"p_audit_action": string,"p_business_date": string,"p_business_id": string,"p_category_id": string,"p_category_kind": Database["public"]['Enums']["category_kind"],"p_client_operation_id": string,"p_description": string,"p_kind": Database["public"]['Enums']["transaction_kind"],"p_money_account_id": string,"p_movement_sign": number,"p_note": string,"p_occurred_at": string,"p_sync_kind": string }; Returns: Json
+                           },
 "rpc_create_business_and_owner":
 { Args: { "p_business_type": string,"p_client_operation_id": string,"p_country_code": string,"p_currency_code": string,"p_name": string,"p_timezone": string }; Returns: Json
+                           },
+"rpc_create_sale":
+{ Args: { "p_amount_minor": number,"p_business_id": string,"p_category_id"?: string,"p_client_operation_id": string,"p_contact_id"?: string,"p_description"?: string,"p_money_account_id"?: string,"p_note"?: string,"p_occurred_at": string,"p_received_minor": number }; Returns: Json
+                           },
+"rpc_record_expense":
+{ Args: { "p_amount_minor": number,"p_business_id": string,"p_category_id": string,"p_client_operation_id": string,"p_description"?: string,"p_money_account_id": string,"p_note"?: string,"p_occurred_at": string }; Returns: Json
+                           },
+"rpc_record_opening_balance":
+{ Args: { "p_amount_minor": number,"p_as_of": string,"p_business_id": string,"p_client_operation_id": string,"p_money_account_id": string }; Returns: Json
+                           },
+"rpc_record_owner_movement":
+{ Args: { "p_amount_minor": number,"p_business_id": string,"p_client_operation_id": string,"p_direction": string,"p_money_account_id": string,"p_note"?: string,"p_occurred_at": string }; Returns: Json
+                           },
+"rpc_record_stock_purchase":
+{ Args: { "p_amount_minor": number,"p_business_id": string,"p_category_id": string,"p_client_operation_id": string,"p_description"?: string,"p_money_account_id": string,"p_note"?: string,"p_occurred_at": string }; Returns: Json
                            },
 "sync_record":
 { Args: { "p_business_id": string,"p_client_operation_id": string,"p_kind": string,"p_result": Json }; Returns: Json

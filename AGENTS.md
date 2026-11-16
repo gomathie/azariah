@@ -52,18 +52,21 @@ RPC-only mutations (ADR-002), derived balances (ADR-003), RLS + explicit grants 
 
 ## Status checkpoint
 
-- 2026-11-16: repo created, spec renamed to Azaria, ADRs + plan written, Vue scaffold + deps,
-  Supabase local config. Task 1 done (Tailwind, i18n EN/FR, PWA, Supabase client, auth/business
-  stores, router guards, auth + onboarding screens; type-check, lint, unit, build green).
-  Tasks 2–4 written: schema, RLS/grants, `rpc_create_business_and_owner` with pgTAP tests in
-  `supabase/tests`. Local stack runs with `npx supabase start -x studio,imgproxy,edge-runtime,pgbouncer,realtime,storage-api,vector,logflare`.
-  Next: confirm SQL tests green → Task 5 e2e onboarding → Task 6 money utils → Task 7 `rpc_create_sale`.
-  Owner commits and pushes; agents do not.
+- 2026-11-16: SQL suite green after `supabase db reset` and `supabase test db` (schema, RLS,
+  create-business, sale, spend: 5 files). `rpc_record_expense`, `rpc_record_stock_purchase`,
+  `rpc_record_owner_movement` and `rpc_record_opening_balance` are in
+  `supabase/migrations/20261116000500_rpc_spend.sql`. Outflows are negative `money_movements`.
+  Money parser rejects a second decimal point (`1.2.3`). Shared Zod input schemas are in
+  `src/types/schemas.ts`. Generated `src/types/database.ts` includes the sale and spend RPCs.
+- In progress: Task 5 onboarding e2e has not been run this session (`e2e/onboarding.spec.ts` is
+  written; `src/stores/__tests__/business.spec.ts` is still missing).
+- Blockers: none. Local Supabase is the Docker stack on 127.0.0.1:54322.
+- Next: Task 5 in the plan's Where we are table (business store unit test, then Playwright onboarding). After that, Task 9. Owner commits and pushes; agents do not.
 
 ## Rules for every runtime
 
 1. Spec wins: `Azaria_Master_Development_Prompt.md`. ADRs in `docs/architecture/ADR.md` are protected.
-2. Work from `docs/superpowers/plans/2026-11-16-azaria-mvp.md`; tick tasks as you complete them.
+2. Work from `docs/superpowers/plans/2026-11-16-azaria-mvp.md`. The **Where we are** table is the position marker: do the row marked **You are here**, then update that table and this checkpoint.
 3. Load the project skill `.claude/skills/azaria-vue-supabase/SKILL.md` for how to add a screen, an RPC, a migration, a test, and how to verify before claiming done.
 4. Tests before claims: run the relevant check and report PASS/FAIL/BLOCKED honestly.
 5. No secrets in the repo. No destructive commands against remote Supabase projects.
