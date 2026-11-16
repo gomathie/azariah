@@ -102,6 +102,22 @@ Keep docs consistent with the code that actually exists (spec §15). Update in t
 Rules: plain language, present tense, no aspirational features described as done, no secrets,
 date research claims, and prefer updating an existing doc over creating a new one.
 
+### Project context (from the library's project-context-management workflow)
+
+- **Entry point:** `CLAUDE.md` is the context entry point (architecture, terminology, decisions,
+  verified commands, status, known issues). `AGENTS.md` points every runtime at it. It is a
+  navigation aid; the code and migrations are the truth when they disagree.
+- **Session startup:** read `CLAUDE.md` → ADRs → the plan task; run `git status` and `git log -5`;
+  reconcile the status checkpoint with the actual code before doing anything.
+- **Checkpoint (end of session):** replace the *Status checkpoint* in `CLAUDE.md` with a few
+  bullets: completed, in progress, blockers, next action. No transcripts.
+- **Change rationale:** every guard, constraint, refusal or default gets a *why* comment at the
+  code, a test named after the behaviour, and an entry in `docs/HANDOFF.md` using
+  `Why / How / Benefit / Trade-off / Verification / Rollback`. If others will be tempted to undo
+  it, add it to *Protected decisions* in `CLAUDE.md`. Read all three before changing such code;
+  disagreements go to the owner, never into a silent revert.
+- Mark hypotheses as such; never claim the knowledge base guarantees memory across sessions.
+
 ### Changelog
 
 `docs/CHANGELOG.md` is the single source of release notes (a "What's new" screen will read it
