@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import BrandMark from '@/components/BrandMark.vue'
 import { useBusinessStore } from '@/stores/business'
 
 const { t } = useI18n()
@@ -22,9 +23,12 @@ const tabs = [
       class="no-print hidden md:flex md:flex-col w-60 shrink-0 border-r border-slate-200 bg-white p-4 gap-1"
       :aria-label="t('nav.more')"
     >
-      <div class="px-2 pb-4">
-        <div class="text-xl font-bold text-brand-800">Azaria</div>
-        <div class="text-sm text-slate-600 truncate">{{ business.current?.name }}</div>
+      <div class="px-2 pb-4 flex items-center gap-3">
+        <BrandMark class="size-10 shrink-0" />
+        <div class="min-w-0">
+          <div class="text-xl font-bold text-brand-800 leading-tight">Azaria</div>
+          <div class="text-sm text-slate-600 truncate">{{ business.current?.name }}</div>
+        </div>
       </div>
       <RouterLink
         v-for="tab in tabs"

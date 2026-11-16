@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import BrandMark from '@/components/BrandMark.vue'
 
 defineProps<{ title: string; back?: boolean }>()
 const router = useRouter()
@@ -18,6 +19,7 @@ const { t } = useI18n()
     >
       <span aria-hidden="true" class="text-2xl leading-none">‹</span>
     </button>
+    <BrandMark v-if="!back" class="size-9 shrink-0 md:hidden" />
     <h1 class="text-lg font-semibold text-slate-900 truncate flex-1">{{ title }}</h1>
     <slot name="actions" />
   </header>

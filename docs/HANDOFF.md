@@ -3,6 +3,15 @@
 Change-rationale entries for guards, constraints, refusals and defaults that a later agent might
 be tempted to undo. Format: Why / How / Benefit / Trade-off / Verification / Rollback. Newest first.
 
+## 2026-11-16 — The app mark is the furnace tile
+
+- **Why:** the name Azaria comes from Azariah in Daniel, who stood in the fire and was not burned. The owner chose the tile: a teal square, the letter A, and the flame in the opening.
+- **How:** `BrandMark.vue` and `public/favicon.svg` use that drawing. The home-screen PNGs fill the square with the same teal so the phone mask does not leave empty corners.
+- **Benefit:** the sign-in screen, the phone header, and the installed icon are the same mark.
+- **Trade-off:** the other two furnace drawings (a plain A, and a rounded A) stay in `src/assets/brand/` and are not used on screen.
+- **Verification:** looked at the welcome screen and the icon files in the browser. No automated test.
+- **Rollback:** remove `BrandMark` from the auth layout, the side navigation, and the page header, and point the icon links back at a plain favicon.
+
 ## 2026-11-16 — A shop roster is a person plus a phone, admin or not
 
 - **Why:** the people using Azaria are local traders and small informal shops. After creating an account they need to add who uses which phone, without role names like manager or viewer.

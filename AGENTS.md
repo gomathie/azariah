@@ -53,7 +53,7 @@ RPC-only mutations (ADR-002), derived balances (ADR-003), RLS + explicit grants 
 ## Status checkpoint
 
 - 2026-11-16: Tasks 1–4 and 6–8 are verified (SQL suite: 5 files, 92 tests, before the later migrations; money and schema unit tests passed). Tasks 5 and 9–20 are written in the repo and their checks have not been run.
-- In progress: nothing is being written. The position marker stays Task 5 until Playwright onboarding passes.
+- In progress: nothing is being written. The position marker stays Task 5 until Playwright onboarding passes. The chosen logo is the furnace tile (letter A with a flame), shown on sign-in, the phone header, and the install icon.
 - Blockers: none in the code. The local Supabase stack may still be mid-restart from the Auth site URL change. Do not start another restart until a check needs it.
 - Next: run checks in order, starting with Task 5 Playwright onboarding, then MoneyInput, `npx supabase db reset` and `npx supabase test db` (now includes 0006–0012), then the sale, collection, daybook, and offline Playwright specs. Owner commits and pushes; agents do not.
 

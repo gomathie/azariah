@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import BrandMark from '@/components/BrandMark.vue'
 import { persistLocale, SUPPORTED_LOCALES, type Locale } from '@/i18n'
 
 const { t, locale } = useI18n()
@@ -27,7 +28,8 @@ function setLocale(next: string) {
     <div class="flex-1 flex items-start md:items-center justify-center px-4 pb-10">
       <div class="w-full max-w-md bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-5">
         <div class="text-center">
-          <div class="text-2xl font-bold text-brand-800">Azaria</div>
+          <BrandMark class="size-16 mx-auto" />
+          <div class="text-2xl font-bold text-brand-800 mt-3">Azaria</div>
           <div class="text-sm text-slate-500">{{ t('app.tagline') }}</div>
         </div>
         <slot />

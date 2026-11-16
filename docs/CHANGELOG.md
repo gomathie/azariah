@@ -6,6 +6,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- The app icon is a teal tile: the letter A, with a flame standing in it.
+
 ### Added
 
 - Sign up, sign in and password reset.

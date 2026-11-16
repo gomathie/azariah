@@ -15,7 +15,7 @@ export default defineConfig({
     VitePWA({
       registerType: 'prompt',
       injectRegister: null,
-      includeAssets: ['favicon.ico', 'icons/icon-192.png', 'icons/icon-512.png'],
+      includeAssets: ['favicon.svg', 'icons/icon-192.png', 'icons/icon-512.png'],
       devOptions: { enabled: true },
       manifest: {
         name: 'Azaria',
