@@ -9,6 +9,33 @@ export interface MembershipRow {
   user_id: string
 }
 
+export async function listShopPeople(businessId: string): Promise<ShopPerson[]> {
+  const data = await callRpc<ShopPerson[]>('rpc_list_shop_people', { p_business_id: businessId })
+  return data ?? []
+}
+
+export interface ShopPerson {
+  id: string
+  name: string
+  device_name: string
+  role: 'staff' | 'manager'
+}
+
+export async function addShopPerson(
+  businessId: string,
+  name: string,
+  deviceName: string,
+  role: 'staff' | 'manager',
+) {
+  return callRpc<ShopPerson>('rpc_add_shop_person', {
+    p_client_operation_id: crypto.randomUUID(),
+    p_business_id: businessId,
+    p_name: name,
+    p_device_name: deviceName,
+    p_role: role,
+  })
+}
+
 export async function listMembers(businessId: string): Promise<MembershipRow[]> {
   const { data, error } = await getSupabase()
     .from('business_memberships')

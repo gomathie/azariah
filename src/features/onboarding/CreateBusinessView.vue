@@ -59,7 +59,7 @@ async function submit() {
       currencyCode: currencyCode.value,
       timezone: timezone.value,
     })
-    await router.replace({ name: 'home', query: { welcome: '1' } })
+    await router.replace({ name: 'members', query: { first: '1' } })
   } catch (e) {
     error.value = e instanceof RpcError ? t(e.i18nKey) : e instanceof Error ? e.message : t('errors.generic')
   } finally {

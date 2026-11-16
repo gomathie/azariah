@@ -3,6 +3,15 @@
 Change-rationale entries for guards, constraints, refusals and defaults that a later agent might
 be tempted to undo. Format: Why / How / Benefit / Trade-off / Verification / Rollback. Newest first.
 
+## 2026-11-16 — A shop roster is a person plus a phone, admin or not
+
+- **Why:** the people using Azaria are local traders and small informal shops. After creating an account they need to add who uses which phone, without role names like manager or viewer.
+- **How:** `shop_people` stores the name, the phone, and the role. The role is `staff` or `manager`. Staff is the default. Only the owner can choose manager, which the screen calls Admin. A staff member cannot add people. Signing in is still `business_memberships`; the roster does not by itself create a login.
+- **Benefit:** the setup screen is one form: person, phone, admin or not, then "Go to my shop".
+- **Trade-off:** a helper listed here cannot open the app until they have their own sign-in. The screen does not pretend otherwise.
+- **Verification:** `supabase/tests/0013_shop_people.test.sql` (not run).
+- **Rollback:** drop `rpc_add_shop_person`, `rpc_list_shop_people`, and `shop_people`.
+
 ## 2026-11-16 — The last active owner cannot be removed or demoted
 
 - **Why:** a business with no owner cannot invite a replacement or export its data.

@@ -20,6 +20,7 @@ Amounts are minor units (`bigint`). GHS uses 2, so 100.00 is stored as 10000. A 
 | `attachments` | Reserved for a future file. No upload screen yet |
 | `audit_events` | Who did what, including reversals and exports |
 | `sync_operations` | The client operation id and the stored result, so a retry does not post twice |
+| `shop_people` | A person, the phone they use, and their role: `staff` or `manager` (shown as Admin). Staff is the default. Signing in still uses `business_memberships` |
 
 ## Status
 

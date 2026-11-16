@@ -1,52 +1,53 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageHeader from '@/components/ui/PageHeader.vue'
 import AppAlert from '@/components/ui/AppAlert.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppInput from '@/components/ui/AppInput.vue'
-import AppSelect from '@/components/ui/AppSelect.vue'
-import { changeMembership, inviteMember, listMembers, type MembershipRow } from '@/features/settings/api'
+import { addShopPerson, listShopPeople, type ShopPerson } from '@/features/settings/api'
 import { RpcError } from '@/lib/supabase/rpc'
-import { useAuthStore } from '@/stores/auth'
 import { useBusinessStore } from '@/stores/business'
 
 const { t } = useI18n()
+const route = useRoute()
+const router = useRouter()
 const business = useBusinessStore()
-const auth = useAuthStore()
-const rows = ref<MembershipRow[]>([])
-const email = ref('')
-const role = ref('staff')
+const people = ref<ShopPerson[]>([])
+const name = ref('')
+const deviceName = ref('')
+const role = ref<'staff' | 'manager'>('staff')
 const error = ref<string | null>(null)
 const notice = ref('')
 const loading = ref(false)
-const roleOptions = [
-  { value: 'manager', label: t('members.manager') },
-  { value: 'staff', label: t('members.staff') },
-  { value: 'viewer', label: t('members.viewer') },
-]
-if (business.current?.role === 'owner') roleOptions.unshift({ value: 'owner', label: t('members.owner') })
+const canAdd = computed(() => business.current?.role === 'owner' || business.current?.role === 'manager')
+const isOwner = computed(() => business.current?.role === 'owner')
+const firstVisit = computed(() => route.query.first === '1')
 
 async function load() {
   const id = business.current?.id
   if (!id) return
-  rows.value = await listMembers(id)
+  people.value = await listShopPeople(id)
 }
 
 watch(() => business.current?.id, () => void load(), { immediate: true })
 
-async function invite() {
+async function addPerson() {
   const id = business.current?.id
-  if (!id || !email.value.includes('@')) {
-    error.value = t('errors.AZ_INVALID_INPUT')
+  if (!id || name.value.trim().length === 0 || deviceName.value.trim().length === 0) {
+    error.value = t('errors.required')
     return
   }
   loading.value = true
   error.value = null
   try {
-    await inviteMember(id, email.value.trim(), role.value)
-    email.value = ''
-    notice.value = t('members.invited')
+    const chosen = isOwner.value && role.value === 'manager' ? 'manager' : 'staff'
+    await addShopPerson(id, name.value.trim(), deviceName.value.trim(), chosen)
+    name.value = ''
+    deviceName.value = ''
+    role.value = 'staff'
+    notice.value = t('members.added')
     await load()
   } catch (e) {
     error.value = e instanceof RpcError ? t(e.i18nKey) : t('errors.generic')
@@ -55,44 +56,54 @@ async function invite() {
   }
 }
 
-async function remove(membershipId: string) {
-  const id = business.current?.id
-  if (!id) return
-  error.value = null
-  try {
-    await changeMembership(id, membershipId, null, 'removed')
-    await load()
-  } catch (e) {
-    error.value = e instanceof RpcError ? t(e.i18nKey) : t('errors.generic')
-  }
+function finish() {
+  void router.push({ name: 'home' })
 }
 </script>
 
 <template>
-  <PageHeader :title="t('members.title')" back />
+  <PageHeader :title="t('members.title')" :back="!firstVisit" />
   <section class="p-4 space-y-4 max-w-lg">
+    <p class="text-slate-700">{{ t('members.intro') }}</p>
     <AppAlert v-if="error" kind="error">{{ error }}</AppAlert>
     <AppAlert v-if="notice" kind="success">{{ notice }}</AppAlert>
-    <form v-if="business.current?.role === 'owner' || business.current?.role === 'manager'" class="space-y-3" @submit.prevent="invite">
-      <AppInput v-model="email" type="email" :label="t('members.email')" />
-      <AppSelect v-model="role" :label="t('members.role')" :options="roleOptions" />
-      <AppButton type="submit" :loading="loading">{{ t('members.invite') }}</AppButton>
+
+    <form v-if="canAdd" class="space-y-3" @submit.prevent="addPerson">
+      <AppInput v-model="name" :label="t('members.name')" :placeholder="t('members.namePlaceholder')" />
+      <AppInput v-model="deviceName" :label="t('members.device')" :placeholder="t('members.devicePlaceholder')" />
+      <fieldset class="space-y-2">
+        <legend class="text-sm font-medium text-slate-700">{{ t('members.roleQuestion') }}</legend>
+        <div class="grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            class="min-h-14 rounded-xl border font-semibold"
+            :class="role === 'staff' ? 'bg-brand-700 text-white border-brand-700' : 'bg-white border-slate-200'"
+            @click="role = 'staff'"
+          >
+            {{ t('members.staff') }}
+          </button>
+          <button
+            v-if="isOwner"
+            type="button"
+            class="min-h-14 rounded-xl border font-semibold"
+            :class="role === 'manager' ? 'bg-brand-700 text-white border-brand-700' : 'bg-white border-slate-200'"
+            @click="role = 'manager'"
+          >
+            {{ t('members.admin') }}
+          </button>
+        </div>
+      </fieldset>
+      <AppButton type="submit" block :loading="loading">{{ t('members.add') }}</AppButton>
     </form>
-    <p v-if="rows.length === 0" class="text-slate-600">{{ t('members.empty') }}</p>
-    <ul class="divide-y divide-slate-200 bg-white rounded-xl border border-slate-200">
-      <li v-for="row in rows" :key="row.id" class="px-4 py-3 flex items-center justify-between gap-3 min-h-14">
-        <span>
-          <span class="block font-medium">{{ row.invited_email || row.user_id }}</span>
-          <span class="block text-sm text-slate-500">{{ row.role }} · {{ row.status }}</span>
-        </span>
-        <AppButton
-          v-if="row.status === 'active' && row.user_id !== auth.user?.id"
-          type="button"
-          variant="ghost"
-          @click="remove(row.id)"
-          >{{ t('members.remove') }}</AppButton
-        >
+
+    <p v-if="people.length === 0" class="text-slate-600">{{ t('members.empty') }}</p>
+    <ul v-else class="divide-y divide-slate-200 bg-white rounded-xl border border-slate-200">
+      <li v-for="person in people" :key="person.id" class="px-4 py-3 min-h-14">
+        <span class="block font-medium text-slate-900">{{ person.name }}</span>
+        <span class="block text-sm text-slate-600">{{ person.device_name }} · {{ person.role === 'manager' ? t('members.admin') : t('members.staff') }}</span>
       </li>
     </ul>
+
+    <AppButton v-if="firstVisit" type="button" variant="secondary" block @click="finish">{{ t('members.done') }}</AppButton>
   </section>
 </template>

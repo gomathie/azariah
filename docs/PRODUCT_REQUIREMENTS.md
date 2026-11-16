@@ -1,24 +1,24 @@
 # Product requirements
 
-Azaria is a phone-first bookkeeping app for a small shop. The owner records what happened today: a sale, an expense, a later payment, or money moved between Cash and Mobile Money. The app keeps those events, then shows cash, debts, and reports from them.
+Azaria is a phone-first bookkeeping app for local traders and small informal shops. The owner records what happened today: a sale, an expense, a later payment, or money moved between Cash and Mobile Money. The app keeps those events, then shows cash, debts, and reports from them.
 
 ## Personas
 
-- **Owner.** Creates the business, records entries, reverses mistakes, invites people, and downloads the data.
-- **Manager.** Records entries and reverses mistakes. Cannot grant the owner role.
-- **Staff.** Records sales and expenses. Cannot reverse entries, invite people, or export the business.
-- **Viewer.** Can read. Cannot record.
+- **Owner.** Creates the shop on their phone, records the day, and adds the other people and phones. An admin can correct mistakes.
+- **Staff.** Uses a named phone to record sales and expenses. Staff do not correct entries.
+- **Trader working alone.** Skips adding anyone and goes straight to the shop.
 
 ## Main flows
 
-1. Sign up, then create a business with country, currency, and time zone. The owner membership, Cash, Mobile Money, and starter categories are created together.
-2. Add a sale. Money received now goes to an account. Anything still owed needs a customer.
-3. Add an expense, or record goods bought to resell. Those stay separate.
-4. Record a later customer payment. It reduces the oldest debt and is not a new sale.
-5. Move money between two accounts.
-6. Open the daybook, open an entry, and reverse it when it was a mistake.
-7. Read Home and Reports for a date range. Download a CSV or a full JSON copy.
-8. If the phone is offline, a sale or an expense stays on the phone and is sent later.
+1. Sign up, then name the shop. Country, currency, and time zone are filled in and can be changed.
+2. Add a person and the phone they use. Choose Staff or Admin. Staff is the usual choice. Skip this when you work alone.
+3. Add a sale. Money received now goes to an account. Anything still owed needs a customer.
+4. Add an expense, or record goods bought to resell. Those stay separate.
+5. Record a later customer payment. It reduces the oldest debt and is not a new sale.
+6. Move money between two accounts.
+7. Open the daybook, open an entry, and reverse it when it was a mistake.
+8. Read Home and Reports for a date range. Download a CSV or a full JSON copy.
+9. If the phone is offline, a sale or an expense stays on the phone and is sent later.
 
 ## Acceptance
 

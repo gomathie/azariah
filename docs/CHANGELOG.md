@@ -21,6 +21,7 @@
 - Save a sale or an expense on this phone when you are offline, then tap Sync when you reconnect.
 - Reports, a CSV download, and a full copy of your business data for the owner.
 - Invite someone who already has an Azaria account.
+- After you create the shop, add a person and the phone they use. Choose Staff or Admin. Staff record sales and expenses. An admin can also correct mistakes.
 - Help, privacy, and profile screens.
 
 ### Security

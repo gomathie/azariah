@@ -18,7 +18,9 @@ export async function signUpAndCreateBusiness(page: Page, businessName = "Ama's 
   await page.getByLabel('Business name').fill(businessName)
   await page.getByRole('button', { name: 'Create business' }).click()
 
-  await expect(page).toHaveURL(/\/(\?welcome=1)?$/)
+  await expect(page.getByRole('heading', { name: 'People and phones' })).toBeVisible()
+  await page.getByRole('button', { name: 'Go to my shop' }).click()
+  await expect(page).toHaveURL(/\/$/)
   await expect(page.getByRole('heading', { name: 'Home' })).toBeVisible()
   return { email }
 }

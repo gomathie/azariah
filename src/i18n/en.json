@@ -211,7 +211,7 @@
   "settings": {
     "title": "Settings",
     "business": "Business settings",
-    "members": "Staff and access",
+    "members": "People and phones",
     "privacy": "Privacy and data",
     "export": "Download all my data"
   },
@@ -228,17 +228,19 @@
     "language": "Language"
   },
   "members": {
-    "title": "Staff and access",
-    "email": "Email",
-    "role": "Access",
-    "invite": "Invite",
-    "invited": "Invitation saved",
-    "owner": "Owner",
-    "manager": "Manager",
+    "title": "People and phones",
+    "intro": "Add a person and the phone they use. Staff record sales and expenses. An admin can also correct mistakes.",
+    "name": "Person",
+    "namePlaceholder": "e.g. Kofi",
+    "device": "Phone",
+    "devicePlaceholder": "e.g. Shop counter",
+    "roleQuestion": "What is their role?",
+    "admin": "Admin",
     "staff": "Staff",
-    "viewer": "Can view",
-    "remove": "Remove access",
-    "empty": "Only you have access so far."
+    "add": "Add person",
+    "added": "Person added",
+    "done": "Go to my shop",
+    "empty": "Only you so far. Add someone when another phone is used for the shop."
   },
   "privacy": {
     "title": "Privacy and data",

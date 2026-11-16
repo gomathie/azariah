@@ -211,7 +211,7 @@
   "settings": {
     "title": "Paramètres",
     "business": "Paramètres de l'entreprise",
-    "members": "Personnel et accès",
+    "members": "Personnes et téléphones",
     "privacy": "Confidentialité et données",
     "export": "Télécharger toutes mes données"
   },
@@ -228,17 +228,19 @@
     "language": "Langue"
   },
   "members": {
-    "title": "Personnel et accès",
-    "email": "E-mail",
-    "role": "Accès",
-    "invite": "Inviter",
-    "invited": "Invitation enregistrée",
-    "owner": "Propriétaire",
-    "manager": "Responsable",
+    "title": "Personnes et téléphones",
+    "intro": "Ajoutez une personne et le téléphone qu'elle utilise. Le personnel note les ventes et les dépenses. Un admin peut aussi corriger les erreurs.",
+    "name": "Personne",
+    "namePlaceholder": "p. ex. Kofi",
+    "device": "Téléphone",
+    "devicePlaceholder": "p. ex. Comptoir",
+    "roleQuestion": "Quel est son rôle ?",
+    "admin": "Admin",
     "staff": "Personnel",
-    "viewer": "Lecture seule",
-    "remove": "Retirer l'accès",
-    "empty": "Vous êtes la seule personne avec accès pour l'instant."
+    "add": "Ajouter",
+    "added": "Personne ajoutée",
+    "done": "Aller à ma boutique",
+    "empty": "Il n'y a que vous pour l'instant. Ajoutez quelqu'un quand un autre téléphone sert à la boutique."
   },
   "privacy": {
     "title": "Confidentialité et données",
