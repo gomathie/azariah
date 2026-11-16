@@ -66,6 +66,18 @@ export function formatMoney(minor: bigint | number, currency: string, locale = '
   }
 }
 
+/**
+ * JSON has no bigint. PostgREST accepts a safe integer for a bigint argument.
+ * Amounts above 2^53−1 cannot be sent exactly, so the caller must stop.
+ */
+export function minorForRpc(value: bigint): number {
+  const limit = BigInt(Number.MAX_SAFE_INTEGER)
+  if (value > limit || value < -limit) {
+    throw new RangeError('Amount is too large to send exactly')
+  }
+  return Number(value)
+}
+
 /** Plain number string without symbol, e.g. for inputs: 125050n -> "1250.50". */
 export function toMajorString(minor: bigint | number, minorUnit: number): string {
   const s = BigInt(minor).toString().padStart(minorUnit + 1, '0')

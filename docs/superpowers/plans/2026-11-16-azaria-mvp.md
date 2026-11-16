@@ -31,7 +31,7 @@ How every person and agent uses this table:
 | 2. Database schema | Verified | `0001_schema.test.sql` ok. `npx supabase test db`: 5 files, 92 tests, PASS. |
 | 3. RLS, grants, membership | Verified | `0003_rls.test.sql` ok in the same run. |
 | 4. Create business RPC | Verified | `0002_business_rpc.test.sql` ok in the same run. |
-| 5. Auth, onboarding, business store | **You are here** | Screens, stores and `e2e/onboarding.spec.ts` exist. `src/stores/__tests__/business.spec.ts` is missing. Playwright has not been run. |
+| 5. Auth, onboarding, business store | **You are here** | `business.spec.ts` passed (1 test) on 2026-11-16. Playwright onboarding has not been run: Chromium is still downloading and the local Supabase stack is restarting so Auth accepts `http://localhost:5173`. |
 | 6. Money parsing and Zod schemas | Verified | `money.spec.ts` and `schemas.spec.ts` passed on 2026-11-16. `1.2.3` is rejected. |
 | 7. `rpc_create_sale` | Verified | `0004_sale.test.sql` ok (scenarios A, B, I, K and the rejection cases). |
 | 8. Expense, stock, owner movement, opening balance | Verified | `0005_spend.test.sql` ok (D, E, G, H, replay, zero amount, other-business account). |

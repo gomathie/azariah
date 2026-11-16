@@ -427,6 +427,12 @@ isOneToOne: false
 "rpc_create_sale":
 { Args: { "p_amount_minor": number,"p_business_id": string,"p_category_id"?: string,"p_client_operation_id": string,"p_contact_id"?: string,"p_description"?: string,"p_money_account_id"?: string,"p_note"?: string,"p_occurred_at": string,"p_received_minor": number }; Returns: Json
                            },
+"rpc_get_customer_statement":
+{ Args: { "p_business_id": string,"p_contact_id": string,"p_from"?: string,"p_to"?: string }; Returns: Json
+                           },
+"rpc_record_collection":
+{ Args: { "p_amount_minor": number,"p_business_id": string,"p_client_operation_id": string,"p_contact_id": string,"p_money_account_id": string,"p_note"?: string,"p_occurred_at": string }; Returns: Json
+                           },
 "rpc_record_expense":
 { Args: { "p_amount_minor": number,"p_business_id": string,"p_category_id": string,"p_client_operation_id": string,"p_description"?: string,"p_money_account_id": string,"p_note"?: string,"p_occurred_at": string }; Returns: Json
                            },

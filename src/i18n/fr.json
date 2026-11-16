@@ -109,7 +109,8 @@
     "amount": "Montant reçu",
     "account": "Reçu sur",
     "outstanding": "Le client doit",
-    "saved": "Paiement enregistré"
+    "saved": "Paiement enregistré",
+    "note": "Note"
   },
   "transfer": {
     "title": "Déplacer de l'argent",
@@ -163,6 +164,9 @@
     "noDebt": "Rien à payer",
     "statement": "Relevé",
     "empty": "Aucun client pour l'instant.",
+    "added": "Ajouté à ce qu'il doit",
+    "paid": "Paiement",
+    "stillOwes": "Doit encore",
     "remind": "Envoyer un rappel",
     "reminderText": "Bonjour {name}, petit rappel : {amount} reste à payer chez {business}. Merci !"
   },

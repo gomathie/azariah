@@ -109,7 +109,8 @@
     "amount": "Amount received",
     "account": "Received into",
     "outstanding": "Customer owes",
-    "saved": "Payment recorded"
+    "saved": "Payment recorded",
+    "note": "Note"
   },
   "transfer": {
     "title": "Move money",
@@ -163,6 +164,9 @@
     "noDebt": "Nothing owed",
     "statement": "Statement",
     "empty": "No customers yet.",
+    "added": "Added to what they owe",
+    "paid": "Payment",
+    "stillOwes": "Still owes",
     "remind": "Send reminder",
     "reminderText": "Hello {name}, a friendly reminder that {amount} is outstanding at {business}. Thank you!"
   },
