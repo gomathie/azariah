@@ -61,7 +61,7 @@ RPC-only mutations (ADR-002), derived balances (ADR-003), RLS + explicit grants 
 - In progress: Task 5 onboarding e2e has not been run this session (`e2e/onboarding.spec.ts` is
   written; `src/stores/__tests__/business.spec.ts` is still missing).
 - Blockers: none. Local Supabase is the Docker stack on 127.0.0.1:54322.
-- Next: Task 5 in the plan's Where we are table (business store unit test, then Playwright onboarding). After that, Task 9. Owner commits and pushes; agents do not.
+- Next: run the checks, in order, before marking anything else Verified. Task 5 Playwright onboarding, then MoneyInput unit test, `supabase test db` for collection, then `e2e/add-sale.spec.ts` and `e2e/collection.spec.ts`. Tasks 9 and 10 are written and have not been run. Owner commits and pushes; agents do not.
 
 ## Rules for every runtime
 

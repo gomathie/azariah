@@ -14,7 +14,7 @@
 
 Updated 2026-11-16. This table is the position marker. The task sections below stay the instructions; this table says which instruction to follow.
 
-**You are here: Task 5 — Auth, onboarding and business store.** Tasks 6, 7 and 8 were built ahead of it and their checks passed. Do not rebuild them. Close Task 5, then continue at Task 9.
+**You are here: Task 5 — Auth, onboarding and business store.** Tasks 6, 7 and 8 are verified. Tasks 9 and 10 are written and their checks have not been run. Do not rebuild 6–10. The next action is to run the checks, starting with Task 5.
 
 How every person and agent uses this table:
 
@@ -35,8 +35,8 @@ How every person and agent uses this table:
 | 6. Money parsing and Zod schemas | Verified | `money.spec.ts` and `schemas.spec.ts` passed on 2026-11-16. `1.2.3` is rejected. |
 | 7. `rpc_create_sale` | Verified | `0004_sale.test.sql` ok (scenarios A, B, I, K and the rejection cases). |
 | 8. Expense, stock, owner movement, opening balance | Verified | `0005_spend.test.sql` ok (D, E, G, H, replay, zero amount, other-business account). |
-| 9. Add Sale and Add Expense screens | Not started | Sale, expense, home and daybook screens are placeholders. |
-| 10. Collection and customer statement | Not started | |
+| 9. Add Sale and Add Expense screens | Written — checks not run | Screens, catalog store, MoneyInput spec, and `e2e/add-sale.spec.ts` are in the repo. No test run yet. |
+| 10. Collection and customer statement | Written — checks not run | `rpc_record_collection`, statement RPC, customer screens, and `e2e/collection.spec.ts` are in the repo. No test run yet. |
 | 11. Transfers and account screens | Not started | |
 | 12. Reversal and daybook | Not started | |
 | 13. Dashboard summary | Not started | |

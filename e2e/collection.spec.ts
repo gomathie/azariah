@@ -23,5 +23,5 @@ test('a later payment clears what the customer owes and is not a new sale', asyn
   await page.getByRole('button', { name: 'Save' }).click()
 
   await expect(page.getByRole('status')).toContainText('Payment recorded')
-  await expect(page.getByText(/Still owes/)).toContainText('0.00')
+  await expect(page.getByText('Still owes').first()).toContainText('0.00')
 })

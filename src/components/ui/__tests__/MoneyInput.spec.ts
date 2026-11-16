@@ -5,6 +5,7 @@ import MoneyInput from '../MoneyInput.vue'
 
 describe('MoneyInput', () => {
   it('emits minor units as the user types', async () => {
+    i18n.global.locale.value = 'en'
     const wrapper = mount(MoneyInput, {
       props: { label: 'Amount', currency: 'GHS', minorUnit: 2, modelValue: null },
       global: { plugins: [i18n] },
@@ -14,6 +15,7 @@ describe('MoneyInput', () => {
   })
 
   it('shows an error when the amount has too many decimals', async () => {
+    i18n.global.locale.value = 'en'
     const wrapper = mount(MoneyInput, {
       props: { label: 'Amount', currency: 'GHS', minorUnit: 2, modelValue: null },
       global: { plugins: [i18n] },

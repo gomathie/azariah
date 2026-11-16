@@ -3,6 +3,15 @@
 Change-rationale entries for guards, constraints, refusals and defaults that a later agent might
 be tempted to undo. Format: Why / How / Benefit / Trade-off / Verification / Rollback. Newest first.
 
+## 2026-11-16 — Customer payments settle the oldest debt first and are not sales
+
+- **Why:** a shop owner who is paid later must see the debt fall and the cash rise, without the dashboard counting that money as another sale.
+- **How:** `rpc_record_collection` writes a `collection` transaction and a positive money movement, then applies the amount to open receivables ordered by `created_at`, `id`. A payment above the outstanding debt raises `AZ_EXCEEDS_DEBT`.
+- **Benefit:** scenario C stays true: money increases, debt decreases, sales total stays the same.
+- **Trade-off:** the owner cannot choose which invoice a payment closes. The oldest open debt is always first.
+- **Verification:** `supabase/tests/0006_collection.test.sql` (not run yet; the owner asked for the code before any test run).
+- **Rollback:** drop `rpc_record_collection` and `rpc_get_customer_statement`. Do not record payments by inserting into `transactions` from the client.
+
 ## 2026-11-16 — Local Auth redirects point at the Vite app
 
 - **Why:** sign-up and password reset send `emailRedirectTo` to the page origin (`/login`, `/reset-password`). GoTrue rejects a redirect that is not `site_url` or in `additional_redirect_urls`. The scaffold value was port 3000, so the app on port 5173 could not create a session.
