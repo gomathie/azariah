@@ -4,6 +4,7 @@ select plan(14);
 
 -- helpers --------------------------------------------------------------------
 create schema if not exists tests;
+grant usage on schema tests to anon, authenticated;
 create or replace function tests.create_user(p_email text) returns uuid language plpgsql as $$
 declare v_id uuid := gen_random_uuid();
 begin
@@ -21,10 +22,12 @@ begin
 end $$;
 create or replace function tests.clear_auth() returns void language plpgsql as $$
 begin
+  -- RESET ROLE is always permitted; it returns to the session (superuser) role.
+  execute 'reset role';
   perform set_config('request.jwt.claims', '', true);
   perform set_config('request.jwt.claim.sub', '', true);
-  perform set_config('role', 'postgres', true);
 end $$;
+grant execute on all functions in schema tests to anon, authenticated;
 
 -- fixtures -------------------------------------------------------------------
 select tests.create_user('ama@example.test') as uid \gset
@@ -45,7 +48,6 @@ select is((select role::text from public.business_memberships where business_id 
 select is((select count(*) from public.money_accounts where business_id = :'bid'), 2::bigint, 'Cash and Mobile Money accounts seeded');
 select ok((select count(*) from public.categories where business_id = :'bid' and kind = 'operating_expense') >= 6, 'operating expense categories seeded');
 select is((select count(*) from public.categories where business_id = :'bid' and kind = 'stock_purchase' and name = 'Goods for resale'), 1::bigint, 'retail stock category seeded');
-select is((select count(*) from public.audit_events where business_id = :'bid' and action = 'business.created'), 1::bigint, 'audit event written');
 
 -- idempotent replay ------------------------------------------------------------
 select is(
@@ -70,5 +72,7 @@ select public.rpc_create_business_and_owner('44444444-4444-4444-4444-44444444444
 select is((select minor_unit from public.businesses where id = ((:'xof')::jsonb ->> 'business_id')::uuid), 0::smallint, 'XOF has 0 minor units');
 
 select tests.clear_auth();
+-- audit_events is only readable by the superuser (no API grant), so check it after clear_auth
+select is((select count(*) from public.audit_events where business_id = :'bid' and action = 'business.created'), 1::bigint, 'audit event written');
 select * from finish();
 rollback;

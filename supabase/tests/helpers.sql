@@ -1,7 +1,0 @@
--- Test helpers shared by pgTAP files. Loaded by each test via \ir helpers.sql? pg_prove runs files
--- independently, so each test file re-creates these (idempotently) in its own transaction.
--- Kept here as the canonical copy; test files inline the same definitions.
---
--- tests.create_user(email) -> uuid : inserts an auth.users row (triggers profile creation)
--- tests.authenticate(uid)          : sets the request to run as that authenticated user
--- tests.clear_auth()               : back to the test superuser

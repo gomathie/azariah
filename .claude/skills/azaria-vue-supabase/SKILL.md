@@ -102,6 +102,28 @@ Keep docs consistent with the code that actually exists (spec §15). Update in t
 Rules: plain language, present tense, no aspirational features described as done, no secrets,
 date research claims, and prefer updating an existing doc over creating a new one.
 
+### Changelog
+
+`docs/CHANGELOG.md` is the single source of release notes (a "What's new" screen will read it
+later, so keep the format strict):
+
+- `## [Unreleased]` at the top; `## [x.y.z] - YYYY-MM-DD` per release.
+- Categories as `### Added`, `### Changed`, `### Fixed`, `### Security`, `### Limitations`.
+- One bullet per user-visible change, written for shop owners, not developers
+  ("Record a sale while offline; it syncs when you reconnect"). Developer-only changes go in
+  the commit message, not the changelog.
+- Authoring notes go in HTML comments. Never keep a second copy of the notes anywhere.
+
+### Documentation impact check (before saying a task is done)
+
+1. Look at the real diff, not your memory of it.
+2. Does it change setup/config/deps, user-visible behaviour, API or schema, deployment or
+   migration steps, or architecture? For each "yes", update the doc from the table above and the
+   changelog in the same change.
+3. If nothing is affected, write one specific sentence saying why.
+4. Verify commands and examples you touched; label anything you could not verify.
+5. End your report with a short "Docs" line: files updated, categories unaffected and why.
+
 ## Verify before claiming done
 
 ```

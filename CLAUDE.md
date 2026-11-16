@@ -51,7 +51,12 @@ RPC-only mutations (ADR-002), derived balances (ADR-003), RLS + explicit grants 
 ## Status checkpoint
 
 - 2026-11-16: repo created, spec renamed to Azaria, ADRs + plan written, Vue scaffold + deps,
-  Supabase local config. Next: Task 1 (config) → Task 2 (schema migration).
+  Supabase local config. Task 1 done (Tailwind, i18n EN/FR, PWA, Supabase client, auth/business
+  stores, router guards, auth + onboarding screens; type-check, lint, unit, build green).
+  Tasks 2–4 written: schema, RLS/grants, `rpc_create_business_and_owner` with pgTAP tests in
+  `supabase/tests`. Local stack runs with `npx supabase start -x studio,imgproxy,edge-runtime,pgbouncer,realtime,storage-api,vector,logflare`.
+  Next: confirm SQL tests green → Task 5 e2e onboarding → Task 6 money utils → Task 7 `rpc_create_sale`.
+  Owner commits and pushes; agents do not.
 
 ## Do not
 

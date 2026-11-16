@@ -3,6 +3,7 @@ create extension if not exists pgtap with schema extensions;
 select plan(16);
 
 create schema if not exists tests;
+grant usage on schema tests to anon, authenticated;
 create or replace function tests.create_user(p_email text) returns uuid language plpgsql as $$
 declare v_id uuid := gen_random_uuid();
 begin
@@ -20,10 +21,12 @@ begin
 end $$;
 create or replace function tests.clear_auth() returns void language plpgsql as $$
 begin
+  -- RESET ROLE is always permitted; it returns to the session (superuser) role.
+  execute 'reset role';
   perform set_config('request.jwt.claims', '', true);
   perform set_config('request.jwt.claim.sub', '', true);
-  perform set_config('role', 'postgres', true);
 end $$;
+grant execute on all functions in schema tests to anon, authenticated;
 
 -- Two users, two businesses -------------------------------------------------
 select tests.create_user('a@example.test') as uid_a \gset
@@ -58,8 +61,8 @@ select is((select count(*) from public.v_account_balances where business_id = :'
 
 -- A cannot write financial tables directly
 select throws_ok(
-  $$insert into public.transactions (business_id, kind, occurred_at, business_date, amount_minor, currency_code, client_operation_id, created_by)
-    values (current_setting('tests.biz_a', true)::uuid, 'sale', now(), current_date, 1, 'GHS', gen_random_uuid(), auth.uid())$$,
+  format($$insert into public.transactions (business_id, kind, occurred_at, business_date, amount_minor, currency_code, client_operation_id, created_by)
+    values (%L, 'sale', now(), current_date, 1, 'GHS', gen_random_uuid(), auth.uid())$$, :'biz_a'),
   '42501', null, 'A cannot insert into transactions directly'
 );
 
