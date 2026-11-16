@@ -34,16 +34,16 @@ const minorUnit = computed(() => business.current?.minor_unit ?? 2)
 
 watch(
   () => business.current?.id,
-  async (id) => {
+  (id) => {
     if (!id) return
-    await catalog.load(id)
-    if (!accountId.value && catalog.accounts[0]) accountId.value = catalog.accounts[0].id
-    try {
+    debtReady.value = (async () => {
+      await catalog.load(id)
+      if (!accountId.value && catalog.accounts[0]) accountId.value = catalog.accounts[0].id
       const rows = await getCustomerStatement(id, contactId.value)
       outstanding.value = BigInt(rows.at(-1)?.balance_minor ?? 0)
-    } catch {
+    })().catch(() => {
       error.value = t('errors.generic')
-    }
+    })
   },
   { immediate: true },
 )
@@ -55,6 +55,8 @@ async function submit() {
     error.value = t('errors.invalid_amount')
     return
   }
+  if (debtReady.value) await debtReady.value
+  if (!accountId.value && catalog.accounts[0]) accountId.value = catalog.accounts[0].id
   if (amount.value > outstanding.value) {
     error.value = t('errors.AZ_EXCEEDS_DEBT')
     return

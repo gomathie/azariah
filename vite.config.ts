@@ -10,7 +10,8 @@ import { VitePWA } from 'vite-plugin-pwa'
 export default defineConfig({
   plugins: [
     vue(),
-    vueDevTools(),
+    // Playwright sets VITE_E2E so the devtools panel does not cover the phone buttons.
+    ...(process.env.VITE_E2E === '1' ? [] : [vueDevTools()]),
     tailwindcss(),
     VitePWA({
       registerType: 'prompt',

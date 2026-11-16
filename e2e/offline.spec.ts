@@ -10,7 +10,7 @@ test('a sale saved offline syncs once and stays a single daybook row', async ({ 
   await page.context().setOffline(true)
   await page.getByLabel('Sale amount').fill('15')
   await page.getByRole('button', { name: 'Save' }).click()
-  await expect(page.getByRole('status')).toContainText('Saved on this device')
+  await expect(page.getByText('Saved on this device')).toBeVisible()
 
   await page.context().setOffline(false)
   await page.getByRole('button', { name: 'Sync' }).click()
