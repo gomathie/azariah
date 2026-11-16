@@ -1,4 +1,6 @@
 import './assets/main.css'
+import './lib/pwa/install'
+import { registerSW } from 'virtual:pwa-register'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -6,6 +8,8 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 import { i18n } from './i18n'
+
+registerSW({ immediate: true })
 
 const app = createApp(App)
 

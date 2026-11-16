@@ -13,6 +13,13 @@
     "today": "Today",
     "all": "All"
   },
+  "install": {
+    "title": "Install app",
+    "action": "Add to home screen",
+    "hint": "Put Azaria on your home screen so it opens like an app.",
+    "ios": "On iPhone: tap Share, then Add to Home Screen.",
+    "browser": "In Chrome, tap the browser menu, then Install app or Add to Home screen."
+  },
   "nav": {
     "home": "Home",
     "daybook": "Daybook",
@@ -144,6 +151,14 @@
     "reverseReason": "Why are you reversing it?",
     "reversed": "Reversed",
     "more": "More entries",
+    "moneyIn": "Money in",
+    "moneyOut": "Money out",
+    "cashLeft": "Cash left",
+    "in": "In",
+    "out": "Out",
+    "today": "Today",
+    "allDays": "All days",
+    "owesOnSale": "Customer owes {amount}",
     "kinds": {
       "sale": "Sale",
       "collection": "Money received",

@@ -82,3 +82,24 @@ export async function reverseTransaction(businessId: string, transactionId: stri
     p_reason: reason,
   })
 }
+
+/** Signed cash for each transaction. The daybook uses this for the In and Out columns. */
+export async function cashForTransactions(
+  businessId: string,
+  transactionIds: string[],
+): Promise<Record<string, bigint[]>> {
+  const totals: Record<string, bigint[]> = {}
+  if (transactionIds.length === 0) return totals
+  const { data, error } = await getSupabase()
+    .from('money_movements')
+    .select('transaction_id, amount_minor')
+    .eq('business_id', businessId)
+    .in('transaction_id', transactionIds)
+  if (error) throw error
+  for (const row of data ?? []) {
+    const list = totals[row.transaction_id] ?? []
+    list.push(BigInt(row.amount_minor))
+    totals[row.transaction_id] = list
+  }
+  return totals
+}

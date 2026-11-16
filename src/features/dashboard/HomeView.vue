@@ -4,6 +4,7 @@ import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageHeader from '@/components/ui/PageHeader.vue'
 import AppAlert from '@/components/ui/AppAlert.vue'
+import InstallApp from '@/components/ui/InstallApp.vue'
 import SummaryCard from '@/features/dashboard/SummaryCard.vue'
 import { getDashboard, type DashboardSummary } from '@/features/dashboard/api'
 import { useBusinessStore } from '@/stores/business'
@@ -42,6 +43,7 @@ watch(
 <template>
   <PageHeader :title="t('nav.home')" />
   <section class="p-4 space-y-4 max-w-lg">
+    <InstallApp />
     <div class="flex gap-2" role="group" :aria-label="t('dashboard.period.month')">
       <button
         v-for="key in ['today', 'week', 'month'] as const"

@@ -2,6 +2,7 @@
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageHeader from '@/components/ui/PageHeader.vue'
+import InstallApp from '@/components/ui/InstallApp.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppAlert from '@/components/ui/AppAlert.vue'
 import { exportBusiness } from '@/features/settings/api'
@@ -49,6 +50,7 @@ async function download() {
 <template>
   <PageHeader :title="t('settings.title')" />
   <section class="p-4 space-y-3 max-w-lg">
+    <InstallApp />
     <AppAlert v-if="error" kind="error">{{ error }}</AppAlert>
     <nav class="flex flex-col gap-2">
       <RouterLink

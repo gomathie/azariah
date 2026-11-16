@@ -11,7 +11,7 @@
 - Sign up, sign in and password reset.
 - Create your business with its country, currency and time zone; Cash and Mobile Money accounts and starter categories are set up for you.
 - English and French interface.
-- Install Azaria on your phone as an app.
+- Tap Add to home screen to install Azaria and open it like an app.
 - Record a sale, including money received now and what a customer still owes.
 - Record an everyday expense separately from goods you bought to sell.
 - Record a later payment from a customer. The payment reduces what they owe and does not count as another sale.

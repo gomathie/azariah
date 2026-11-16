@@ -13,6 +13,13 @@
     "today": "Aujourd'hui",
     "all": "Tout"
   },
+  "install": {
+    "title": "Installer l'application",
+    "action": "Ajouter à l'écran d'accueil",
+    "hint": "Mettez Azaria sur l'écran d'accueil pour l'ouvrir comme une application.",
+    "ios": "Sur iPhone : touchez Partager, puis Sur l'écran d'accueil.",
+    "browser": "Dans Chrome, ouvrez le menu du navigateur, puis Installer l'application ou Ajouter à l'écran d'accueil."
+  },
   "nav": {
     "home": "Accueil",
     "daybook": "Journal",
@@ -144,6 +151,14 @@
     "reverseReason": "Pourquoi l'annuler ?",
     "reversed": "Annulée",
     "more": "Plus d'entrées",
+    "moneyIn": "Entrées",
+    "moneyOut": "Sorties",
+    "cashLeft": "Reste en caisse",
+    "in": "Entrée",
+    "out": "Sortie",
+    "today": "Aujourd'hui",
+    "allDays": "Tous les jours",
+    "owesOnSale": "Le client doit {amount}",
     "kinds": {
       "sale": "Vente",
       "collection": "Argent reçu",
