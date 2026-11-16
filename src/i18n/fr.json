@@ -229,7 +229,7 @@
   },
   "members": {
     "title": "Personnes et téléphones",
-    "intro": "Ajoutez une personne et le téléphone qu'elle utilise. Le personnel note les ventes et les dépenses. Un admin peut aussi corriger les erreurs.",
+    "intro": "Ajoutez une personne et le téléphone qu'elle utilise. Le personnel note les ventes et les dépenses. Le personnel ne peut pas annuler une entrée, inviter un propriétaire, ni télécharger toute l'entreprise. Un admin peut corriger les erreurs.",
     "name": "Personne",
     "namePlaceholder": "p. ex. Kofi",
     "device": "Téléphone",

@@ -5,7 +5,7 @@ Azaria is a phone-first bookkeeping app for local traders and small informal sho
 ## Personas
 
 - **Owner.** Creates the shop on their phone, records the day, and adds the other people and phones. An admin can correct mistakes.
-- **Staff.** Uses a named phone to record sales and expenses. Staff do not correct entries.
+- **Staff.** Records sales and expenses. Cannot undo an entry, invite an owner, or download the whole business.
 - **Trader working alone.** Skips adding anyone and goes straight to the shop.
 
 ## Main flows

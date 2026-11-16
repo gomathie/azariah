@@ -229,7 +229,7 @@
   },
   "members": {
     "title": "People and phones",
-    "intro": "Add a person and the phone they use. Staff record sales and expenses. An admin can also correct mistakes.",
+    "intro": "Add a person and the phone they use. Staff record sales and expenses. Staff cannot undo an entry, invite an owner, or download the whole business. An admin can correct mistakes.",
     "name": "Person",
     "namePlaceholder": "e.g. Kofi",
     "device": "Phone",
