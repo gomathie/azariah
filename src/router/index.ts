@@ -90,6 +90,24 @@ const router = createRouter({
           meta: { titleKey: 'expense.add' },
         },
         {
+          path: 'add/invoice',
+          name: 'add-invoice',
+          component: () => import('@/features/documents/CreateInvoiceView.vue'),
+          meta: { titleKey: 'documents.invoice' },
+        },
+        {
+          path: 'add/receipt',
+          name: 'add-receipt',
+          component: () => import('@/features/documents/CreateReceiptView.vue'),
+          meta: { titleKey: 'documents.receipt' },
+        },
+        {
+          path: 'documents/:documentId',
+          name: 'document',
+          component: () => import('@/features/documents/DocumentView.vue'),
+          meta: { titleKey: 'documents.title' },
+        },
+        {
           path: 'customers',
           name: 'customers',
           component: () => import('@/features/customers/CustomersView.vue'),

@@ -10,6 +10,7 @@ export type AzariaErrorCode =
   | 'AZ_SAME_ACCOUNT'
   | 'AZ_ALREADY_REVERSED'
   | 'AZ_NOT_FOUND'
+  | 'AZ_NO_MONEY_RECEIVED'
 
 export class RpcError extends Error {
   constructor(

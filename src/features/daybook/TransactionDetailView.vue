@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageHeader from '@/components/ui/PageHeader.vue'
 import AppAlert from '@/components/ui/AppAlert.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppInput from '@/components/ui/AppInput.vue'
 import { getTransaction, reverseTransaction, type DaybookRow } from '@/features/daybook/api'
+import { issueDocument } from '@/features/documents/api'
 import { RpcError } from '@/lib/supabase/rpc'
 import { useBusinessStore } from '@/stores/business'
 import { formatMoney } from '@/utils/money'
 
 const { t, locale } = useI18n()
 const route = useRoute()
+const router = useRouter()
 const business = useBusinessStore()
 const row = ref<DaybookRow | null>(null)
 const reason = ref('')

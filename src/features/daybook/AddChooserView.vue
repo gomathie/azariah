@@ -19,5 +19,15 @@ const { t } = useI18n()
       class="block rounded-xl bg-white border border-brand-200 text-brand-800 font-semibold min-h-14 leading-[3.5rem] text-center"
       >{{ t('expense.add') }}</RouterLink
     >
+    <RouterLink
+      :to="{ name: 'add-invoice' }"
+      class="block rounded-xl bg-white border border-brand-200 text-brand-800 font-semibold min-h-14 leading-[3.5rem] text-center"
+      >{{ t('documents.invoice') }}</RouterLink
+    >
+    <RouterLink
+      :to="{ name: 'add-receipt' }"
+      class="block rounded-xl bg-white border border-brand-200 text-brand-800 font-semibold min-h-14 leading-[3.5rem] text-center"
+      >{{ t('documents.receipt') }}</RouterLink
+    >
   </section>
 </template>
