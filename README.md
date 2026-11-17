@@ -1,73 +1,49 @@
-# azaria-scaffold
+# Azaria
 
-This template should help get you started developing with Vue 3 in Vite.
+Azaria is a phone-first bookkeeping app for local traders and small shops. It runs in the browser, and you can add it to the home screen so it opens like an app. It is its own product.
 
-## Recommended IDE Setup
+You record what happened today: a sale, an expense, a later payment, or money moved between Cash and Mobile Money. Azaria keeps those events and shows the cash, the debts, and the reports that come from them. It does not treat sales minus spending as profit.
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+The app is in English and French.
 
-## Recommended Browser Setup
+## What you can do
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+- Sign up, then name the shop. Country, currency, and time zone start filled in and can be changed.
+- Add a person and the phone they use. Staff record sales and expenses. Staff cannot undo an entry, invite an owner, or download the whole business. An admin can correct mistakes. Someone working alone can skip this and go straight to the shop.
+- Record a sale. Money received now goes to Cash or Mobile Money. Anything still owed needs a customer.
+- Record an everyday expense separately from goods bought to resell.
+- Record a later payment from a customer. It reduces the oldest debt and is not a new sale.
+- Move money between Cash and Mobile Money.
+- Open the daybook, open an entry, and reverse a mistake. The original stays, marked reversed.
+- Read Home for today, this week, or this month: sales, money received, operating expenses, stock purchases, net cash movement, customer debts, and the money in each account.
+- Open a report for a date range, download a CSV, or, as the owner, download a full copy of the business.
+- Open Help, privacy, and profile from Settings.
+- Add Azaria to the home screen.
+- Save a sale or an expense on the phone when there is no connection, then tap Sync when the connection is back.
 
-## Type Support for `.vue` Imports in TS
+A later payment, a transfer, and a reversal still need a connection. Inviting someone to sign in works when they already have an Azaria account. A name and phone on the people list does not by itself create a sign-in.
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## Not in the app yet
 
-## Customize configuration
+Inventory quantities, supplier debts, invoices, receipt photos, profit, and transactions in more than one currency.
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## For developers
 
-## Project Setup
+Vue 3, TypeScript, Vite, Pinia, and Supabase. Copy `.env.example` to `.env` and set `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` from the local stack. Do not commit `.env`.
 
 ```sh
 npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+The app is at http://localhost:5173. Local Supabase needs Docker. Start and stop it with `npx supabase start` and `npx supabase stop`. On this Windows machine the reserved port range blocks the default Studio port; see `AGENTS.md` before starting the stack.
 
 ```sh
 npm run test:unit
-```
-
-### Run End-to-End Tests with [Playwright](https://playwright.dev)
-
-```sh
-# Install browsers for the first run
-npx playwright install
-
-# When testing on CI, must build the project first
-npm run build
-
-# Runs the end-to-end tests
-npm run test:e2e
-# Runs the tests only on Chromium
-npm run test:e2e -- --project=chromium
-# Runs the tests of a specific file
-npm run test:e2e -- tests/example.spec.ts
-# Runs the tests in debug mode
-npm run test:e2e -- --debug
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
+npm run type-check
 npm run lint
+npm run build
+npx playwright test
 ```
+
+Product detail is in `docs/PRODUCT_REQUIREMENTS.md`. Decisions that stay fixed are in `docs/architecture/ADR.md`.
