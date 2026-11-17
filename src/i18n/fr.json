@@ -283,8 +283,32 @@
       "reverse": {
         "title": "Corriger une erreur",
         "body": "Le propriétaire ou un responsable peut annuler une entrée. L'originale reste, marquée annulée, et l'argent est remis."
+      },
+      "paper": {
+        "title": "Facture et reçu",
+        "body": "Une facture est une note pour un client. Un reçu montre l'argent reçu. Téléchargez l'un ou l'autre en PDF. Aucun des deux n'ajoute une deuxième vente."
       }
     }
+  },
+  "documents": {
+    "title": "Facture ou reçu",
+    "invoice": "Facture",
+    "receipt": "Reçu",
+    "makeInvoice": "Faire une facture",
+    "makeReceipt": "Faire un reçu",
+    "invoiceIntro": "Ceci enregistre la vente et prépare une facture à télécharger en PDF. Ce n'est pas une deuxième vente.",
+    "receiptIntro": "Un reçu montre l'argent reçu. Payé maintenant enregistre la vente comme payée en entier. Ou choisissez une entrée déjà dans le journal.",
+    "customerRequired": "Choisissez un client. Une facture a besoin d'un nom.",
+    "savedOffline": "Enregistré sur ce téléphone. Le PDF sera prêt une fois en ligne, après la synchronisation.",
+    "paidNow": "Payé maintenant",
+    "fromDaybook": "Déjà dans le journal",
+    "noneToReceipt": "Aucune vente ni paiement pour l'instant.",
+    "customer": "Client",
+    "saleAmount": "Montant de la vente",
+    "moneyReceived": "Argent reçu",
+    "customerOwes": "Le client doit",
+    "cancelled": "Annulée",
+    "downloadPdf": "Télécharger le PDF"
   },
   "errors": {
     "generic": "Une erreur s'est produite. Veuillez réessayer.",
@@ -298,6 +322,7 @@
     "AZ_EXCEEDS_DEBT": "Le paiement dépasse ce que le client doit.",
     "AZ_SAME_ACCOUNT": "Choisissez deux comptes différents.",
     "AZ_ALREADY_REVERSED": "Cette entrée a déjà été annulée.",
-    "AZ_NOT_FOUND": "Enregistrement introuvable."
+    "AZ_NOT_FOUND": "Enregistrement introuvable.",
+    "AZ_NO_MONEY_RECEIVED": "Aucun argent reçu sur cette entrée, donc pas de reçu."
   }
 }

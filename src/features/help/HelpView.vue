@@ -3,7 +3,7 @@ import { useI18n } from 'vue-i18n'
 import PageHeader from '@/components/ui/PageHeader.vue'
 
 const { t } = useI18n()
-const cards = ['sale', 'expense', 'debt', 'move', 'reverse'] as const
+const cards = ['sale', 'expense', 'debt', 'move', 'reverse', 'paper'] as const
 </script>
 
 <template>

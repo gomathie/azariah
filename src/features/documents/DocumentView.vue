@@ -7,6 +7,7 @@ import AppAlert from '@/components/ui/AppAlert.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import BrandMark from '@/components/BrandMark.vue'
 import { getDocument, type ShopDocument } from '@/features/documents/api'
+import { buildDocumentPdf, downloadPdf } from '@/features/documents/pdf'
 import { RpcError } from '@/lib/supabase/rpc'
 import { useBusinessStore } from '@/stores/business'
 import { formatMoney } from '@/utils/money'
@@ -16,6 +17,7 @@ const route = useRoute()
 const business = useBusinessStore()
 const paper = ref<ShopDocument | null>(null)
 const error = ref<string | null>(null)
+const downloading = ref(false)
 
 const title = computed(() =>
   paper.value ? t(paper.value.kind === 'invoice' ? 'documents.invoice' : 'documents.receipt') : t('documents.title'),
@@ -39,8 +41,43 @@ function money(minor: number): string {
   return formatMoney(BigInt(minor), paper.value?.currency_code ?? 'GHS', locale.value)
 }
 
-function printPaper() {
-  window.print()
+async function download() {
+  if (!paper.value) return
+  downloading.value = true
+  error.value = null
+  try {
+    const logo = await loadLogo()
+    const bytes = await buildDocumentPdf(
+      paper.value,
+      {
+        title: title.value,
+        customer: t('documents.customer'),
+        saleAmount: t('documents.saleAmount'),
+        moneyReceived: t('documents.moneyReceived'),
+        customerOwes: t('documents.customerOwes'),
+        cancelled: t('documents.cancelled'),
+        total: money(paper.value.total_minor),
+        received: paper.value.kind === 'invoice' ? money(paper.value.received_minor) : null,
+        outstanding: paper.value.outstanding_minor > 0 ? money(paper.value.outstanding_minor) : null,
+      },
+      logo,
+    )
+    downloadPdf(bytes, `${paper.value.display_number}.pdf`)
+  } catch {
+    error.value = t('errors.generic')
+  } finally {
+    downloading.value = false
+  }
+}
+
+async function loadLogo(): Promise<Uint8Array | undefined> {
+  try {
+    const response = await fetch('/icons/icon-192.png')
+    if (!response.ok) return undefined
+    return new Uint8Array(await response.arrayBuffer())
+  } catch {
+    return undefined
+  }
 }
 </script>
 
@@ -73,8 +110,8 @@ function printPaper() {
         {{ t('documents.customerOwes') }}: {{ money(paper.outstanding_minor) }}
       </p>
     </article>
-    <AppButton v-if="paper" class="no-print mt-4" type="button" block @click="printPaper">
-      {{ t('documents.print') }}
+    <AppButton v-if="paper" class="no-print mt-4" type="button" block :loading="downloading" @click="download">
+      {{ t('documents.downloadPdf') }}
     </AppButton>
   </section>
 </template>

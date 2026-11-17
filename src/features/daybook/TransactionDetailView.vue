@@ -20,6 +20,7 @@ const row = ref<DaybookRow | null>(null)
 const reason = ref('')
 const error = ref<string | null>(null)
 const loading = ref(false)
+const paperLoading = ref(false)
 const canReverse = computed(
   () =>
     row.value?.status === 'posted' &&
@@ -39,6 +40,22 @@ watch(
   },
   { immediate: true },
 )
+
+async function makePaper(kind: 'invoice' | 'receipt') {
+  const current = business.current
+  const transactionId = route.params.transactionId
+  if (!current || typeof transactionId !== 'string') return
+  paperLoading.value = true
+  error.value = null
+  try {
+    const paper = await issueDocument(current.id, transactionId, kind)
+    await router.push({ name: 'document', params: { documentId: paper.document_id } })
+  } catch (e) {
+    error.value = e instanceof RpcError ? t(e.i18nKey) : t('errors.generic')
+  } finally {
+    paperLoading.value = false
+  }
+}
 
 async function reverse() {
   const current = business.current
@@ -71,6 +88,24 @@ async function reverse() {
       <p>{{ row.business_date }}</p>
       <p v-if="row.description">{{ row.description }}</p>
       <AppAlert v-if="row.status === 'reversed'" kind="warning">{{ t('daybook.reversed') }}</AppAlert>
+      <div v-if="row.status === 'posted' && (row.kind === 'sale' || row.kind === 'collection')" class="space-y-2">
+        <AppButton
+          v-if="row.kind === 'sale'"
+          type="button"
+          block
+          :loading="paperLoading"
+          @click="makePaper('invoice')"
+          >{{ t('documents.makeInvoice') }}</AppButton
+        >
+        <AppButton
+          type="button"
+          block
+          variant="secondary"
+          :loading="paperLoading"
+          @click="makePaper('receipt')"
+          >{{ t('documents.makeReceipt') }}</AppButton
+        >
+      </div>
       <form v-if="canReverse" class="space-y-3" @submit.prevent="reverse">
         <AppInput v-model="reason" :label="t('daybook.reverseReason')" />
         <AppButton type="submit" variant="danger" :loading="loading">{{ t('daybook.reverse') }}</AppButton>

@@ -283,8 +283,32 @@
       "reverse": {
         "title": "Fix a mistake",
         "body": "An owner or manager can reverse an entry. The original stays, marked reversed, and the money is put back."
+      },
+      "paper": {
+        "title": "Invoice and receipt",
+        "body": "An invoice is a bill for a customer. A receipt shows money received. Download either as a PDF. Neither one adds a second sale."
       }
     }
+  },
+  "documents": {
+    "title": "Invoice or receipt",
+    "invoice": "Invoice",
+    "receipt": "Receipt",
+    "makeInvoice": "Make invoice",
+    "makeReceipt": "Make receipt",
+    "invoiceIntro": "This records the sale and makes a bill you can download as a PDF. It is not a second sale.",
+    "receiptIntro": "A receipt shows money received. Paid now records that sale as paid in full. Or pick an entry already in the daybook.",
+    "customerRequired": "Choose a customer. An invoice needs a name.",
+    "savedOffline": "Saved on this phone. The PDF is ready once you are online and the entry has synced.",
+    "paidNow": "Paid now",
+    "fromDaybook": "Already in the daybook",
+    "noneToReceipt": "No sale or payment here yet.",
+    "customer": "Customer",
+    "saleAmount": "Sale amount",
+    "moneyReceived": "Money received",
+    "customerOwes": "Customer owes",
+    "cancelled": "Cancelled",
+    "downloadPdf": "Download PDF"
   },
   "errors": {
     "generic": "Something went wrong. Please try again.",
@@ -298,6 +322,7 @@
     "AZ_EXCEEDS_DEBT": "The payment is more than what the customer owes.",
     "AZ_SAME_ACCOUNT": "Choose two different accounts.",
     "AZ_ALREADY_REVERSED": "This entry was already reversed.",
-    "AZ_NOT_FOUND": "We could not find that record."
+    "AZ_NOT_FOUND": "We could not find that record.",
+    "AZ_NO_MONEY_RECEIVED": "There is no money received on this entry, so there is no receipt."
   }
 }
