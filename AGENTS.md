@@ -53,7 +53,7 @@ RPC-only mutations (ADR-002), derived balances (ADR-003), RLS + explicit grants 
 ## Status checkpoint
 
 - 2026-11-16: Tasks 1–18 have passing checks. SQL suite: 13 files, 134 tests, PASS. Playwright onboarding, sale, collection, daybook, and offline passed on chromium and mobile. MoneyInput, Home, offline queue, sync, and CSV unit tests passed.
-- In progress: nothing is being written. The position marker is Task 19 (help, privacy, settings, French). The logo is the furnace tile.
+- In progress: Task 19 is still the position marker. Invoices and receipt PDFs are written (migration `20261116001500`, Add menu, Download PDF). The document SQL test has not been run yet.
 - Blockers: Windows reserves TCP 54323–54422, so local Supabase uses 54423, 54424, and 54427 for Studio, mail, and analytics. Analytics is off. Start the stack with the project binary, not `npx supabase start -x`, because npm swallows `-x`.
 - Next: Task 19 has no automated check yet. Task 20 is the CI workflow, not run. Owner commits and pushes; agents do not.
 

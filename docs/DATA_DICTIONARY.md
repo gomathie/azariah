@@ -21,10 +21,13 @@ Amounts are minor units (`bigint`). GHS uses 2, so 100.00 is stored as 10000. A 
 | `audit_events` | Who did what, including reversals and exports |
 | `sync_operations` | The client operation id and the stored result, so a retry does not post twice |
 | `shop_people` | A person, the phone they use, and their role: `staff` or `manager` (shown as Admin). Staff is the default. Signing in still uses `business_memberships` |
+| `documents` | One invoice or receipt for a sale or a payment. Amounts are copied from that entry. Issuing a paper does not post money |
+| `document_counters` | The last invoice number and the last receipt number for a business. Not readable from the app |
 
 ## Status
 
 - Transaction status: `posted` or `reversed`. A reversal is a new posted transaction of kind `reversal`. The original becomes `reversed`.
+- Document kind: `invoice` or `receipt`. Document status: `issued` or `void`. Reversing the entry sets its papers to `void`. Numbers are not reused.
 - Membership status: `active`, `invited`, or `removed`. Invites in the current function create an `active` row because the person must already have an account.
 - Membership role: `owner`, `manager`, `staff`, `viewer`.
 

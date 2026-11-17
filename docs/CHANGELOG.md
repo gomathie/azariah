@@ -14,6 +14,7 @@
 
 ### Added
 
+- Make an invoice for a customer, or a receipt for money received, and download it as a PDF.
 - Sign up, sign in and password reset.
 - Create your business with its country, currency and time zone; Cash and Mobile Money accounts and starter categories are set up for you.
 - English and French interface.

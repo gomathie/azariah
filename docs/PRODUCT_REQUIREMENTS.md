@@ -18,7 +18,8 @@ Azaria is a phone-first bookkeeping app for local traders and small informal sho
 6. Move money between two accounts.
 7. Open the daybook, open an entry, and reverse it when it was a mistake.
 8. Read Home and Reports for a date range. Download a CSV or a full JSON copy.
-9. If the phone is offline, a sale or an expense stays on the phone and is sent later.
+9. Make an invoice for a sale, or a receipt for money received, and download it as a PDF.
+10. If the phone is offline, a sale or an expense stays on the phone and is sent later. The PDF waits until that entry has synced.
 
 ## Acceptance
 
@@ -26,6 +27,6 @@ The target journey is the one in spec §16: Ama's Provision Shop, the sales and 
 
 ## MVP boundary
 
-In the app now: auth, one business, sales, expenses, stock purchases, owner movements, opening balances, collections, transfers, reversals, dashboard, reports, CSV, owner export, membership changes, English and French, and an offline queue for sales and expenses.
+In the app now: auth, one business, sales, expenses, stock purchases, owner movements, opening balances, collections, transfers, reversals, dashboard, reports, CSV, owner export, invoices, receipts as PDFs, membership changes, English and French, and an offline queue for sales and expenses.
 
-Not in the app: inventory quantities, supplier debts, invoices, receipt photos, profit, and multi-currency transactions. Those stay on the roadmap.
+Not in the app: inventory quantities, supplier debts, photos of paper receipts, profit, and multi-currency transactions. Those stay on the roadmap.

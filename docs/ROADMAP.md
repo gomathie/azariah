@@ -8,12 +8,12 @@ Updated 2026-11-16. "Written" means the code is in the repo. "Verified" means th
 |---|---|
 | Auth, business setup, money utilities, sale and spend RPCs | Verified in unit or SQL runs on 2026-11-16 |
 | Onboarding in the browser | Written. Playwright not run |
-| Sales, expenses, collections, transfers, reversals, dashboard, reports, export, members, offline queue, help | Written. Checks not run |
+| Sales, expenses, collections, transfers, reversals, dashboard, reports, export, members, offline queue, help, invoices and receipt PDFs | Written. Document SQL and PDF unit check not run in this note |
 | CI workflow and the docs in spec §15 | Written. CI not run |
 
 ## P1, not started
 
-Supplier debts, inventory quantities, cost and estimated profit, invoices, receipt photos, French review beyond the current strings, mentor summaries.
+Supplier debts, inventory quantities, cost and estimated profit, receipt photos, French review beyond the current strings, mentor summaries.
 
 ## P2, not started
 

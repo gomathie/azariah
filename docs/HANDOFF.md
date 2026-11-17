@@ -3,6 +3,15 @@
 Change-rationale entries for guards, constraints, refusals and defaults that a later agent might
 be tempted to undo. Format: Why / How / Benefit / Trade-off / Verification / Rollback. Newest first.
 
+## 2026-11-17 — An invoice or receipt is a paper, not a second sale
+
+- **Why:** a trader needs a bill or a proof of money received they can hand over as a PDF. That paper must not add another sale or another payment.
+- **How:** `rpc_issue_document` copies the amounts from an existing posted sale or collection, assigns INV- or RCT- numbers, and stores the paper. The PDF is built in the browser from that row. Reversing the entry marks its papers `void`.
+- **Benefit:** Download PDF gives a file named like `INV-0001.pdf`. Tapping the button twice does not create a second number.
+- **Trade-off:** a sale or expense saved offline has no PDF until it syncs. A receipt needs money received on that entry. Photos of paper receipts are still not in the app.
+- **Verification:** `src/features/documents/__tests__/pdf.spec.ts` and `supabase/tests/0014_documents.test.sql`.
+- **Rollback:** drop `rpc_issue_document`, `rpc_get_document`, `documents`, and `document_counters`, and remove the Add menu links.
+
 ## 2026-11-16 — Local Supabase ports sit above the Windows reserved range
 
 - **Why:** Windows on this machine reserves TCP 54323–54422. Supabase's Studio, mail, and analytics ports are inside that range, so `supabase start` failed before the API came up.

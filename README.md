@@ -16,6 +16,7 @@ The app is in English and French.
 - Move money between Cash and Mobile Money.
 - Open the daybook, open an entry, and reverse a mistake. The original stays, marked reversed.
 - Read Home for today, this week, or this month: sales, money received, operating expenses, stock purchases, net cash movement, customer debts, and the money in each account.
+- Make an invoice for a customer, or a receipt for money received, and download either as a PDF. The paper uses the sale or payment already recorded. It does not add a second sale.
 - Open a report for a date range, download a CSV, or, as the owner, download a full copy of the business.
 - Open Help, privacy, and profile from Settings.
 - Add Azaria to the home screen.
@@ -25,7 +26,7 @@ A later payment, a transfer, and a reversal still need a connection. Inviting so
 
 ## Not in the app yet
 
-Inventory quantities, supplier debts, invoices, receipt photos, profit, and transactions in more than one currency.
+Inventory quantities, supplier debts, photos of paper receipts, profit, and transactions in more than one currency.
 
 ## For developers
 
