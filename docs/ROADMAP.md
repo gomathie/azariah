@@ -8,7 +8,8 @@ Updated 2026-11-16. "Written" means the code is in the repo. "Verified" means th
 |---|---|
 | Auth, business setup, money utilities, sale and spend RPCs | Verified in unit or SQL runs on 2026-11-16 |
 | Onboarding in the browser | Written. Playwright not run |
-| Sales, expenses, collections, transfers, reversals, dashboard, reports, export, members, offline queue, help, invoices and receipt PDFs | Written. Document SQL and PDF unit check not run in this note |
+| Sales, expenses, collections, transfers, reversals, dashboard, reports, export, members, offline queue, help | Written. Earlier checks passed for tasks 1–18 |
+| Invoices and receipt PDFs | Written. PDF unit test PASS (3). SQL `0014_documents` PASS (18) on 2026-11-17 |
 | CI workflow and the docs in spec §15 | Written. CI not run |
 
 ## P1, not started

@@ -1,5 +1,6 @@
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 import type { ShopDocument } from '@/features/documents/api'
+import { toMajorString } from '@/utils/money'
 
 export interface DocumentPdfLabels {
   title: string
@@ -20,6 +21,11 @@ export function pdfSafe(text: string): string {
     .join('')
     .replace(/[ \t]{2,}/g, ' ')
     .trim()
+}
+
+/** Currency code plus the amount, so the PDF never depends on a symbol the font cannot draw. */
+export function pdfMoney(minor: number, currency: string, minorUnit: number): string {
+  return pdfSafe(`${currency} ${toMajorString(minor, minorUnit)}`)
 }
 
 function wrap(text: string, width: number): string[] {

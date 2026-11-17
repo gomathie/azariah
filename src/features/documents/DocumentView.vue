@@ -7,9 +7,10 @@ import AppAlert from '@/components/ui/AppAlert.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import BrandMark from '@/components/BrandMark.vue'
 import { getDocument, type ShopDocument } from '@/features/documents/api'
-import { buildDocumentPdf, downloadPdf } from '@/features/documents/pdf'
+import { buildDocumentPdf, downloadPdf, pdfMoney } from '@/features/documents/pdf'
 import { RpcError } from '@/lib/supabase/rpc'
 import { useBusinessStore } from '@/stores/business'
+import { minorUnitFor } from '@/utils/locales'
 import { formatMoney } from '@/utils/money'
 
 const { t, locale } = useI18n()
@@ -41,6 +42,11 @@ function money(minor: number): string {
   return formatMoney(BigInt(minor), paper.value?.currency_code ?? 'GHS', locale.value)
 }
 
+function fileMoney(minor: number): string {
+  const currency = paper.value?.currency_code ?? 'GHS'
+  return pdfMoney(minor, currency, minorUnitFor(currency))
+}
+
 async function download() {
   if (!paper.value) return
   downloading.value = true
@@ -56,9 +62,9 @@ async function download() {
         moneyReceived: t('documents.moneyReceived'),
         customerOwes: t('documents.customerOwes'),
         cancelled: t('documents.cancelled'),
-        total: money(paper.value.total_minor),
-        received: paper.value.kind === 'invoice' ? money(paper.value.received_minor) : null,
-        outstanding: paper.value.outstanding_minor > 0 ? money(paper.value.outstanding_minor) : null,
+        total: fileMoney(paper.value.total_minor),
+        received: paper.value.kind === 'invoice' ? fileMoney(paper.value.received_minor) : null,
+        outstanding: paper.value.outstanding_minor > 0 ? fileMoney(paper.value.outstanding_minor) : null,
       },
       logo,
     )

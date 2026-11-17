@@ -86,7 +86,7 @@ select throws_like(
   'a later payment is not an invoice'
 );
 select is(
-  (public.rpc_issue_document(gen_random_uuid(), :'biz', (:'collected')::jsonb ->> 'transaction_id', 'receipt') ->> 'total_minor'),
+  (public.rpc_issue_document(gen_random_uuid(), :'biz', ((:'collected')::jsonb ->> 'transaction_id')::uuid, 'receipt') ->> 'total_minor'),
   '4000',
   'a receipt for a later payment is the money received'
 );
@@ -136,7 +136,7 @@ select tests.clear_auth();
 select tests.authenticate(:'uid_staff');
 select public.rpc_create_sale(gen_random_uuid(), :'biz', now(), 2000, 2000, :'cash', null, null, 'Soap', null) as staff_sale \gset
 select is(
-  (public.rpc_issue_document(gen_random_uuid(), :'biz', (:'staff_sale')::jsonb ->> 'transaction_id', 'invoice') ->> 'display_number'),
+  (public.rpc_issue_document(gen_random_uuid(), :'biz', ((:'staff_sale')::jsonb ->> 'transaction_id')::uuid, 'invoice') ->> 'display_number'),
   'INV-0002',
   'staff can issue the next invoice'
 );
