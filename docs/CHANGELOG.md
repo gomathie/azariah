@@ -8,6 +8,7 @@
 
 ### Changed
 
+- The guides are easier to get around. On a phone, one section opens at a time, a "Jump to" list stays under the header, and you can search. On a computer, the contents stay at the side and show where you are.
 - Home opens with the money you have right now, then shortcuts for a sale, an expense, a payment and moving money, then your latest entries.
 - The daybook groups entries by day, shows money in with a plus and money out with a minus, and names the customer and the account. A credit sale shows what is not yet paid.
 - Reports show a breakdown, not just one number: sales by day, money received by account, expenses and stock purchases by category, and customer names for debts.
@@ -21,6 +22,7 @@
 
 ### Added
 
+- An About page with the story behind Azaria and where the name comes from. Anyone can read it, signed in or not.
 - A user guide and an admin guide inside the app, under Profile, Guides. Everyone sees the user guide. Owners, admins and the support team also see the admin guide.
 - Twi as a third language, next to English and French. The Twi wording still needs a check by a native speaker, and the guides are in English and French only.
 - Add a customer or edit a customer's name and phone on the Customers screen.

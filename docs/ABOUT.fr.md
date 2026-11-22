@@ -14,6 +14,18 @@ Des outils de comptabilité existent déjà, mais la plupart ont été faits pou
 
 Azaria a été construit dans l'autre sens. Il part du commerçant et du téléphone qu'il a déjà en main, et de cinq questions qu'un chef d'entreprise se pose chaque jour.
 
+## Pourquoi le nom Azaria
+
+Le nom vient d'**Azaria**, l'un des trois jeunes hommes du livre de Daniel. Azaria, Hanania et Mishaël, aussi appelés Abed-Nego, Shadrak et Méshak, furent jetés dans une fournaise ardente parce qu'ils refusaient de renoncer à ce qu'ils croyaient. Ils marchèrent dans le feu et en sortirent indemnes. Pas un cheveu ne fut brûlé, et leurs vêtements ne sentaient même pas la fumée.
+
+Le nom Azaria signifie « le Seigneur a aidé ».
+
+Cette histoire est dans notre logo : la lettre **A** avec une flamme debout à l'intérieur. La flamme est là, et le A tient toujours.
+
+Gérer une petite entreprise peut ressembler à cette fournaise. Les prix montent, les clients paient en retard, et certains mois sont durs. Azaria porte le nom de celui qui traverse le feu en gardant debout ce qu'il a bâti. Des comptes clairs y contribuent : ils vous montrent où vous en êtes, pour que la pression ne devienne pas une perte.
+
+Azaria est pour tous les entrepreneurs, quelles que soient leur foi ou leur origine.
+
 ## Cinq questions, chaque jour
 
 1. Combien ai-je vendu ?

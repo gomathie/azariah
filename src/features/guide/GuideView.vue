@@ -130,7 +130,8 @@ function onScroll() {
     let current = ''
     for (const section of visible.value) {
       const el = document.getElementById(section.id)
-      if (el && el.getBoundingClientRect().top <= 140) current = section.id
+      // A phone has the header plus the jump bar stuck to the top; a computer has only the header.
+      if (el && el.getBoundingClientRect().top <= (wide.value ? 140 : 230)) current = section.id
     }
     if (current) active.value = current
   })

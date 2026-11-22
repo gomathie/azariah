@@ -96,6 +96,7 @@ Keep docs consistent with the code that actually exists (spec §15). Update in t
 | `docs/REPORT_DEFINITIONS.md` | A report formula, filter or date/currency rule changes |
 | `docs/TEST_REPORT.md` | After each verification run: ID, steps, expected, actual, PASS/FAIL/BLOCKED, evidence path |
 | `docs/DEPLOYMENT.md`, `docs/PILOT_GUIDE.md`, `docs/ROADMAP.md`, `docs/PRODUCT_REQUIREMENTS.md`, `docs/COMPETITOR_BENCHMARK.md` | When the related process, scope or research changes |
+| `docs/ABOUT.md` and `docs/ABOUT.fr.md` | The story, the name or what the product stands for changes. Shown at `/about`, public. Same reader and same shape rule as the guides. |
 | `docs/USER_GUIDE.md`, `docs/ADMIN_GUIDE.md` and their `.fr.md` copies | A screen, a button label or what a role may do changes. Keep the same `##` sections and block order in every language; `guide.spec.ts` fails otherwise. The app shows these files under Profile, Guides. |
 | `src/i18n/en.json`, `fr.json`, `tw.json` | Any text on a screen changes. All three need the key. Twi is unreviewed machine translation; say so when adding to it. |
 | `README.md` | Setup, env vars or commands change |

@@ -14,6 +14,18 @@ Tools for keeping accounts already exist, but most were made for accountants and
 
 Azaria was built the other way round. It starts from the trader and the phone already in their hand, and from five questions a business owner asks every day.
 
+## Why the name Azaria
+
+The name comes from **Azariah**, one of the three young men in the book of Daniel. Azariah, Hananiah and Mishael, also known as Abednego, Shadrach and Meshach, were thrown into a blazing furnace because they would not give up what they believed. They walked in the fire and came out unharmed. Not a hair was singed, and their clothes did not even smell of smoke.
+
+The name Azariah means "the Lord has helped".
+
+That story is in our logo: the letter **A** with a flame standing inside it. The flame is there, and the A still stands.
+
+Running a small business can feel like that furnace. Prices rise, customers pay late, and some months are hard. Azaria is named for coming through the fire with what you built still standing. Clear records are part of how a business does that: they show you where you are, so pressure does not turn into loss. And the Lord will help everyone to acheive success.
+
+Azaria is for every entrepreneur, whatever their faith or background.
+
 ## Five questions, every day
 
 1. How much did I sell?

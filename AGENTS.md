@@ -60,6 +60,7 @@ Support access is consent-based and read-only (ADR-009): a function or policy th
 - Local logins, local stack only: shop owner `demo@azaria.test`, support `support@azaria.test`. Passwords were given to the owner in chat and are not in the repository.
 - Blockers: Windows reserves TCP 54323–54422, so local Supabase uses 54423, 54424 and 54427 for Studio, mail and analytics. Analytics is off. Start the stack with the project binary, not `npx supabase start -x`, because npm swallows `-x`. Use `npx supabase migration up` to apply a new migration without wiping local data.
 - Later on 2026-11-22: in-app user and admin guides from `docs/USER_GUIDE.md` and `docs/ADMIN_GUIDE.md` (with `.fr.md` copies), Twi as a third language (unreviewed machine translation), and an injection-safety pass (`src/utils/safe.ts`, migration `20261122000300`, `docs/SECURITY.md` "Typed text is data"). SQL suite now 17 files, 236 tests. Unit 15 files, 67 tests. The first platform admin exists on the cloud database.
+- Also on 2026-11-22: guide reader rebuilt for navigation (phone accordion with a sticky jump list and search; desktop side contents with the current section marked); public About page from `docs/ABOUT.md`; two ad videos with voice-over in `marketing/` (English and Twi), source in `marketing/ad-video`. Unit tests now 70.
 - Next: turn the 2026-11-22 browser checks into Playwright specs. Task 19 still has no automated check. Task 20, the CI workflow, has not been run. Owner commits and pushes; agents do not.
 
 ## Rules for every runtime
