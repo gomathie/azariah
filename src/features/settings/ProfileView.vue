@@ -52,6 +52,13 @@ async function signOut() {
         <span class="block font-medium text-slate-900">{{ t('guide.admin') }}</span>
         <span class="block text-sm text-slate-600">{{ t('guide.adminHint') }}</span>
       </RouterLink>
+      <RouterLink
+        :to="{ name: 'about' }"
+        class="block rounded-xl border border-slate-200 bg-white px-4 py-3 min-h-14"
+      >
+        <span class="block font-medium text-slate-900">{{ t('about.title') }}</span>
+        <span class="block text-sm text-slate-600">{{ t('about.hint') }}</span>
+      </RouterLink>
     </div>
     <AppButton type="button" variant="secondary" @click="signOut">{{ t('nav.signOut') }}</AppButton>
   </section>

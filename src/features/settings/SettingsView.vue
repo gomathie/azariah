@@ -23,6 +23,7 @@ const links = [
   { name: 'profile', label: 'nav.profile' },
   { name: 'privacy', label: 'settings.privacy' },
   { name: 'help', label: 'nav.help' },
+  { name: 'about', label: 'about.title' },
 ] as const
 
 async function download() {

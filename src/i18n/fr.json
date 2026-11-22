@@ -453,6 +453,17 @@
     "contents": "Dans ce guide",
     "other": "Autre guide",
     "loadError": "Le guide n'a pas pu s'ouvrir. Vérifiez votre connexion et réessayez.",
-    "englishOnly": "Ce guide est en anglais pour le moment."
+    "englishOnly": "Ce guide est en anglais pour le moment.",
+    "search": "Rechercher dans ce guide",
+    "jump": "Aller à une section",
+    "openAll": "Tout ouvrir",
+    "closeAll": "Tout fermer",
+    "top": "Haut",
+    "noMatch": "Rien ne correspond à votre recherche.",
+    "matches": "{count} sections correspondent"
+  },
+  "about": {
+    "title": "À propos d'Azaria",
+    "hint": "L'histoire de l'application et ses valeurs"
   }
 }

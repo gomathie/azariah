@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { canReadAdminGuide } from '../access'
-import { parseGuide, parseInline, slug } from '../markdown'
+import { parseGuide, parseInline, sectionText, slug } from '../markdown'
 
 const doc = (name: string) => parseGuide(readFileSync(resolve(process.cwd(), 'docs', name), 'utf8'))
 
@@ -65,6 +65,7 @@ describe('the guide files', () => {
   it.each([
     ['USER_GUIDE.md', 'USER_GUIDE.fr.md'],
     ['ADMIN_GUIDE.md', 'ADMIN_GUIDE.fr.md'],
+    ['ABOUT.md', 'ABOUT.fr.md'],
   ])('%s and its French copy have the same shape', (english, french) => {
     const en = doc(english)
     const fr = doc(french)
@@ -105,6 +106,24 @@ describe('the guide files', () => {
     for (const topic of ['Who can do what', 'Reverse this entry', 'Owner money', 'Download all my data', 'Support access', 'Support console']) {
       expect(text).toContain(topic)
     }
+  })
+})
+
+describe('sectionText', () => {
+  it('gathers headings, paragraphs, list items and table cells for search', () => {
+    const guide = parseGuide('# T\n\n## Part\n\nTap **Add**.\n\n- One thing\n\n| Task | Owner |\n|---|---|\n| Undo | Yes |')
+    const text = sectionText(guide.sections[0]!)
+    for (const piece of ['Part', 'Tap Add.', 'One thing', 'Task Owner', 'Undo Yes']) expect(text).toContain(piece)
+  })
+})
+
+describe('the About page', () => {
+  it('tells the story and makes no claim the app cannot keep', () => {
+    const text = readFileSync(resolve(process.cwd(), 'docs', 'ABOUT.md'), 'utf8')
+    expect(text).toContain('The story behind Azaria')
+    expect(text).toContain('Five questions, every day')
+    expect(text).toContain('It is not a bank')
+    expect(text).not.toMatch(/guarantee|certified|regulated/i)
   })
 })
 

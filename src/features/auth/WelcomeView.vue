@@ -22,5 +22,10 @@ const { t } = useI18n()
         >{{ t('auth.signIn') }}</RouterLink
       >
     </div>
+    <p class="text-center text-sm">
+      <RouterLink :to="{ name: 'about' }" class="text-brand-800 underline inline-flex items-center min-h-11">{{
+        t('about.title')
+      }}</RouterLink>
+    </p>
   </AuthLayout>
 </template>

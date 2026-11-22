@@ -142,3 +142,15 @@ export function parseGuide(source: string): Guide {
   flush()
   return guide
 }
+
+/** Everything a person can read in a section, joined, for search. */
+export function sectionText(section: GuideSection): string {
+  const parts: string[] = [section.title]
+  for (const block of section.blocks) {
+    if (block.type === 'heading') parts.push(block.text)
+    else if (block.type === 'paragraph') parts.push(block.spans.map((s) => s.text).join(''))
+    else if (block.type === 'list') parts.push(...block.items.map((item) => item.map((s) => s.text).join('')))
+    else parts.push(block.head.join(' '), ...block.rows.map((row) => row.join(' ')))
+  }
+  return parts.join('\n')
+}

@@ -453,6 +453,17 @@
     "contents": "In this guide",
     "other": "Other guide",
     "loadError": "The guide could not be opened. Check your connection and try again.",
-    "englishOnly": "This guide is in English for now."
+    "englishOnly": "This guide is in English for now.",
+    "search": "Search this guide",
+    "jump": "Jump to a section",
+    "openAll": "Open all",
+    "closeAll": "Close all",
+    "top": "Top",
+    "noMatch": "Nothing here matches your search.",
+    "matches": "{count} sections match"
+  },
+  "about": {
+    "title": "About Azaria",
+    "hint": "The story behind the app and what it stands for"
   }
 }

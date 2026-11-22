@@ -453,6 +453,17 @@
     "contents": "Nea ɛwɔ akwankyerɛ yi mu",
     "other": "Akwankyerɛ foforo",
     "loadError": "Akwankyerɛ no antumi ammue. Hwɛ wo intanɛt na san sɔ hwɛ.",
-    "englishOnly": "Akwankyerɛ yi wɔ Borɔfo kasa mu seesei."
+    "englishOnly": "Akwankyerɛ yi wɔ Borɔfo kasa mu seesei.",
+    "search": "Hwehwɛ akwankyerɛ yi mu",
+    "jump": "Kɔ ɔfã bi",
+    "openAll": "Bue ne nyinaa",
+    "closeAll": "To ne nyinaa mu",
+    "top": "Soro",
+    "noMatch": "Biribiara nni ha a ɛne nea worehwehwɛ no hyia.",
+    "matches": "Afã {count} na ɛhyia"
+  },
+  "about": {
+    "title": "Azaria ho nsɛm",
+    "hint": "App no abakɔsɛm ne nea egyina ma"
   }
 }

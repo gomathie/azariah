@@ -23,6 +23,7 @@ const links = [
   { name: 'settings', label: 'nav.settings' },
   { name: 'accounts', label: 'nav.accounts' },
   { name: 'help', label: 'nav.help' },
+  { name: 'about', label: 'about.title' },
 ] as const
 
 function close(returnFocus = false) {

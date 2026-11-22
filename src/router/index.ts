@@ -52,6 +52,12 @@ const router = createRouter({
       meta: { requiresAuth: true, titleKey: 'onboarding.title' },
     },
     {
+      path: '/about',
+      name: 'about',
+      component: () => import('@/features/guide/GuideView.vue'),
+      meta: { titleKey: 'about.title' },
+    },
+    {
       path: '/guide/:which(user|admin)',
       name: 'guide',
       component: () => import('@/features/guide/GuideView.vue'),
