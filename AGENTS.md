@@ -49,15 +49,17 @@ Tests: Vitest (jsdom), Playwright, Supabase SQL tests (`supabase/tests`). Backen
 
 See `docs/architecture/ADR.md`. Do not undo without the owner's agreement: minor-unit money (ADR-001),
 RPC-only mutations (ADR-002), derived balances (ADR-003), RLS + explicit grants (ADR-004).
+Support access is consent-based and read-only (ADR-009): a function or policy that writes must name the roles it accepts, and the shop list must ask only for the signed-in person's own memberships.
 
 ## Status checkpoint
 
-- 2026-11-16: Tasks 1–18 have passing checks. SQL suite: 13 files, 134 tests, PASS. Playwright onboarding, sale, collection, daybook, and offline passed on chromium and mobile. MoneyInput, Home, offline queue, sync, and CSV unit tests passed.
-- In progress: Task 19 is still the position marker. Invoices and receipt PDFs are written. PDF unit test PASS (3). SQL `0014_documents` PASS (18). Migration `20261116001500` is applied locally.
-- Blockers: Windows reserves TCP 54323–54422, so local Supabase uses 54423, 54424, and 54427 for Studio, mail, and analytics. Analytics is off. Start the stack with the project binary, not `npx supabase start -x`, because npm swallows `-x`.
-- Cloud: Supabase project `azaria` (ref `zqxmlgeqvrmbczjsurtj`, London) was created and linked on 2026-11-22. All 15 migrations are applied there. `.env` stays local; cloud values are in the gitignored `.env.production.local`. See `docs/DEPLOYMENT.md`. No frontend is deployed; the owner is connecting Cloudflare Pages (settings in `docs/DEPLOYMENT.md`, headers in `public/_headers`, variables in gitignored `.env.cloudflare`). `npm run build` now passes its type-check. A local demo login exists on the local stack only: `demo@azaria.test`.
-- 2026-11-22 UI: Customers screen has an Add customer form; a round profile button sits top right in `PageHeader`; Add to home screen is a row in Settings only. Checked in Chromium on a phone viewport; no e2e spec covers them yet. `npm run lint` fails on 8 mock-typing errors in test files and on generated `dev-dist/`.
-- Next: Task 19 has no automated check yet. Task 20 is the CI workflow, not run. Owner commits and pushes; agents do not.
+- 2026-11-22: Tasks 1–18 keep their passing checks. SQL suite: 16 files, 210 tests, PASS. Unit: 13 files, 50 tests, PASS. Lint and type-check PASS. `npm run build` PASS.
+- Done on 2026-11-22, checked in a browser but with no spec file yet: Home redesign (money available, quick actions, recent entries), daybook with direction and day groups, Add menu with payment, transfer and owner money, customer add and edit, account menu, reports with breakdowns and PDF or Excel downloads, consent-based support access (ADR-009) with a console at `/support`.
+- Cloud: Supabase project `azaria` (ref `zqxmlgeqvrmbczjsurtj`, London) has migrations up to `20261116001500`. Migrations `20261122000100` (report breakdowns) and `20261122000200` (support access) are local only. The app tolerates their absence: reports show totals without lines and nobody is a platform admin. Push them only with a dry run and the owner's go-ahead.
+- Deploy: the owner is connecting Cloudflare Pages. Settings are in `docs/DEPLOYMENT.md`, headers in `public/_headers`, variables in the gitignored `.env.cloudflare`.
+- Local logins, local stack only: shop owner `demo@azaria.test`, support `support@azaria.test`. Passwords were given to the owner in chat and are not in the repository.
+- Blockers: Windows reserves TCP 54323–54422, so local Supabase uses 54423, 54424 and 54427 for Studio, mail and analytics. Analytics is off. Start the stack with the project binary, not `npx supabase start -x`, because npm swallows `-x`. Use `npx supabase migration up` to apply a new migration without wiping local data.
+- Next: turn the 2026-11-22 browser checks into Playwright specs. Task 19 still has no automated check. Task 20, the CI workflow, has not been run. Owner commits and pushes; agents do not.
 
 ## Rules for every runtime
 

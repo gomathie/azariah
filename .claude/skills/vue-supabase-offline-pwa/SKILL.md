@@ -1,6 +1,6 @@
 ---
 name: vue-supabase-offline-pwa
-description: Work in the Azaria bookkeeping PWA — Vue 3 + TypeScript + Vite, Pinia, Vue Router, Vue I18n, Tailwind 4, Dexie offline queue, Supabase (Postgres, Auth, RLS, rpc_* functions). Use for screens, stores, migrations, RPC functions, RLS policies, SQL/Vitest/Playwright tests and reviews in this repo.
+description: Build or change a Vue 3 + TypeScript + Vite PWA backed by Supabase. Covers Postgres row-level security with explicit grants, tenant isolation, idempotent rpc_* writes, pgTAP tests, a Dexie offline queue, Vue I18n, Tailwind 4, Vitest and Playwright, money as integer minor units, consent-based support access, PDF and Excel exports, and Cloudflare Pages deployment. Reference implementation, Azaria, a small-business bookkeeping app. Use for screens, stores, migrations, RPC functions, policies, tests and reviews in this repository.
 ---
 
 # Azaria — Vue + Supabase stack skill
@@ -139,6 +139,30 @@ later, so keep the format strict):
 3. If nothing is affected, write one specific sentence saying why.
 4. Verify commands and examples you touched; label anything you could not verify.
 5. End your report with a short "Docs" line: files updated, categories unaffected and why.
+
+## Support access (ADR-009)
+
+- Platform admins are rows in `platform_admins`, added with SQL only. They see a shop directory, never books, unless the owner grants time-limited access.
+- `is_member(business_id)` without roles is the read door, and it also admits support with a live grant. **A function or policy that writes must pass roles.** Add every new write to `supabase/tests/0016_support_access.test.sql`, which acts as support and expects a refusal.
+- Client queries for "my shops" filter on the signed-in user's id. Never infer a person's role from a row that row security merely lets them read.
+- The support view is `business.supportBusiness` with role `viewer`, held in memory. Hide write actions when the role is `viewer`; the database refuses them anyway.
+
+## Reports and downloads
+
+- A report RPC returns its total plus `lines` grouped in SQL. `src/features/reports/build.ts` turns the payload into columns, rows and a footer; it never computes a business figure the database did not return.
+- Downloads are PDF (`pdf-lib`, loaded only on click) and Excel (`src/utils/xlsx.ts`, a dependency-free writer). PDF text goes through `pdfSafe`; amounts print as plain numbers with "Amounts in <code>" because the PDF font lacks some currency marks.
+- Dates shown to people go through `friendlyDate` or `dateLocale` so English reads day first.
+
+## Traps this project has already paid for
+
+- **A test that clicks by name can click the wrong page.** After a navigation click, wait for the destination's heading before choosing a link whose text also appears on the page you are leaving.
+- **`npm run lint` rewrites files.** It runs with `--fix`. It once turned unicode escapes in a regex into raw characters and a spread into a typed array. Re-run the unit tests after linting, and avoid control-character regexes.
+- **`npm run build` type-checks first.** A type error in a test file fails the deploy. Run `npx vue-tsc --build` before saying a change is done.
+- **SQL tests share the local database.** They run inside a transaction but can see existing rows. Give fixtures names that cannot collide with demo data, and never assert a global row count.
+- **A YAML description with ": " in it must be quoted**, or the skill's frontmatter will not parse.
+- **Local data survives `supabase migration up`, not `supabase db reset`.** Use `migration up` when someone is looking at the local app.
+- **The Content Security Policy names the Supabase host.** Changing the project or adding a third-party script, font or API needs a matching edit in `public/_headers`.
+- **The CLI targets the local stack by default.** A cloud push needs `--remote`, a dry run first, and the owner's go-ahead.
 
 ## Verify before claiming done
 
