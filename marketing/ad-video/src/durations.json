@@ -1,26 +1,26 @@
 {
   "en": {
-    "brand": 4.83,
-    "close": 5.99,
-    "daybook": 5.49,
-    "debts": 4.54,
-    "hook": 5.94,
-    "money": 6.88,
-    "problem": 7.34,
-    "record": 4.85,
-    "reports": 4.35,
-    "trust": 4.15
+    "hook": 7.18,
+    "problem": 8.81,
+    "brand": 6.24,
+    "money": 7.43,
+    "record": 5.63,
+    "daybook": 6.18,
+    "debts": 5.36,
+    "reports": 3.35,
+    "trust": 4.88,
+    "close": 6.58
   },
   "tw": {
-    "hook": 6.11,
-    "problem": 8.09,
-    "brand": 4.89,
-    "money": 7.17,
-    "record": 4.81,
-    "daybook": 6.16,
-    "debts": 4.07,
-    "reports": 4.6,
-    "trust": 4.7,
-    "close": 6.31
+    "hook": 6.53,
+    "problem": 8.02,
+    "brand": 4.82,
+    "money": 8.13,
+    "record": 5.22,
+    "daybook": 6.19,
+    "debts": 4.66,
+    "reports": 4.55,
+    "trust": 5.15,
+    "close": 6.41
   }
 }

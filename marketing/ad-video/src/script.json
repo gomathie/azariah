@@ -1,26 +1,209 @@
 {
   "en": [
-    { "id": "hook", "headline": "How much did your shop make today?", "support": "If you have to guess, you are losing money.", "say": "How much did your shop make today? If you have to guess, you are losing money." },
-    { "id": "problem", "headline": "Sound familiar?", "points": ["The notebook gets lost.", "Customer debts get forgotten.", "Cash and MoMo get mixed up."], "say": "The notebook gets lost. Customer debts get forgotten. Cash and mobile money get mixed up." },
-    { "id": "brand", "headline": "Azaria", "support": "Record Today. Grow Tomorrow.", "say": "Meet Azaria. Record today. Grow tomorrow." },
-    { "id": "money", "headline": "See all your money in one place.", "shot": "home", "say": "See all your money in one place. Cash, mobile money and bank, always up to date." },
-    { "id": "record", "headline": "Record a sale in seconds.", "shot": "sale", "say": "Record a sale in seconds, and keep your sales and expenses apart." },
-    { "id": "daybook", "headline": "Every entry, day by day.", "shot": "daybook", "say": "See every entry, day by day. Money in, and money out." },
-    { "id": "debts", "headline": "Know exactly who owes you.", "shot": "customers", "say": "Know exactly who owes you, and send a reminder in one tap." },
-    { "id": "reports", "headline": "Clear reports as PDF or Excel.", "shot": "reports", "say": "Get clear reports, as P D F, or Excel." },
-    { "id": "trust", "headline": "Built for the way you work.", "points": ["Works without internet", "Your records stay private", "English, Français and Twi"], "say": "It works without internet, and your records stay private." },
-    { "id": "close", "headline": "Know your business. Grow your business.", "cta": "Start with Azaria today", "say": "Know your business. Grow your business. Start with Azaria today." }
+    {
+      "id": "hook",
+      "headline": "How much did your shop make today?",
+      "support": "If you have to guess, you are losing money.",
+      "say": "How much did your shop make, today? If you have to guess... you're losing money.",
+      "caption": "How much did your shop make today? If you have to guess, you're losing money.",
+      "speed": 1
+    },
+    {
+      "id": "problem",
+      "headline": "Sound familiar?",
+      "points": [
+        "The notebook gets lost.",
+        "Debts get forgotten.",
+        "Cash and MoMo get mixed up."
+      ],
+      "icons": [
+        "notebook",
+        "clock",
+        "coins"
+      ],
+      "say": "The notebook gets lost. Customer debts? Forgotten. Cash and mobile money, all mixed up.",
+      "caption": "The notebook gets lost. Customer debts? Forgotten. Cash and Mobile Money, all mixed up.",
+      "speed": 1.1
+    },
+    {
+      "id": "brand",
+      "headline": "Azaria",
+      "support": "Record Today. Grow Tomorrow.",
+      "say": "Meet Azaria! Record today. Grow tomorrow.",
+      "caption": "Meet Azaria! Record today. Grow tomorrow.",
+      "speed": 1
+    },
+    {
+      "id": "money",
+      "headline": "See all your money in one place.",
+      "shot": "home",
+      "icon": "wallet",
+      "say": "See all your money, in one place. Cash, mobile money, and bank. Always up to date.",
+      "caption": "See all your money in one place. Cash, Mobile Money and bank. Always up to date.",
+      "speed": 1.08
+    },
+    {
+      "id": "record",
+      "headline": "Record a sale in seconds.",
+      "shot": "sale",
+      "icon": "tag",
+      "say": "Record a sale in seconds! And keep your sales and expenses apart.",
+      "caption": "Record a sale in seconds! And keep your sales and expenses apart.",
+      "speed": 1.08
+    },
+    {
+      "id": "daybook",
+      "headline": "Every entry, day by day.",
+      "shot": "daybook",
+      "icon": "book",
+      "say": "Every entry, day by day. Money in... and money out.",
+      "caption": "Every entry, day by day. Money in, and money out.",
+      "speed": 1.06
+    },
+    {
+      "id": "debts",
+      "headline": "Know exactly who owes you.",
+      "shot": "customers",
+      "icon": "people",
+      "say": "Know exactly who owes you. And send a reminder, in one tap!",
+      "caption": "Know exactly who owes you. And send a reminder in one tap!",
+      "speed": 1.08
+    },
+    {
+      "id": "reports",
+      "headline": "Clear reports as PDF or Excel.",
+      "shot": "reports",
+      "icon": "chart",
+      "say": "Clear reports, as P D F, or Excel.",
+      "caption": "Clear reports, as PDF or Excel.",
+      "speed": 1.06
+    },
+    {
+      "id": "trust",
+      "headline": "Built for the way you work.",
+      "points": [
+        "Works without internet",
+        "Your records stay private",
+        "English, Français and Twi"
+      ],
+      "icons": [
+        "wifiOff",
+        "lock",
+        "globe"
+      ],
+      "say": "It works without internet. And your records stay private.",
+      "caption": "It works without internet. And your records stay private.",
+      "speed": 1.04
+    },
+    {
+      "id": "close",
+      "headline": "Know your business. Grow your business.",
+      "cta": "Start with Azaria today",
+      "say": "Know your business. Grow your business! Start with Azaria, today.",
+      "caption": "Know your business. Grow your business! Start with Azaria today.",
+      "speed": 1.02
+    }
   ],
   "tw": [
-    { "id": "hook", "headline": "Sika ahe na wo sotɔɔ nyae ɛnnɛ?", "support": "Sɛ wonnim a, wo sika reyera.", "say": "Sika ahe na wo sotɔɔ nyae ɛnnɛ? Sɛ wonnim a, wo sika reyera." },
-    { "id": "problem", "headline": "Wunim eyi?", "points": ["Nwoma no yera.", "Wo werɛ fi adetɔfo ka.", "Sika ne MoMo di afra."], "say": "Nwoma no yera. Wo werɛ fi adetɔfo ka. Sika a ɛwɔ nsam ne mobaa mɔni di afra." },
-    { "id": "brand", "headline": "Azaria", "support": "Kyerɛw Ɛnnɛ. Nyin Ɔkyena.", "say": "Hyia Asaria. Kyerɛw ɛnnɛ. Nyin ɔkyena." },
-    { "id": "money", "headline": "Hu wo sika nyinaa wɔ baabi koro.", "shot": "home", "say": "Hu wo sika nyinaa wɔ baabi koro. Sika a ɛwɔ nsam, mobaa mɔni, ne sikakorabea." },
-    { "id": "record", "headline": "Kyerɛw adetɔn ntɛm ara.", "shot": "sale", "say": "Kyerɛw adetɔn ntɛm ara, na ma adetɔn ne ɛka ntetew mu." },
-    { "id": "daybook", "headline": "Biribiara, da biara.", "shot": "daybook", "say": "Hu biribiara a wokyerɛwee, da biara. Sika a aba, ne sika a akɔ." },
-    { "id": "debts", "headline": "Hu wɔn a wɔde wo ka.", "shot": "customers", "say": "Hu wɔn a wɔde wo ka pɛpɛɛpɛ, na soma nkaebɔ ntɛm." },
-    { "id": "reports", "headline": "Amanneɛbɔ sɛ PDF anaa Excel.", "shot": "reports", "say": "Nya amanneɛbɔ a emu da hɔ, sɛ pi di ɛf, anaa ɛksɛl." },
-    { "id": "trust", "headline": "Wɔyɛ maa wo adwuma.", "points": ["Ɛyɛ adwuma a intanɛt nni hɔ", "Wo nsɛm yɛ kokoam", "English, Français ne Twi"], "say": "Ɛyɛ adwuma a intanɛt nni hɔ mpo, na wo nsɛm yɛ kokoam." },
-    { "id": "close", "headline": "Hu wo adwuma. Ma wo adwuma nyin.", "cta": "Fi ase ne Azaria ɛnnɛ", "say": "Hu wo adwuma. Ma wo adwuma nyin. Fi ase ne Asaria ɛnnɛ." }
+    {
+      "id": "hook",
+      "headline": "Sika ahe na wo sotɔɔ nyae ɛnnɛ?",
+      "support": "Sɛ wonnim a, wo sika reyera.",
+      "say": "Sika ahe, na wo sotɔɔ nyae ɛnnɛ? Sɛ wonnim a, wo sika reyera.",
+      "caption": "Sika ahe na wo sotɔɔ nyae ɛnnɛ? Sɛ wonnim a, wo sika reyera."
+    },
+    {
+      "id": "problem",
+      "headline": "Wunim eyi?",
+      "points": [
+        "Nwoma no yera.",
+        "Wo werɛ fi adetɔfo ka.",
+        "Sika ne MoMo di afra."
+      ],
+      "icons": [
+        "notebook",
+        "clock",
+        "coins"
+      ],
+      "say": "Nwoma no yera. Wo werɛ fi adetɔfo ka. Sika a ɛwɔ nsam ne mobaa mɔni di afra.",
+      "caption": "Nwoma no yera. Wo werɛ fi adetɔfo ka. Sika a ɛwɔ nsam ne Mobile Money di afra."
+    },
+    {
+      "id": "brand",
+      "headline": "Azaria",
+      "support": "Kyerɛw Ɛnnɛ. Nyin Ɔkyena.",
+      "say": "Hyia Asaria. Kyerɛw ɛnnɛ. Nyin ɔkyena.",
+      "caption": "Hyia Azaria. Kyerɛw ɛnnɛ. Nyin ɔkyena."
+    },
+    {
+      "id": "money",
+      "headline": "Hu wo sika nyinaa wɔ baabi koro.",
+      "shot": "home",
+      "icon": "wallet",
+      "say": "Hu wo sika nyinaa wɔ baabi koro. Sika a ɛwɔ nsam, mobaa mɔni, ne sikakorabea.",
+      "caption": "Hu wo sika nyinaa wɔ baabi koro. Sika a ɛwɔ nsam, Mobile Money, ne sikakorabea."
+    },
+    {
+      "id": "record",
+      "headline": "Kyerɛw adetɔn ntɛm ara.",
+      "shot": "sale",
+      "icon": "tag",
+      "say": "Kyerɛw adetɔn, ntɛm ara. Na ma adetɔn ne ɛka, ntetew mu.",
+      "caption": "Kyerɛw adetɔn ntɛm ara, na ma adetɔn ne ɛka ntetew mu."
+    },
+    {
+      "id": "daybook",
+      "headline": "Biribiara, da biara.",
+      "shot": "daybook",
+      "icon": "book",
+      "say": "Hu biribiara a wokyerɛwee, da biara. Sika a aba, ne sika a akɔ."
+    },
+    {
+      "id": "debts",
+      "headline": "Hu wɔn a wɔde wo ka.",
+      "shot": "customers",
+      "icon": "people",
+      "say": "Hu wɔn a wɔde wo ka, pɛpɛɛpɛ. Na soma nkaebɔ, ntɛm.",
+      "caption": "Hu wɔn a wɔde wo ka pɛpɛɛpɛ, na soma nkaebɔ ntɛm."
+    },
+    {
+      "id": "reports",
+      "headline": "Amanneɛbɔ sɛ PDF anaa Excel.",
+      "shot": "reports",
+      "icon": "chart",
+      "say": "Nya amanneɛbɔ a emu da hɔ, sɛ pi di ɛf, anaa ɛksɛl.",
+      "caption": "Nya amanneɛbɔ a emu da hɔ, sɛ PDF, anaa Excel."
+    },
+    {
+      "id": "trust",
+      "headline": "Wɔyɛ maa wo adwuma.",
+      "points": [
+        "Ɛyɛ adwuma a intanɛt nni hɔ",
+        "Wo nsɛm yɛ kokoam",
+        "English, Français ne Twi"
+      ],
+      "icons": [
+        "wifiOff",
+        "lock",
+        "globe"
+      ],
+      "say": "Ɛyɛ adwuma, a intanɛt nni hɔ mpo. Na wo nsɛm, yɛ kokoam.",
+      "caption": "Ɛyɛ adwuma a intanɛt nni hɔ mpo, na wo nsɛm yɛ kokoam."
+    },
+    {
+      "id": "close",
+      "headline": "Hu wo adwuma. Ma wo adwuma nyin.",
+      "cta": "Fi ase ne Azaria ɛnnɛ",
+      "say": "Hu wo adwuma. Ma wo adwuma nyin. Fi ase ne Asaria, ɛnnɛ.",
+      "caption": "Hu wo adwuma. Ma wo adwuma nyin. Fi ase ne Azaria ɛnnɛ."
+    }
+  ],
+  "short": [
+    "hook",
+    "brand",
+    "money",
+    "debts",
+    "trust",
+    "close"
   ]
 }
