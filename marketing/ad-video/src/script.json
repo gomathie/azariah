@@ -1,0 +1,26 @@
+{
+  "en": [
+    { "id": "hook", "headline": "How much did your shop make today?", "support": "If you have to guess, you are losing money.", "say": "How much did your shop make today? If you have to guess, you are losing money." },
+    { "id": "problem", "headline": "Sound familiar?", "points": ["The notebook gets lost.", "Customer debts get forgotten.", "Cash and MoMo get mixed up."], "say": "The notebook gets lost. Customer debts get forgotten. Cash and mobile money get mixed up." },
+    { "id": "brand", "headline": "Azaria", "support": "Record Today. Grow Tomorrow.", "say": "Meet Azaria. Record today. Grow tomorrow." },
+    { "id": "money", "headline": "See all your money in one place.", "shot": "home", "say": "See all your money in one place. Cash, mobile money and bank, always up to date." },
+    { "id": "record", "headline": "Record a sale in seconds.", "shot": "sale", "say": "Record a sale in seconds, and keep your sales and expenses apart." },
+    { "id": "daybook", "headline": "Every entry, day by day.", "shot": "daybook", "say": "See every entry, day by day. Money in, and money out." },
+    { "id": "debts", "headline": "Know exactly who owes you.", "shot": "customers", "say": "Know exactly who owes you, and send a reminder in one tap." },
+    { "id": "reports", "headline": "Clear reports as PDF or Excel.", "shot": "reports", "say": "Get clear reports, as P D F, or Excel." },
+    { "id": "trust", "headline": "Built for the way you work.", "points": ["Works without internet", "Your records stay private", "English, Français and Twi"], "say": "It works without internet, and your records stay private." },
+    { "id": "close", "headline": "Know your business. Grow your business.", "cta": "Start with Azaria today", "say": "Know your business. Grow your business. Start with Azaria today." }
+  ],
+  "tw": [
+    { "id": "hook", "headline": "Sika ahe na wo sotɔɔ nyae ɛnnɛ?", "support": "Sɛ wonnim a, wo sika reyera.", "say": "Sika ahe na wo sotɔɔ nyae ɛnnɛ? Sɛ wonnim a, wo sika reyera." },
+    { "id": "problem", "headline": "Wunim eyi?", "points": ["Nwoma no yera.", "Wo werɛ fi adetɔfo ka.", "Sika ne MoMo di afra."], "say": "Nwoma no yera. Wo werɛ fi adetɔfo ka. Sika a ɛwɔ nsam ne mobaa mɔni di afra." },
+    { "id": "brand", "headline": "Azaria", "support": "Kyerɛw Ɛnnɛ. Nyin Ɔkyena.", "say": "Hyia Asaria. Kyerɛw ɛnnɛ. Nyin ɔkyena." },
+    { "id": "money", "headline": "Hu wo sika nyinaa wɔ baabi koro.", "shot": "home", "say": "Hu wo sika nyinaa wɔ baabi koro. Sika a ɛwɔ nsam, mobaa mɔni, ne sikakorabea." },
+    { "id": "record", "headline": "Kyerɛw adetɔn ntɛm ara.", "shot": "sale", "say": "Kyerɛw adetɔn ntɛm ara, na ma adetɔn ne ɛka ntetew mu." },
+    { "id": "daybook", "headline": "Biribiara, da biara.", "shot": "daybook", "say": "Hu biribiara a wokyerɛwee, da biara. Sika a aba, ne sika a akɔ." },
+    { "id": "debts", "headline": "Hu wɔn a wɔde wo ka.", "shot": "customers", "say": "Hu wɔn a wɔde wo ka pɛpɛɛpɛ, na soma nkaebɔ ntɛm." },
+    { "id": "reports", "headline": "Amanneɛbɔ sɛ PDF anaa Excel.", "shot": "reports", "say": "Nya amanneɛbɔ a emu da hɔ, sɛ pi di ɛf, anaa ɛksɛl." },
+    { "id": "trust", "headline": "Wɔyɛ maa wo adwuma.", "points": ["Ɛyɛ adwuma a intanɛt nni hɔ", "Wo nsɛm yɛ kokoam", "English, Français ne Twi"], "say": "Ɛyɛ adwuma a intanɛt nni hɔ mpo, na wo nsɛm yɛ kokoam." },
+    { "id": "close", "headline": "Hu wo adwuma. Ma wo adwuma nyin.", "cta": "Fi ase ne Azaria ɛnnɛ", "say": "Hu wo adwuma. Ma wo adwuma nyin. Fi ase ne Asaria ɛnnɛ." }
+  ]
+}

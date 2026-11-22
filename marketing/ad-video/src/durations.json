@@ -1,0 +1,26 @@
+{
+  "en": {
+    "brand": 4.83,
+    "close": 5.99,
+    "daybook": 5.49,
+    "debts": 4.54,
+    "hook": 5.94,
+    "money": 6.88,
+    "problem": 7.34,
+    "record": 4.85,
+    "reports": 4.35,
+    "trust": 4.15
+  },
+  "tw": {
+    "hook": 6.11,
+    "problem": 8.09,
+    "brand": 4.89,
+    "money": 7.17,
+    "record": 4.81,
+    "daybook": 6.16,
+    "debts": 4.07,
+    "reports": 4.6,
+    "trust": 4.7,
+    "close": 6.31
+  }
+}
