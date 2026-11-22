@@ -29,6 +29,16 @@ Date: 2026-11-16. This file records runs that actually happened. A file existing
 | FILES | Two downloaded `.xlsx` files opened in Excel 16; one PDF read back | PASS. |
 | CSP | Production build served locally with the `public/_headers` policy: welcome, sign-up, login, service worker, Supabase sign-in call | PASS. Not checked on Cloudflare itself. |
 
+### Later on 2026-11-22
+
+| ID | Check | Result |
+|---|---|---|
+| SQL-17 | `npx supabase test db`, file `0017_text_safety` | PASS. 26 assertions. |
+| SQL-ALL | `npx supabase test db` | PASS. 17 files, 236 tests. |
+| UNIT | `npx vitest run` | PASS. 15 files, 67 tests. |
+| AUDIT | `npm audit --omit=dev` | 0 vulnerabilities. |
+| BROWSER-3 | Scripted Chromium run: hostile sign-in redirect, guides from Profile, hostile customer name and phone, Twi on Home, guide fallback note | PASS. No console errors. Not kept as a spec file. |
+
 ## Not run
 
 | ID | What is on disk | Status |

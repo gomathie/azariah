@@ -96,6 +96,8 @@ Keep docs consistent with the code that actually exists (spec §15). Update in t
 | `docs/REPORT_DEFINITIONS.md` | A report formula, filter or date/currency rule changes |
 | `docs/TEST_REPORT.md` | After each verification run: ID, steps, expected, actual, PASS/FAIL/BLOCKED, evidence path |
 | `docs/DEPLOYMENT.md`, `docs/PILOT_GUIDE.md`, `docs/ROADMAP.md`, `docs/PRODUCT_REQUIREMENTS.md`, `docs/COMPETITOR_BENCHMARK.md` | When the related process, scope or research changes |
+| `docs/USER_GUIDE.md`, `docs/ADMIN_GUIDE.md` and their `.fr.md` copies | A screen, a button label or what a role may do changes. Keep the same `##` sections and block order in every language; `guide.spec.ts` fails otherwise. The app shows these files under Profile, Guides. |
+| `src/i18n/en.json`, `fr.json`, `tw.json` | Any text on a screen changes. All three need the key. Twi is unreviewed machine translation; say so when adding to it. |
 | `README.md` | Setup, env vars or commands change |
 | `docs/superpowers/plans/*.md` | Tick the task checkbox when its verification passes |
 
@@ -153,12 +155,23 @@ later, so keep the format strict):
 - Downloads are PDF (`pdf-lib`, loaded only on click) and Excel (`src/utils/xlsx.ts`, a dependency-free writer). PDF text goes through `pdfSafe`; amounts print as plain numbers with "Amounts in <code>" because the PDF font lacks some currency marks.
 - Dates shown to people go through `friendlyDate` or `dateLocale` so English reads day first.
 
+## Typed text is data
+
+- Never build SQL from text. Functions take typed parameters; search text is escaped before `LIKE`.
+- Never use `v-html` or `innerHTML`. Parse to data and render with elements, as the guide reader does.
+- A new free-text column gets a line in a `clean_*` trigger, a length limit, and a hostile-input case in `supabase/tests/0017_text_safety.test.sql`.
+- A value placed inside a PostgREST filter string is validated first with `src/utils/safe.ts`.
+- Only `safeInternalPath` decides where to go after sign-in.
+- Do not "sanitise" by deleting quotes or angle brackets. They are ordinary text; the defence is parameters and escaping.
+
 ## Traps this project has already paid for
 
 - **A test that clicks by name can click the wrong page.** After a navigation click, wait for the destination's heading before choosing a link whose text also appears on the page you are leaving.
 - **`npm run lint` rewrites files.** It runs with `--fix`. It once turned unicode escapes in a regex into raw characters and a spread into a typed array. Re-run the unit tests after linting, and avoid control-character regexes.
 - **`npm run build` type-checks first.** A type error in a test file fails the deploy. Run `npx vue-tsc --build` before saying a change is done.
 - **SQL tests share the local database.** They run inside a transaction but can see existing rows. Give fixtures names that cannot collide with demo data, and never assert a global row count.
+- **The shell eats backslashes in generated SQL.** A psql `\gset` written through a shell script lost its backslash twice. Write SQL test files with the editor, not through `node -e` or `sed`.
+- **A volatile function inside a `where` clause is not called once.** In a pgTAP assertion, call the function first, keep its result with `\gset`, then assert.
 - **A YAML description with ": " in it must be quoted**, or the skill's frontmatter will not parse.
 - **Local data survives `supabase migration up`, not `supabase db reset`.** Use `migration up` when someone is looking at the local app.
 - **The Content Security Policy names the Supabase host.** Changing the project or adding a third-party script, font or API needs a matching edit in `public/_headers`.

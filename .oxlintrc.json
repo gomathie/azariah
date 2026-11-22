@@ -17,6 +17,7 @@
   "ignorePatterns": [
     "dist",
     "dev-dist",
-    "coverage"
+    "coverage",
+    "marketing"
   ]
 }

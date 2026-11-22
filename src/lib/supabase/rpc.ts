@@ -43,9 +43,9 @@ function isNetworkFailure(err: unknown): boolean {
 export async function callRpc<T = unknown>(name: string, params: Record<string, unknown>): Promise<T> {
   let response
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     // Every write goes through here, so invisible control characters are stripped in one place.
-    response = await (getSupabase().rpc as any)(name, cleanPayload(params))
+    const rpc = getSupabase().rpc as unknown as (fn: string, args: Record<string, unknown>) => Promise<unknown>
+    response = await rpc.call(getSupabase(), name, cleanPayload(params))
   } catch (err) {
     throw new RpcError(isNetworkFailure(err) ? 'network' : 'generic', String(err), err)
   }

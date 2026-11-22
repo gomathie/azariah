@@ -21,6 +21,8 @@
 
 ### Added
 
+- A user guide and an admin guide inside the app, under Profile, Guides. Everyone sees the user guide. Owners, admins and the support team also see the admin guide.
+- Twi as a third language, next to English and French. The Twi wording still needs a check by a native speaker, and the guides are in English and French only.
 - Add a customer or edit a customer's name and phone on the Customers screen.
 - The Add menu now has Record payment, Move money and Owner money.
 - Record your own money going into the business or coming out. It is not counted as a sale or an expense.
@@ -47,6 +49,8 @@
 - Each business's records are isolated; members of one business cannot see another business's data.
 - Staff cannot undo an entry, invite an owner, or download the whole business.
 - The support team cannot open a shop unless its owner allows it, can only read, and every look is recorded.
+- Anything typed into Azaria is kept as plain text. Text that looks like a command, a formula or web code is stored and shown as text and is never run.
+- Hidden characters that can disguise text are removed from names and notes. A phone number can hold only a phone number.
 
 ### Limitations
 

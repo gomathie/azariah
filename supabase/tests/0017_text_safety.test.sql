@@ -60,10 +60,9 @@ select is((select name from public.contacts where id = :'kofi'), 'Kofi Mensah', 
 select is((select notes from public.contacts where id = :'kofi'), 'line one' || chr(10) || 'line two', 'a new line is kept in notes; the bell character is removed');
 update public.contacts set name = 'Ama' || U&'\FEFF' where id = :'kofi';
 select is((select name from public.contacts where id = :'kofi'), 'Ama', 'cleaning also runs on update');
-select is((select description from public.transactions where id = (
-  public.rpc_record_expense(gen_random_uuid(), :'biz', now(), 100, :'cash',
-    (select id from public.categories where business_id = :'biz' and kind = 'operating_expense' limit 1),
-    'Tro' || chr(27) || 'tro', null) ->> 'transaction_id')::uuid), 'Trotro', 'cleaning runs for rows written by functions too');
+select id as expcat from public.categories where business_id = :'biz' and kind = 'operating_expense' limit 1 \gset
+select (public.rpc_record_expense(gen_random_uuid(), :'biz', now(), 100, :'cash', :'expcat', 'Tro' || chr(27) || 'tro', null) ->> 'transaction_id') as exp \gset
+select is((select description from public.transactions where id = :'exp'), 'Trotro', 'cleaning runs for rows written by functions too');
 select is(public.clean_text('Café ₵ 12,50 — "quoted" <b> = ; '' ok'), 'Café ₵ 12,50 — "quoted" <b> = ; '' ok', 'visible characters are never changed');
 
 -- 3. A phone number holds a phone number -----------------------------------------------------------

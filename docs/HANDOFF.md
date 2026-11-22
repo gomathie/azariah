@@ -3,6 +3,32 @@
 Change-rationale entries for guards, constraints, refusals and defaults that a later agent might
 be tempted to undo. Format: Why / How / Benefit / Trade-off / Verification / Rollback. Newest first.
 
+## 2026-11-22 — Text is cleaned in triggers as well as in the browser
+
+- **Why:** the owner asked that all input be safe from injection and stored as text. The browser can be bypassed with a forged request, so the database must clean too.
+- **How:** `20261122000300_text_safety.sql` adds `clean_text` and a BEFORE trigger on each table with free text. It removes control, zero-width and direction-override characters and nothing a person can see. It adds a phone format check and length limits, as NOT VALID so existing rows are untouched. In the browser, `callRpc` runs `cleanPayload` on every write.
+- **Benefit:** the same rule holds for the app, a forged request and the SQL console. Quotes, angle brackets and equals signs are left alone, because the defence against injection is parameters and escaping, not deleting characters.
+- **Trade-off:** a legitimate zero-width joiner in a name would be removed. A new free-text column needs its own trigger line.
+- **Verification:** `0017_text_safety.test.sql`, 26 assertions; `safe.spec.ts`, 9 tests; browser run with a hostile customer name.
+- **Rollback:** drop the triggers and constraints in a new migration.
+
+## 2026-11-22 — The guides are Markdown files in docs/, read by the app
+
+- **Why:** the owner asked for a user guide and an admin guide inside the app. The shared library's convention is one guide file per audience with a translated copy that has the same headings.
+- **How:** `docs/USER_GUIDE.md`, `docs/ADMIN_GUIDE.md` and their `.fr.md` copies are imported as raw text and parsed by `src/features/guide/markdown.ts` into plain data. No HTML from a file reaches the page.
+- **Benefit:** one copy of each guide, readable on GitHub and in the app, available offline after first use.
+- **Trade-off:** the parser supports headings, paragraphs, lists, simple tables and bold only.
+- **Verification:** `guide.spec.ts` checks that each French copy has the same sections and block types as the English one, and that each guide names the features it must cover.
+- **Rollback:** remove the route and the Profile links.
+
+## 2026-11-22 — Twi was translated by an AI and needs a native speaker
+
+- **Why:** the owner asked for Twi. No native speaker reviewed it.
+- **How:** `src/i18n/tw.json` has every key. Dates and numbers in Twi use Ghana's English formats because browsers have none for Twi. The guides fall back to English with a note.
+- **Trade-off:** some words may read unnaturally or be wrong. Product terms such as Mobile Money, PDF, Excel and invoice are left as traders say them.
+- **Verification:** key-completeness check; Home rendered in Twi in a browser.
+- **Rollback:** remove `tw` from `SUPPORTED_LOCALES`.
+
 ## 2026-11-22 — `is_member` has a read-only door for support, and writes must name roles
 
 - **Why:** the owner asked for super-admin provisions. The spec forbids automatic access to an entrepreneur's finances, so support access is by the owner's consent, time-limited and read-only (ADR-009).

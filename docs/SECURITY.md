@@ -13,6 +13,27 @@ The browser uses the publishable Supabase key. It cannot bypass membership check
 
 The last active owner cannot be demoted or removed. A membership id from another business is rejected. An account or category from another business is rejected.
 
+## Typed text is data
+
+Whatever a person types is stored as text and shown as text. It is never run as a query, a command, a formula, a link or markup.
+
+| Risk | What stops it | Checked by |
+|---|---|---|
+| SQL injection | Every database function takes typed parameters. No function builds SQL from text. The app uses the Supabase client, which sends values separately from the query. | `0017_text_safety.test.sql`: SQL typed into a shop name, a customer name, a description and a note is stored word for word and no table or row is lost. |
+| Search used as a pattern or a query | Search text is escaped before `LIKE`. | Same file: `' or '1'='1` matches nothing; `%` and `_` are literal. |
+| Script injection (XSS) | Vue escapes all text. The app has no `v-html` and no `innerHTML`. The guides are parsed into plain data, not HTML. The Content Security Policy allows scripts from the site only. | Browser run 2026-11-22: a customer named `<img src=x onerror=alert(1)>` showed as text, no element was created, no script ran. `guide.spec.ts`. |
+| Formula injection in downloads | Excel cells holding text are inline strings, never formulas. PDFs draw text only. | `xlsx.spec.ts`. |
+| Filter injection | The one place a value is placed inside a filter string, the daybook's next-page cursor, accepts only an exact date, timestamp and id. | `safe.spec.ts`. |
+| Redirect to another site after sign-in | Only a path inside the app is followed. | `safe.spec.ts`; browser run with `//evil.example` landed on Home. |
+| Hidden or reordered text | Control characters, zero-width characters and direction overrides are removed, in the browser's single write path and again by database triggers. | `safe.spec.ts`, `0017_text_safety.test.sql`. |
+| A phone field used for something else | The database accepts only digits, spaces and `+ ( ) . -`, at most 32 characters. The WhatsApp link uses digits only. | `0017_text_safety.test.sql`. |
+| Oversized input | Length limits on every free-text column, and `maxlength` on inputs. | `0017_text_safety.test.sql`. |
+| Known holes in libraries | `npm audit --omit=dev` reported 0 vulnerabilities on 2026-11-22. Run it before each release. | Manual. |
+
+Rules for new code: never build SQL from text; never use `v-html`; put any new free-text column in a cleaning trigger with a length limit; validate a value before placing it in a filter string; add the hostile-input case to `0017_text_safety.test.sql`.
+
+Not covered: rate limiting and sign-in abuse controls are Supabase's defaults; two-step sign-in is not built; uploaded files do not exist yet.
+
 ## Support team access
 
 The Azaria support team has no standing access to any shop. See ADR-009.

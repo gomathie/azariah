@@ -515,6 +515,9 @@ isOneToOne: false
 "business_local_date":
 { Args: { "p_business_id": string,"p_occurred_at": string }; Returns: string
                            },
+"clean_text":
+{ Args: { "p_text": string }; Returns: string
+                           },
 "currency_minor_unit":
 { Args: { "p_currency_code": string }; Returns: number
                            },
