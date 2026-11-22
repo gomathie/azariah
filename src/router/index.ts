@@ -52,6 +52,12 @@ const router = createRouter({
       meta: { requiresAuth: true, titleKey: 'onboarding.title' },
     },
     {
+      path: '/guide/:which(user|admin)',
+      name: 'guide',
+      component: () => import('@/features/guide/GuideView.vue'),
+      meta: { requiresAuth: true, titleKey: 'guide.title' },
+    },
+    {
       path: '/support',
       name: 'support-console',
       component: () => import('@/features/support/SupportConsoleView.vue'),

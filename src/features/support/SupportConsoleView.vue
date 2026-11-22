@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageHeader from '@/components/ui/PageHeader.vue'
 import AppAlert from '@/components/ui/AppAlert.vue'
@@ -94,7 +94,12 @@ onMounted(() => void load(true))
   <div class="min-h-dvh">
     <PageHeader :title="t('support.console')" />
     <section class="p-4 space-y-4 max-w-2xl mx-auto">
-      <AppAlert kind="info">{{ t('support.intro') }}</AppAlert>
+      <AppAlert kind="info">
+        {{ t('support.intro') }}
+        <RouterLink :to="{ name: 'guide', params: { which: 'admin' } }" class="underline font-semibold">{{
+          t('guide.admin')
+        }}</RouterLink>
+      </AppAlert>
       <form class="flex gap-2 items-end" role="search" @submit.prevent="load(true)">
         <div class="flex-1">
           <AppInput v-model="search" :label="t('support.search')" inputmode="search" autocomplete="off" />

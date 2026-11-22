@@ -441,5 +441,16 @@
     "quickPayment": "Payment",
     "quickTransfer": "Move money",
     "seeAll": "See all"
+  },
+  "guide": {
+    "title": "Guides",
+    "user": "User guide",
+    "userHint": "Everything you can do in Azaria, step by step",
+    "admin": "Admin guide",
+    "adminHint": "For owners and admins: people, corrections, data and support access",
+    "readUser": "Read the user guide",
+    "contents": "In this guide",
+    "other": "Other guide",
+    "loadError": "The guide could not be opened. Check your connection and try again."
   }
 }
