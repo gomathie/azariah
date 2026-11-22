@@ -29,7 +29,7 @@ export function persistLocale(locale: Locale) {
   }
 }
 
-export const i18n = createI18n<[MessageSchema], Locale>({
+export const i18n = createI18n<[MessageSchema], Locale, false>({
   legacy: false,
   locale: detectLocale(),
   fallbackLocale: 'en',

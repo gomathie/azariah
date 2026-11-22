@@ -97,7 +97,7 @@ async function load() {
   error.value = null
   loading.value = true
   try {
-    const filters = name.value === 'account_statement' ? { money_account_id: accountId.value } : {}
+    const filters: Record<string, string> = name.value === 'account_statement' ? { money_account_id: accountId.value } : {}
     rows.value = asRows(await runReport(name.value as ReportName, id, from.value, to.value, filters))
   } catch {
     error.value = t('errors.generic')
