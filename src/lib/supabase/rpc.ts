@@ -3,6 +3,7 @@ import { getSupabase } from './client'
 /** Error codes raised by `rpc_*` functions (see supabase/migrations). They map 1:1 to `errors.*` i18n keys. */
 export type AzariaErrorCode =
   | 'AZ_FORBIDDEN'
+  | 'AZ_SUPPORT_NOT_GRANTED'
   | 'AZ_INVALID_INPUT'
   | 'AZ_INVALID_AMOUNT'
   | 'AZ_CONTACT_REQUIRED'

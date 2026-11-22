@@ -11,6 +11,8 @@ declare module 'vue-router' {
     requiresBusiness?: boolean
     /** Signed-in users are redirected away (login, signup). */
     guestOnly?: boolean
+    /** Only the Azaria support team. The database enforces this too; the guard only keeps the screen tidy. */
+    requiresPlatformAdmin?: boolean
     titleKey?: string
   }
 }
@@ -48,6 +50,12 @@ const router = createRouter({
       name: 'onboarding',
       component: () => import('@/features/onboarding/CreateBusinessView.vue'),
       meta: { requiresAuth: true, titleKey: 'onboarding.title' },
+    },
+    {
+      path: '/support',
+      name: 'support-console',
+      component: () => import('@/features/support/SupportConsoleView.vue'),
+      meta: { requiresAuth: true, requiresPlatformAdmin: true, titleKey: 'support.console' },
     },
     {
       path: '/',
@@ -212,10 +220,16 @@ router.beforeEach(async (to) => {
   if ((to.meta.requiresAuth || to.meta.requiresBusiness) && !auth.isSignedIn) {
     return { name: 'welcome', query: to.fullPath !== '/' ? { redirect: to.fullPath } : {} }
   }
+  if (to.meta.requiresPlatformAdmin) {
+    const business = useBusinessStore()
+    await business.ensureLoaded()
+    if (!business.platformAdmin) return { name: 'home' }
+  }
   if (to.meta.requiresBusiness) {
     const business = useBusinessStore()
     await business.ensureLoaded()
-    if (!business.current) return { name: 'onboarding' }
+    // A support person with no shop of their own lands on the console, not on shop set-up.
+    if (!business.current) return business.platformAdmin ? { name: 'support-console' } : { name: 'onboarding' }
   }
   return true
 })

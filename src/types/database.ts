@@ -195,6 +195,52 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"document_counters": {
+                  Row: {
+                    "business_id": string,"kind": string,"last_number": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "business_id": string,"kind": string,"last_number"?: number
+                  }
+                  Update: {
+                    "business_id"?: string,"kind"?: string,"last_number"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "document_counters_business_id_fkey"
+      columns: ["business_id"]
+isOneToOne: false
+      referencedRelation: "businesses"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"documents": {
+                  Row: {
+                    "business_date": string,"business_id": string,"business_name": string,"client_operation_id": string,"contact_name": string | null,"created_at": string,"created_by": string,"currency_code": string,"description": string | null,"display_number": string,"id": string,"kind": string,"number": number,"outstanding_minor": number,"received_minor": number,"status": string,"total_minor": number,"transaction_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "business_date": string,"business_id": string,"business_name": string,"client_operation_id": string,"contact_name"?: string | null,"created_at"?: string,"created_by": string,"currency_code": string,"description"?: string | null,"display_number": string,"id"?: string,"kind": string,"number": number,"outstanding_minor": number,"received_minor": number,"status"?: string,"total_minor": number,"transaction_id": string
+                  }
+                  Update: {
+                    "business_date"?: string,"business_id"?: string,"business_name"?: string,"client_operation_id"?: string,"contact_name"?: string | null,"created_at"?: string,"created_by"?: string,"currency_code"?: string,"description"?: string | null,"display_number"?: string,"id"?: string,"kind"?: string,"number"?: number,"outstanding_minor"?: number,"received_minor"?: number,"status"?: string,"total_minor"?: number,"transaction_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "documents_business_id_fkey"
+      columns: ["business_id"]
+isOneToOne: false
+      referencedRelation: "businesses"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "documents_transaction_id_fkey"
+      columns: ["transaction_id"]
+isOneToOne: false
+      referencedRelation: "transactions"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"money_accounts": {
                   Row: {
                     "business_id": string,"created_at": string,"currency_code": string,"id": string,"is_active": boolean,"is_default": boolean,"name": string,"sort_order": number,"type": Database["public"]['Enums']["account_type"],"updated_at": string
@@ -253,6 +299,20 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"platform_admins": {
+                  Row: {
+                    "created_at": string,"note": string | null,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"note"?: string | null,"user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"note"?: string | null,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"profiles": {
                   Row: {
                     "created_at": string,"display_name": string | null,"id": string,"locale": string,"updated_at": string
@@ -296,6 +356,46 @@ isOneToOne: false
       columns: ["transaction_id"]
 isOneToOne: true
       referencedRelation: "transactions"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"shop_people": {
+                  Row: {
+                    "business_id": string,"created_at": string,"device_name": string,"id": string,"name": string,"role": Database["public"]['Enums']["business_role"]
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "business_id": string,"created_at"?: string,"device_name": string,"id"?: string,"name": string,"role"?: Database["public"]['Enums']["business_role"]
+                  }
+                  Update: {
+                    "business_id"?: string,"created_at"?: string,"device_name"?: string,"id"?: string,"name"?: string,"role"?: Database["public"]['Enums']["business_role"]
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "shop_people_business_id_fkey"
+      columns: ["business_id"]
+isOneToOne: false
+      referencedRelation: "businesses"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"support_grants": {
+                  Row: {
+                    "business_id": string,"created_at": string,"expires_at": string,"granted_by": string,"id": string,"reason": string | null,"revoked_at": string | null,"revoked_by": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "business_id": string,"created_at"?: string,"expires_at": string,"granted_by": string,"id"?: string,"reason"?: string | null,"revoked_at"?: string | null,"revoked_by"?: string | null
+                  }
+                  Update: {
+                    "business_id"?: string,"created_at"?: string,"expires_at"?: string,"granted_by"?: string,"id"?: string,"reason"?: string | null,"revoked_at"?: string | null,"revoked_by"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "support_grants_business_id_fkey"
+      columns: ["business_id"]
+isOneToOne: false
+      referencedRelation: "businesses"
       referencedColumns: ["id"]
     }
                   ]
@@ -406,6 +506,9 @@ isOneToOne: false
             "assert_member":
 { Args: { "p_business_id": string,"p_roles"?: (Database["public"]['Enums']["business_role"])[] }; Returns: undefined
                            },
+"assert_platform_admin":
+{ Args: Record<PropertyKey, never>; Returns: undefined
+                           },
 "audit":
 { Args: { "p_action": string,"p_business_id": string,"p_data"?: Json,"p_entity_id": string,"p_entity_type": string }; Returns: undefined
                            },
@@ -415,11 +518,38 @@ isOneToOne: false
 "currency_minor_unit":
 { Args: { "p_currency_code": string }; Returns: number
                            },
+"document_payload":
+{ Args: { "p_id": string }; Returns: Json
+                           },
+"has_support_access":
+{ Args: { "p_business_id": string }; Returns: boolean
+                           },
 "is_member":
 { Args: { "p_business_id": string,"p_roles"?: (Database["public"]['Enums']["business_role"])[] }; Returns: boolean
                            },
+"is_platform_admin":
+{ Args: Record<PropertyKey, never>; Returns: boolean
+                           },
 "post_money_event":
 { Args: { "p_amount_minor": number,"p_audit_action": string,"p_business_date": string,"p_business_id": string,"p_category_id": string,"p_category_kind": Database["public"]['Enums']["category_kind"],"p_client_operation_id": string,"p_description": string,"p_kind": Database["public"]['Enums']["transaction_kind"],"p_money_account_id": string,"p_movement_sign": number,"p_note": string,"p_occurred_at": string,"p_sync_kind": string }; Returns: Json
+                           },
+"rpc_add_shop_person":
+{ Args: { "p_business_id": string,"p_client_operation_id": string,"p_device_name": string,"p_name": string,"p_role": string }; Returns: Json
+                           },
+"rpc_admin_list_businesses":
+{ Args: { "p_before"?: string,"p_limit"?: number,"p_search"?: string }; Returns: Json
+                           },
+"rpc_admin_open_business":
+{ Args: { "p_business_id": string }; Returns: Json
+                           },
+"rpc_admin_set_business_status":
+{ Args: { "p_business_id": string,"p_reason": string,"p_status": string }; Returns: Json
+                           },
+"rpc_admin_whoami":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"rpc_change_membership":
+{ Args: { "p_business_id": string,"p_client_operation_id": string,"p_membership_id": string,"p_role"?: string,"p_status"?: string }; Returns: Json
                            },
 "rpc_create_business_and_owner":
 { Args: { "p_business_type": string,"p_client_operation_id": string,"p_country_code": string,"p_currency_code": string,"p_name": string,"p_timezone": string }; Returns: Json
@@ -427,8 +557,32 @@ isOneToOne: false
 "rpc_create_sale":
 { Args: { "p_amount_minor": number,"p_business_id": string,"p_category_id"?: string,"p_client_operation_id": string,"p_contact_id"?: string,"p_description"?: string,"p_money_account_id"?: string,"p_note"?: string,"p_occurred_at": string,"p_received_minor": number }; Returns: Json
                            },
+"rpc_export_business_data":
+{ Args: { "p_business_id": string }; Returns: Json
+                           },
 "rpc_get_customer_statement":
 { Args: { "p_business_id": string,"p_contact_id": string,"p_from"?: string,"p_to"?: string }; Returns: Json
+                           },
+"rpc_get_dashboard_summary":
+{ Args: { "p_business_id": string,"p_from"?: string,"p_to"?: string }; Returns: Json
+                           },
+"rpc_get_document":
+{ Args: { "p_business_id": string,"p_document_id": string }; Returns: Json
+                           },
+"rpc_grant_support_access":
+{ Args: { "p_business_id": string,"p_hours"?: number,"p_reason"?: string }; Returns: Json
+                           },
+"rpc_invite_member":
+{ Args: { "p_business_id": string,"p_client_operation_id": string,"p_email": string,"p_role": string }; Returns: Json
+                           },
+"rpc_issue_document":
+{ Args: { "p_business_id": string,"p_client_operation_id": string,"p_kind": string,"p_transaction_id": string }; Returns: Json
+                           },
+"rpc_list_shop_people":
+{ Args: { "p_business_id": string }; Returns: Json
+                           },
+"rpc_list_support_access":
+{ Args: { "p_business_id": string }; Returns: Json
                            },
 "rpc_record_collection":
 { Args: { "p_amount_minor": number,"p_business_id": string,"p_client_operation_id": string,"p_contact_id": string,"p_money_account_id": string,"p_note"?: string,"p_occurred_at": string }; Returns: Json
@@ -445,27 +599,6 @@ isOneToOne: false
 "rpc_record_stock_purchase":
 { Args: { "p_amount_minor": number,"p_business_id": string,"p_category_id": string,"p_client_operation_id": string,"p_description"?: string,"p_money_account_id": string,"p_note"?: string,"p_occurred_at": string }; Returns: Json
                            },
-"rpc_transfer_between_accounts":
-{ Args: { "p_amount_minor": number,"p_business_id": string,"p_client_operation_id": string,"p_from_account_id": string,"p_note"?: string,"p_occurred_at": string,"p_to_account_id": string }; Returns: Json
-                           },
-"rpc_reverse_transaction":
-{ Args: { "p_business_id": string,"p_client_operation_id": string,"p_reason": string,"p_transaction_id": string }; Returns: Json
-                           },
-"rpc_get_dashboard_summary":
-{ Args: { "p_business_id": string,"p_from"?: string,"p_to"?: string }; Returns: Json
-                           },
-"rpc_report_sales":
-{ Args: { "p_business_id": string,"p_filters"?: Json,"p_from": string,"p_to": string }; Returns: Json
-                           },
-"rpc_report_money_received":
-{ Args: { "p_business_id": string,"p_filters"?: Json,"p_from": string,"p_to": string }; Returns: Json
-                           },
-"rpc_report_expenses":
-{ Args: { "p_business_id": string,"p_filters"?: Json,"p_from": string,"p_to": string }; Returns: Json
-                           },
-"rpc_report_stock_purchases":
-{ Args: { "p_business_id": string,"p_filters"?: Json,"p_from": string,"p_to": string }; Returns: Json
-                           },
 "rpc_report_account_statement":
 { Args: { "p_business_id": string,"p_filters"?: Json,"p_from": string,"p_to": string }; Returns: Json
                            },
@@ -475,14 +608,26 @@ isOneToOne: false
 "rpc_report_customer_debts":
 { Args: { "p_business_id": string,"p_filters"?: Json,"p_from": string,"p_to": string }; Returns: Json
                            },
-"rpc_export_business_data":
+"rpc_report_expenses":
+{ Args: { "p_business_id": string,"p_filters"?: Json,"p_from": string,"p_to": string }; Returns: Json
+                           },
+"rpc_report_money_received":
+{ Args: { "p_business_id": string,"p_filters"?: Json,"p_from": string,"p_to": string }; Returns: Json
+                           },
+"rpc_report_sales":
+{ Args: { "p_business_id": string,"p_filters"?: Json,"p_from": string,"p_to": string }; Returns: Json
+                           },
+"rpc_report_stock_purchases":
+{ Args: { "p_business_id": string,"p_filters"?: Json,"p_from": string,"p_to": string }; Returns: Json
+                           },
+"rpc_reverse_transaction":
+{ Args: { "p_business_id": string,"p_client_operation_id": string,"p_reason": string,"p_transaction_id": string }; Returns: Json
+                           },
+"rpc_revoke_support_access":
 { Args: { "p_business_id": string }; Returns: Json
                            },
-"rpc_invite_member":
-{ Args: { "p_business_id": string,"p_client_operation_id": string,"p_email": string,"p_role": string }; Returns: Json
-                           },
-"rpc_change_membership":
-{ Args: { "p_business_id": string,"p_client_operation_id": string,"p_membership_id": string,"p_role"?: string,"p_status"?: string }; Returns: Json
+"rpc_transfer_between_accounts":
+{ Args: { "p_amount_minor": number,"p_business_id": string,"p_client_operation_id": string,"p_from_account_id": string,"p_note"?: string,"p_occurred_at": string,"p_to_account_id": string }; Returns: Json
                            },
 "sync_record":
 { Args: { "p_business_id": string,"p_client_operation_id": string,"p_kind": string,"p_result": Json }; Returns: Json

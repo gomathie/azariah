@@ -4,7 +4,10 @@ import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageHeader from '@/components/ui/PageHeader.vue'
 import AppAlert from '@/components/ui/AppAlert.vue'
+import AppIcon, { type IconName } from '@/components/ui/AppIcon.vue'
 import SummaryCard from '@/features/dashboard/SummaryCard.vue'
+import EntryRow from '@/features/daybook/EntryRow.vue'
+import { getDaybook, type DaybookRow } from '@/features/daybook/api'
 import { getDashboard, type DashboardSummary } from '@/features/dashboard/api'
 import { useBusinessStore } from '@/stores/business'
 import { formatMoney } from '@/utils/money'
@@ -15,6 +18,20 @@ const business = useBusinessStore()
 const period = ref<'today' | 'week' | 'month'>('today')
 const summary = ref<DashboardSummary | null>(null)
 const error = ref<string | null>(null)
+const recent = ref<DaybookRow[]>([])
+
+const role = computed(() => business.current?.role ?? 'viewer')
+// A viewer can only read, so the shortcuts to record things are not offered.
+const quick = computed<{ to: { name: string; query?: Record<string, string> }; label: string; icon: IconName }[]>(() =>
+  role.value === 'viewer'
+    ? []
+    : [
+        { to: { name: 'add-sale' }, label: t('home.quickSale'), icon: 'sale' },
+        { to: { name: 'add-expense' }, label: t('home.quickExpense'), icon: 'expense' },
+        { to: { name: 'customers', query: { pay: '1' } }, label: t('home.quickPayment'), icon: 'payment' },
+        { to: { name: 'transfer' }, label: t('home.quickTransfer'), icon: 'transfer' },
+      ],
+)
 
 const currency = computed(() => business.current?.currency_code ?? 'GHS')
 const range = computed(() => {
@@ -37,6 +54,20 @@ watch(
       summary.value = await getDashboard(id, range.value.from, range.value.to)
     } catch {
       error.value = navigator.onLine ? t('errors.generic') : t('errors.network')
+    }
+  },
+  { immediate: true },
+)
+
+// The latest entries are a convenience. If they cannot be read, Home still shows the money picture.
+watch(
+  () => business.current?.id,
+  async (id) => {
+    if (!id) return
+    try {
+      recent.value = (await getDaybook({ businessId: id, limit: 5 })).rows
+    } catch {
+      recent.value = []
     }
   },
   { immediate: true },
@@ -67,6 +98,20 @@ watch(
         </ul>
       </article>
 
+      <nav v-if="quick.length" class="grid grid-cols-4 gap-2" :aria-label="t('home.quickLabel')">
+        <RouterLink
+          v-for="item in quick"
+          :key="item.label"
+          :to="item.to"
+          class="flex flex-col items-center gap-1 rounded-xl py-2 text-xs font-medium text-slate-700 hover:bg-slate-100 text-center"
+        >
+          <span class="size-12 rounded-full bg-white border border-slate-200 text-brand-700 flex items-center justify-center">
+            <AppIcon :name="item.icon" class="size-6" />
+          </span>
+          {{ item.label }}
+        </RouterLink>
+      </nav>
+
       <div class="flex gap-2" role="group" :aria-label="t('dashboard.periodLabel')">
         <button
           v-for="key in ['today', 'week', 'month'] as const"
@@ -92,6 +137,21 @@ watch(
         </RouterLink>
       </div>
       <p class="text-sm text-slate-600">{{ t('dashboard.profitNote') }}</p>
+
+      <div class="space-y-2">
+        <div class="flex items-center justify-between">
+          <h2 class="text-base font-semibold text-slate-900">{{ t('dashboard.recent') }}</h2>
+          <RouterLink :to="{ name: 'daybook' }" class="text-sm font-medium text-brand-800 underline min-h-10 flex items-center">
+            {{ t('home.seeAll') }}
+          </RouterLink>
+        </div>
+        <p v-if="recent.length === 0" class="text-slate-600">{{ t('dashboard.noEntries') }}</p>
+        <ul v-else class="divide-y divide-slate-200 bg-white rounded-xl border border-slate-200">
+          <li v-for="row in recent" :key="row.id">
+            <EntryRow :row="row" :currency="currency" />
+          </li>
+        </ul>
+      </div>
     </template>
     <p v-else-if="!error" class="text-slate-600">{{ t('app.loading') }}</p>
   </section>

@@ -63,7 +63,7 @@ RPC-only mutations (ADR-002), derived balances (ADR-003), RLS + explicit grants 
 
 1. Spec wins: `Azaria_Master_Development_Prompt.md`. ADRs in `docs/architecture/ADR.md` are protected.
 2. Work from `docs/superpowers/plans/2026-11-16-azaria-mvp.md`. The **Where we are** table is the position marker: do the row marked **You are here**, then update that table and this checkpoint.
-3. Load the project skill `.claude/skills/azaria-vue-supabase/SKILL.md` for how to add a screen, an RPC, a migration, a test, and how to verify before claiming done.
+3. Load the project skill `.claude/skills/vue-supabase-offline-pwa/SKILL.md` for how to add a screen, an RPC, a migration, a test, and how to verify before claiming done.
 4. Tests before claims: run the relevant check and report PASS/FAIL/BLOCKED honestly.
 5. No secrets in the repo. No destructive commands against remote Supabase projects.
 6. Do not commit, push, deploy or create cloud resources unless the owner asks. The owner makes the commits.

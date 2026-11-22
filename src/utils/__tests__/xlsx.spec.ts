@@ -66,3 +66,10 @@ describe('buildXlsx counts', () => {
     expect(text).toContain('<c r="C1" s="2"><v>205</v></c>')
   })
 })
+
+describe('buildXlsx text safety', () => {
+  it('drops control characters and keeps accents, currency marks and emoji', () => {
+    const text = new TextDecoder().decode(buildXlsx('R', [['Caf\u00e9 \u20b5 \u0001\u0008ok \u{1F600}']]))
+    expect(text).toContain('Caf\u00e9 \u20b5 ok \u{1F600}')
+  })
+})

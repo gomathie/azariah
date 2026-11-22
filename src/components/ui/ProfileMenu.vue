@@ -84,6 +84,13 @@ async function signOut() {
       </div>
       <nav class="border-t border-slate-200 py-1 flex flex-col" :aria-label="t('nav.accountMenu')">
         <RouterLink
+          v-if="business.platformAdmin"
+          :to="{ name: 'support-console' }"
+          class="rounded-xl px-3 min-h-12 flex items-center hover:bg-slate-100 font-medium text-brand-800"
+          @click="close()"
+          >{{ t('support.console') }}</RouterLink
+        >
+        <RouterLink
           v-for="link in links"
           :key="link.name"
           :to="{ name: link.name }"

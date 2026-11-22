@@ -33,11 +33,24 @@ export function crc32(bytes: Uint8Array): number {
   return (crc ^ 0xffffffff) >>> 0
 }
 
+/** XML 1.0 allows tab, newline, carriage return and printable characters. Anything else would make Excel refuse the file. */
+function isXmlChar(code: number): boolean {
+  return (
+    code === 0x9 ||
+    code === 0xa ||
+    code === 0xd ||
+    (code >= 0x20 && code <= 0xd7ff) ||
+    (code >= 0xe000 && code <= 0xfffd) ||
+    code >= 0x10000
+  )
+}
+
 function xmlEscape(text: string): string {
-  // XML 1.0 forbids most control characters; a stray one would make Excel refuse the file.
-  return text
-     
-    .replace(/[^\u0009\u000A\u000D -퟿-�]/g, '')
+  let clean = ''
+  for (const char of text) {
+    if (isXmlChar(char.codePointAt(0) ?? 0)) clean += char
+  }
+  return clean
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')

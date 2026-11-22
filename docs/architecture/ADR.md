@@ -53,3 +53,15 @@ Scaffolded with `create-vue` so the Vite/Vue/Vitest/Playwright versions are mutu
 - Local: Supabase CLI + Docker, `supabase/migrations` applied by `supabase db reset` (local only).
 - Staging and production: two separate Supabase cloud projects; frontend is a static Vite build on Cloudflare Pages or equivalent.
 - Ruled out: any shared infrastructure with DEKA ERP; service-role keys in the browser.
+
+## ADR-009 Platform support access is consent-based and read-only
+
+- A platform admin (the Azaria support team) is a row in `platform_admins`, added only with SQL by whoever holds the database. No API creates one.
+- Without the owner's consent an admin sees a directory only: shop name, country, currency, status, owner email, member count, last entry date. No sales, balances, customers or entries.
+- An owner grants access for 1 hour to 7 days with `rpc_grant_support_access` and can revoke it at any time. One live grant per shop.
+- While a grant is live the admin can read that one shop. `is_member(business_id)` returns true for them only when no role is requested, which is how every read policy and read function calls it. Every write names its roles, so support access cannot satisfy a write.
+- An admin can suspend or reactivate a shop with a reason. A suspended shop is closed to its members.
+- Every grant, revoke, look, search and status change is written to `audit_events` and shown to the owner.
+- Why: spec principle 5 says administrators do not automatically get access to an entrepreneur's finances, and §6.1 says platform support does not bypass business-level privacy. Support still has to be possible when something breaks.
+- Ruled out: a role that reads every shop; support writes of any kind; a service-role key in a support tool; impersonating the owner.
+- Rule for later work: a new function that only reads may call `is_member(p_business_id)` or `assert_member(p_business_id)` without roles. A function or policy that writes must name roles. `supabase/tests/0016_support_access.test.sql` fails if a write opens to support.

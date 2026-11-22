@@ -3,6 +3,42 @@
 Change-rationale entries for guards, constraints, refusals and defaults that a later agent might
 be tempted to undo. Format: Why / How / Benefit / Trade-off / Verification / Rollback. Newest first.
 
+## 2026-11-22 — `is_member` has a read-only door for support, and writes must name roles
+
+- **Why:** the owner asked for super-admin provisions. The spec forbids automatic access to an entrepreneur's finances, so support access is by the owner's consent, time-limited and read-only (ADR-009).
+- **How:** `is_member(business_id)` also returns true for a platform admin with a live grant, but only when called without roles. All 16 places that call it without roles are reads. Every write passes roles.
+- **Benefit:** support can see what the owner sees without a second set of read functions, and cannot write by construction.
+- **Trade-off:** a future write that calls `is_member` or `assert_member` without roles would open to support. `0016_support_access.test.sql` tries a sale, a reversal, owner money, an export, a customer insert and a shop rename as support and expects each to be refused. Add the new write to that test.
+- **Verification:** SQL suite PASS, 16 files, 210 tests. Browser run: no access before the grant, read-only view with a banner after it, "You do not have permission" on a sale, access gone after the owner stopped it, an ordinary owner sent away from `/support`.
+- **Rollback:** re-create `is_member` from `20261116000200_rls.sql` in a new migration and drop the two tables.
+
+## 2026-11-22 — The shop list asks only for the signed-in person's own memberships
+
+- **Why:** found while testing support access. Row security lets a support person with a live grant read a shop's membership rows. The app listed every membership row it could read, so it showed that shop as the support person's own, with the owner's role. The database still refused writes; the screen was wrong.
+- **How:** `useBusinessStore.load()` filters `user_id = <signed-in user>`, and returns no shops when nobody is signed in.
+- **Benefit:** a person's role always comes from their own membership.
+- **Trade-off:** none known.
+- **Verification:** two new unit tests in `src/stores/__tests__/business.spec.ts`; browser run shows no Add or Edit buttons in the support view.
+- **Rollback:** do not remove the filter while ADR-009 stands.
+
+## 2026-11-22 — Excel files are written by hand, with no spreadsheet library
+
+- **Why:** the owner asked for PDF or Excel instead of CSV. Spreadsheet libraries are several hundred kilobytes; phones on slow networks pay for that.
+- **How:** `src/utils/xlsx.ts` writes the six XML parts of a workbook into an uncompressed ZIP (about 200 lines). Text is stored as inline strings.
+- **Benefit:** no new dependency, no formula injection, numbers stay numbers.
+- **Trade-off:** one sheet, two fonts, two number formats. Anything richer needs a library.
+- **Verification:** Excel 16 opened two downloaded files, read the right rows, and reported the total cell as a number in bold. 9 unit tests.
+- **Rollback:** delete the file and the Excel button.
+
+## 2026-11-22 — Daybook rows read movements with the entry, one request per page
+
+- **Why:** the daybook must show money in and money out, the customer and the account.
+- **How:** `getDaybook` embeds `contact` and `money_movements(money_account)` in the same keyset-paged select, capped at 100 rows.
+- **Benefit:** one round trip per page, no per-row requests.
+- **Trade-off:** each row carries its movements (one or two).
+- **Verification:** browser run on the demo shop; `e2e/daybook.spec.ts` and `e2e/collection.spec.ts` pass.
+- **Rollback:** remove the embedded fields; `EntryRow` then shows the plain amount.
+
 ## 2026-11-22 — Content Security Policy names the Supabase host
 
 - **Why:** the spec asks for a CSP. A policy that allowed any host would not stop a injected script from sending shop data elsewhere.

@@ -362,7 +362,8 @@
     "AZ_SAME_ACCOUNT": "Choose two different accounts.",
     "AZ_ALREADY_REVERSED": "This entry was already reversed.",
     "AZ_NOT_FOUND": "We could not find that record.",
-    "AZ_NO_MONEY_RECEIVED": "There is no money received on this entry, so there is no receipt."
+    "AZ_NO_MONEY_RECEIVED": "There is no money received on this entry, so there is no receipt.",
+    "AZ_SUPPORT_NOT_GRANTED": "The owner has not given support access to this shop, or it has ended."
   },
   "add": {
     "everyday": "Every day",
@@ -386,5 +387,59 @@
     "note": "Note",
     "hint": "Owner money is not a sale and not an expense.",
     "saved": "Owner money recorded"
+  },
+  "support": {
+    "console": "Support console",
+    "intro": "Find a shop to help. You can open a shop only while its owner has allowed support access, and you can only look, never change anything. Everything you do here is recorded.",
+    "search": "Shop name or owner email",
+    "searchAction": "Search",
+    "none": "No shops found.",
+    "owner": "Owner",
+    "lastEntry": "Last entry",
+    "never": "No entries yet",
+    "members": "People",
+    "statusActive": "Active",
+    "statusSuspended": "Suspended",
+    "accessUntil": "Support access until {time}",
+    "noAccess": "No support access. Ask the owner to allow it in Settings, Privacy and data.",
+    "open": "Open, read only",
+    "suspend": "Suspend shop",
+    "reactivate": "Reactivate shop",
+    "reason": "Reason (the owner can be told this)",
+    "reasonNeeded": "Give a reason of at least three letters.",
+    "confirm": "Confirm",
+    "more": "More shops",
+    "viewing": "Support view of {name}. Read only.",
+    "leave": "Leave",
+    "myShop": "Back to my shop",
+    "ownerTitle": "Support access",
+    "ownerIntro": "If something goes wrong, you can let the Azaria support team look at this shop for a limited time. They can read your records to help you. They cannot add, change or delete anything, and you can stop it at any time.",
+    "ownerOnly": "Only the owner can allow or stop support access.",
+    "allow": "Allow support access",
+    "hours24": "24 hours",
+    "hours72": "3 days",
+    "hours168": "7 days",
+    "howLong": "For how long?",
+    "why": "What do you need help with?",
+    "activeUntil": "Support can look at this shop until {time}.",
+    "stop": "Stop support access now",
+    "stopped": "Support access stopped.",
+    "allowed": "Support access allowed.",
+    "historyTitle": "What happened",
+    "events": {
+      "granted": "You allowed support access",
+      "revoked": "Support access was stopped",
+      "viewed": "Support opened this shop",
+      "status_changed": "Support changed this shop's status",
+      "searched": "Support searched"
+    }
+  },
+  "home": {
+    "quickLabel": "Quick actions",
+    "quickSale": "Sale",
+    "quickExpense": "Expense",
+    "quickPayment": "Payment",
+    "quickTransfer": "Move money",
+    "seeAll": "See all"
   }
 }

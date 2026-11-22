@@ -24,6 +24,15 @@ Amounts are minor units (`bigint`). GHS uses 2, so 100.00 is stored as 10000. A 
 | `documents` | One invoice or receipt for a sale or a payment. Amounts are copied from that entry. Issuing a paper does not post money |
 | `document_counters` | The last invoice number and the last receipt number for a business. Not readable from the app |
 
+### Support access tables (2026-11-22)
+
+| Table | What it holds |
+|---|---|
+| `platform_admins` | `user_id`, `note`, `created_at`. The support team. Not readable or writable through the API. |
+| `support_grants` | `business_id`, `granted_by`, `reason`, `created_at`, `expires_at`, `revoked_at`, `revoked_by`. A grant is live when `revoked_at` is null and `expires_at` is in the future. At most 7 days long. Owners and managers of the shop can read their rows. |
+
+Audit actions added: `support.granted`, `support.revoked`, `support.viewed`, `support.status_changed`, `support.searched`.
+
 ## Status
 
 - Transaction status: `posted` or `reversed`. A reversal is a new posted transaction of kind `reversal`. The original becomes `reversed`.

@@ -1,5 +1,5 @@
 ---
-name: azaria-vue-supabase
+name: vue-supabase-offline-pwa
 description: Work in the Azaria bookkeeping PWA — Vue 3 + TypeScript + Vite, Pinia, Vue Router, Vue I18n, Tailwind 4, Dexie offline queue, Supabase (Postgres, Auth, RLS, rpc_* functions). Use for screens, stores, migrations, RPC functions, RLS policies, SQL/Vitest/Playwright tests and reviews in this repo.
 ---
 

@@ -19,3 +19,9 @@ Supplier debts, inventory quantities, cost and estimated profit, receipt photos,
 ## P2, not started
 
 Branches, stock valuation, multi-currency transactions, and anything that needs a hosted production project.
+
+## Added on 2026-11-22
+
+- Done locally: report breakdowns, PDF and Excel downloads, owner money screen, customer edit, account menu, quick actions and recent entries on Home, consent-based support access (ADR-009).
+- Waiting on the owner: applying migrations `20261122000100` and `20261122000200` to the cloud database; naming the first platform admin; an email provider; staging versus production.
+- Next ideas, not started: two-step sign-in for platform admins; telling the owner by email when support opens their shop; a filter and search in the daybook; close-of-day cash count; a WhatsApp daily summary.

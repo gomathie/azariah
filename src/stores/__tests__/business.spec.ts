@@ -11,7 +11,10 @@ vi.mock('@/lib/supabase/client', () => ({
   getSupabase: () => ({ from }),
 }))
 
+import { useAuthStore } from '../auth'
 import { useBusinessStore } from '../business'
+
+let memberFilter: { column: string; value: string } | null = null
 
 const BUSINESS_ID = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'
 
@@ -24,8 +27,10 @@ describe('useBusinessStore createBusiness', () => {
     callRpc.mockResolvedValue({ business_id: BUSINESS_ID })
     from.mockReturnValue({
       select: () => ({
-        eq: () =>
-          Promise.resolve({
+        eq: () => ({
+          eq: (column: string, value: string) => {
+            memberFilter = { column, value }
+            return Promise.resolve({
             data: [
               {
                 role: 'owner',
@@ -41,12 +46,15 @@ describe('useBusinessStore createBusiness', () => {
               },
             ],
             error: null,
-          }),
+            })
+          },
+        }),
       }),
     })
   })
 
   it('sends a UUID operation id and selects the created business', async () => {
+    useAuthStore().session = { user: { id: 'user-1' } } as never
     const store = useBusinessStore()
     const id = await store.createBusiness({
       name: "Ama's Provision Shop",
@@ -72,5 +80,19 @@ describe('useBusinessStore createBusiness', () => {
         ),
       }),
     )
+  })
+
+  it('loads only the signed-in person\x27s own memberships', async () => {
+    useAuthStore().session = { user: { id: 'user-1' } } as never
+    memberFilter = null
+    await useBusinessStore().load()
+    expect(memberFilter).toEqual({ column: 'user_id', value: 'user-1' })
+  })
+
+  it('lists no shops when nobody is signed in', async () => {
+    const store = useBusinessStore()
+    await store.load()
+    expect(store.businesses).toEqual([])
+    expect(from).not.toHaveBeenCalled()
   })
 })

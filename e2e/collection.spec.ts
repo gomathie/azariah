@@ -17,6 +17,8 @@ test('a later payment clears what the customer owes and is not a new sale', asyn
   await expect(page.getByRole('status')).toContainText('Sale recorded')
 
   await page.getByRole('link', { name: 'Customers' }).click()
+  // The daybook row also names the customer, so wait for the Customers page before choosing them.
+  await expect(page.getByRole('heading', { name: 'Customers' })).toBeVisible()
   await page.getByRole('link', { name: 'Kofi' }).click()
   await page.getByRole('link', { name: 'Record payment' }).click()
   await page.getByLabel('Amount received').fill('40')

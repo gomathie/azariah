@@ -17,6 +17,10 @@ vi.mock('@/features/dashboard/api', () => ({
   }),
 }))
 
+vi.mock('@/features/daybook/api', () => ({
+  getDaybook: async () => ({ rows: [], nextCursor: null }),
+}))
+
 describe('HomeView', () => {
   let pinia: ReturnType<typeof createPinia>
 

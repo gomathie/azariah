@@ -8,15 +8,23 @@
 
 ### Changed
 
-- Add to home screen is now in the Settings menu, not on the welcome screen.
+- Home opens with the money you have right now, then shortcuts for a sale, an expense, a payment and moving money, then your latest entries.
+- The daybook groups entries by day, shows money in with a plus and money out with a minus, and names the customer and the account. A credit sale shows what is not yet paid.
+- Reports show a breakdown, not just one number: sales by day, money received by account, expenses and stock purchases by category, and customer names for debts.
+- Reports download as PDF or Excel. The CSV download is gone.
+- Dates read day first, such as 17 Nov.
+- The round button at the top right now opens a menu: your shop, switch shop, profile, settings, money accounts, help and sign out.
+- Add to home screen is now in the Settings menu, not on the welcome screen or Home.
 - The app icon is a teal tile: the letter A, with a flame standing in it.
 - A sale saved without a connection says so on the same screen. The daybook opens when the connection is back.
 - Recording a payment waits until the amount the customer owes has loaded, so the exact amount owed is accepted.
 
 ### Added
 
-- Add a customer from the Customers screen, with an optional phone number.
-- A round profile button at the top right of every screen opens your profile.
+- Add a customer or edit a customer's name and phone on the Customers screen.
+- The Add menu now has Record payment, Move money and Owner money.
+- Record your own money going into the business or coming out. It is not counted as a sale or an expense.
+- Support access: in Settings, Privacy and data, the owner can let the Azaria support team look at the shop for 24 hours, 3 days or 7 days, stop it at any time, and see what support did.
 - Make an invoice for a customer, or a receipt for money received, and download it as a PDF.
 - Sign up, sign in and password reset.
 - Create your business with its country, currency and time zone; Cash and Mobile Money accounts and starter categories are set up for you.
@@ -29,7 +37,7 @@
 - Reverse a mistaken entry. The original stays, marked reversed.
 - Home shows sales, money received, spending, stock purchases, net cash movement, customer debts, and the money in each account.
 - Save a sale or an expense on this phone when you are offline, then tap Sync when you reconnect.
-- Reports, a CSV download, and a full copy of your business data for the owner.
+- Reports, and a full copy of your business data for the owner.
 - Invite someone who already has an Azaria account.
 - After you create the shop, add a person and the phone they use. Choose Staff or Admin.
 - Help, privacy, and profile screens.
@@ -38,9 +46,11 @@
 
 - Each business's records are isolated; members of one business cannot see another business's data.
 - Staff cannot undo an entry, invite an owner, or download the whole business.
+- The support team cannot open a shop unless its owner allows it, can only read, and every look is recorded.
 
 ### Limitations
 
+- Support access, the report breakdowns and Owner money need a database update that is on the test database only. It has not been applied to the live database yet.
 - A later payment, a transfer, and a reversal still need a connection. Only a sale or an expense can wait on the phone.
 - Inviting someone works when they already have an Azaria account.
 - These newer screens are in the app and have not been tried in a full run yet.

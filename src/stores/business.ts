@@ -39,19 +39,41 @@ export const useBusinessStore = defineStore('business', () => {
   const loaded = ref(false)
   const loading = ref(false)
 
+  /** True for a member of the Azaria support team. Decided by the database, never by the browser. */
+  const platformAdmin = ref(false)
+  /**
+   * A shop a platform admin is looking at with the owner's permission. Held in memory only, so a
+   * reload ends the look. The role is 'viewer': the screens hide write actions and the database
+   * refuses them regardless.
+   */
+  const supportBusiness = ref<Business | null>(null)
+
   const current = computed(
-    () => businesses.value.find((b) => b.id === currentBusinessId.value) ?? businesses.value[0] ?? null,
+    () =>
+      supportBusiness.value ??
+      businesses.value.find((b) => b.id === currentBusinessId.value) ??
+      businesses.value[0] ??
+      null,
   )
 
   async function load() {
     loading.value = true
     try {
+      // Ask only for this person's own memberships. Row security also lets a support person with a live
+      // grant read a shop's membership rows, and those must never be mistaken for their own role.
+      const userId = useAuthStore().user?.id
+      if (!userId) {
+        businesses.value = []
+        loaded.value = true
+        return
+      }
       const { data, error } = await getSupabase()
         .from('business_memberships')
         .select(
           'role, business:businesses(id, name, business_type, country_code, timezone, currency_code, minor_unit)',
         )
         .eq('status', 'active')
+        .eq('user_id', userId)
       if (error) throw error
       type Row = { role: Business['role']; business: Omit<Business, 'role'> | null }
       businesses.value = ((data ?? []) as unknown as Row[])
@@ -59,6 +81,13 @@ export const useBusinessStore = defineStore('business', () => {
         .map((row) => ({ ...row.business, role: row.role }))
       if (!businesses.value.some((b) => b.id === currentBusinessId.value)) {
         select(businesses.value[0]?.id ?? null)
+      }
+      // A database without the support migration simply has no admins; that must not block sign-in.
+      try {
+        const who = await callRpc<{ is_platform_admin?: boolean }>('rpc_admin_whoami', {})
+        platformAdmin.value = who?.is_platform_admin === true
+      } catch {
+        platformAdmin.value = false
       }
       loaded.value = true
     } finally {
@@ -95,8 +124,19 @@ export const useBusinessStore = defineStore('business', () => {
     return businessId
   }
 
+  async function openSupport(businessId: string) {
+    const row = await callRpc<Omit<Business, 'role'>>('rpc_admin_open_business', { p_business_id: businessId })
+    supportBusiness.value = { ...row, role: 'viewer' }
+  }
+
+  function closeSupport() {
+    supportBusiness.value = null
+  }
+
   function reset() {
     businesses.value = []
+    platformAdmin.value = false
+    supportBusiness.value = null
     loaded.value = false
     select(null)
   }
@@ -107,5 +147,20 @@ export const useBusinessStore = defineStore('business', () => {
     if (!auth.isSignedIn && loaded.value) reset()
   })
 
-  return { businesses, currentBusinessId, current, loaded, loading, load, ensureLoaded, select, createBusiness, reset }
+  return {
+    businesses,
+    currentBusinessId,
+    current,
+    loaded,
+    loading,
+    platformAdmin,
+    supportBusiness,
+    load,
+    ensureLoaded,
+    select,
+    createBusiness,
+    openSupport,
+    closeSupport,
+    reset,
+  }
 })

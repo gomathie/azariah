@@ -17,3 +17,21 @@ The dashboard uses the same sales, money-received, expense, and stock formulas. 
 CSV cells that start with `=`, `+`, `-`, or `@` are prefixed with `'` so a spreadsheet does not treat them as formulas.
 
 The cash-movement check for scenarios A–H expects net 26500 minor units (GHS 265) with the transfer present and not counted. That SQL test is written and has not been run.
+
+## Breakdowns and downloads (2026-11-22)
+
+Each total above is unchanged. Four reports now also return `lines`, grouped in the database:
+
+| Report | Lines | Order |
+|---|---|---|
+| Sales summary | One per business date: date, number of sales, amount | Oldest day first |
+| Money received | One per money account: name, amount | Account order |
+| Operating expenses | One per category: name, amount | Largest first |
+| Stock purchases paid | One per category: name, amount | Largest first |
+
+- The lines of a report add up to its `total_minor`. Reversed entries are left out of both.
+- Customer debts shows the customer's name. Its total line is the sum of the lines the database returned.
+- Account statement and cash movement show money in and money out in separate columns.
+- Downloads are PDF and Excel. Both carry the shop name, the report name, the period, and "Amounts in <currency code>". Amounts are plain numbers so a spreadsheet can add them; counts are whole numbers. A cell that begins with `=` is stored as text, never as a formula.
+- CSV is no longer offered. `src/utils/csv.ts` stays in the code, unused.
+- Checked by `supabase/tests/0015_report_breakdowns.test.sql`, `src/features/reports/__tests__/build.spec.ts`, `src/utils/__tests__/xlsx.spec.ts`, and by opening two downloaded workbooks in Excel 16 and one PDF on 2026-11-22.

@@ -1,18 +1,25 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import BrandMark from '@/components/BrandMark.vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
 import { useBusinessStore } from '@/stores/business'
 
 const { t } = useI18n()
 const business = useBusinessStore()
+const router = useRouter()
+
+async function leaveSupport() {
+  business.closeSupport()
+  await router.push({ name: 'support-console' })
+}
 
 const tabs = [
-  { name: 'home', labelKey: 'nav.home', icon: '⌂', primary: false },
-  { name: 'daybook', labelKey: 'nav.daybook', icon: '☰', primary: false },
-  { name: 'add', labelKey: 'nav.add', icon: '+', primary: true },
-  { name: 'customers', labelKey: 'nav.customers', icon: '☺', primary: false },
-  { name: 'reports', labelKey: 'nav.reports', icon: '▤', primary: false },
+  { name: 'home', labelKey: 'nav.home', icon: 'home', primary: false },
+  { name: 'daybook', labelKey: 'nav.daybook', icon: 'book', primary: false },
+  { name: 'add', labelKey: 'nav.add', icon: 'plus', primary: true },
+  { name: 'customers', labelKey: 'nav.customers', icon: 'people', primary: false },
+  { name: 'reports', labelKey: 'nav.reports', icon: 'report', primary: false },
 ] as const
 </script>
 
@@ -37,18 +44,28 @@ const tabs = [
         class="rounded-xl px-3 py-2 min-h-11 flex items-center gap-2 text-slate-700 hover:bg-slate-100"
         active-class="bg-brand-50 text-brand-800 font-semibold"
       >
-        <span aria-hidden="true" class="w-5 text-center">{{ tab.icon }}</span>{{ t(tab.labelKey) }}
+        <AppIcon :name="tab.icon" class="size-5 shrink-0" />{{ t(tab.labelKey) }}
       </RouterLink>
       <RouterLink
         :to="{ name: 'settings' }"
         class="rounded-xl px-3 py-2 min-h-11 flex items-center gap-2 text-slate-700 hover:bg-slate-100 mt-auto"
         active-class="bg-brand-50 text-brand-800 font-semibold"
       >
-        <span aria-hidden="true" class="w-5 text-center">⚙</span>{{ t('nav.settings') }}
+        <AppIcon name="settings" class="size-5 shrink-0" />{{ t('nav.settings') }}
       </RouterLink>
     </nav>
 
     <main class="flex-1 pb-20 md:pb-0 min-w-0">
+      <div
+        v-if="business.supportBusiness"
+        role="status"
+        class="no-print bg-amber-100 text-amber-900 px-4 py-2 flex items-center justify-between gap-3 text-sm"
+      >
+        <span>{{ t('support.viewing', { name: business.supportBusiness.name }) }}</span>
+        <button type="button" class="underline font-semibold min-h-10 shrink-0" @click="leaveSupport">
+          {{ t('support.leave') }}
+        </button>
+      </div>
       <RouterView />
     </main>
 
@@ -65,11 +82,11 @@ const tabs = [
         active-class="text-brand-800 font-semibold"
       >
         <span
-          aria-hidden="true"
-          class="text-xl leading-none mb-1"
-          :class="tab.primary ? 'bg-brand-700 text-white rounded-full size-10 flex items-center justify-center -mt-5 shadow' : ''"
-          >{{ tab.icon }}</span
+          class="mb-1 flex items-center justify-center"
+          :class="tab.primary ? 'bg-brand-700 text-white rounded-full size-11 -mt-6 shadow-md ring-4 ring-white' : ''"
         >
+          <AppIcon :name="tab.icon" :class="tab.primary ? 'size-6' : 'size-6'" />
+        </span>
         {{ t(tab.labelKey) }}
       </RouterLink>
     </nav>
