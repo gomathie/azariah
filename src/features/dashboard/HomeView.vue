@@ -12,7 +12,7 @@ import { localDate, startOfMonth, startOfWeek } from '@/utils/dates'
 
 const { t, locale } = useI18n()
 const business = useBusinessStore()
-const period = ref<'today' | 'week' | 'month'>('month')
+const period = ref<'today' | 'week' | 'month'>('today')
 const summary = ref<DashboardSummary | null>(null)
 const error = ref<string | null>(null)
 
@@ -23,6 +23,10 @@ const range = computed(() => {
   if (period.value === 'week') return { from: startOfWeek(), to: today }
   return { from: startOfMonth(), to: today }
 })
+// Adding the account balances the database returned; shown as one "money available" figure.
+const available = computed(() =>
+  (summary.value?.accounts ?? []).reduce((sum, account) => sum + BigInt(account.balance_minor), 0n),
+)
 
 watch(
   [() => business.current?.id, range],
@@ -32,7 +36,7 @@ watch(
     try {
       summary.value = await getDashboard(id, range.value.from, range.value.to)
     } catch {
-      error.value = t('errors.generic')
+      error.value = navigator.onLine ? t('errors.generic') : t('errors.network')
     }
   },
   { immediate: true },
@@ -42,41 +46,52 @@ watch(
 <template>
   <PageHeader :title="t('nav.home')" />
   <section class="p-4 space-y-4 max-w-lg">
-    <div class="flex gap-2" role="group" :aria-label="t('dashboard.period.month')">
-      <button
-        v-for="key in ['today', 'week', 'month'] as const"
-        :key="key"
-        type="button"
-        class="min-h-12 px-3 rounded-xl border"
-        :class="period === key ? 'bg-brand-700 text-white border-brand-700' : 'bg-white border-slate-200'"
-        @click="period = key"
-      >
-        {{ t(`dashboard.period.${key}`) }}
-      </button>
-    </div>
     <AppAlert v-if="error" kind="error">{{ error }}</AppAlert>
     <template v-if="summary">
-      <div class="grid grid-cols-1 gap-3">
+      <!-- The first thing a trader asks: how much money is there right now, and where. -->
+      <article class="rounded-2xl bg-brand-700 text-white p-4 space-y-3">
+        <div>
+          <h2 class="text-sm font-medium text-brand-100">{{ t('dashboard.moneyAvailable') }}</h2>
+          <p class="text-3xl font-semibold tabular-nums break-words">{{ formatMoney(available, currency, locale) }}</p>
+        </div>
+        <ul class="space-y-1">
+          <li v-for="account in summary.accounts" :key="account.id">
+            <RouterLink
+              :to="{ name: 'account-statement', params: { accountId: account.id } }"
+              class="flex items-center justify-between gap-3 rounded-xl bg-white/10 hover:bg-white/20 px-3 min-h-12"
+            >
+              <span>{{ account.name }}</span>
+              <span class="font-medium tabular-nums">{{ formatMoney(BigInt(account.balance_minor), currency, locale) }}</span>
+            </RouterLink>
+          </li>
+        </ul>
+      </article>
+
+      <div class="flex gap-2" role="group" :aria-label="t('dashboard.periodLabel')">
+        <button
+          v-for="key in ['today', 'week', 'month'] as const"
+          :key="key"
+          type="button"
+          class="min-h-12 px-3 rounded-xl border flex-1"
+          :class="period === key ? 'bg-brand-700 text-white border-brand-700' : 'bg-white border-slate-200'"
+          :aria-pressed="period === key"
+          @click="period = key"
+        >
+          {{ t(`dashboard.period.${key}`) }}
+        </button>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
         <SummaryCard :label="t('dashboard.sales')" :minor="summary.sales_minor" :currency="currency" :locale="locale" />
         <SummaryCard :label="t('dashboard.moneyReceived')" :minor="summary.money_received_minor" :currency="currency" :locale="locale" />
         <SummaryCard :label="t('dashboard.operatingExpenses')" :minor="summary.operating_expenses_minor" :currency="currency" :locale="locale" />
         <SummaryCard :label="t('dashboard.stockPurchases')" :minor="summary.stock_purchases_minor" :currency="currency" :locale="locale" />
-        <SummaryCard :label="t('dashboard.netCash')" :minor="summary.net_cash_movement_minor" :currency="currency" :locale="locale" />
-        <SummaryCard :label="t('dashboard.customerDebts')" :minor="summary.customer_debts_minor" :currency="currency" :locale="locale" />
+        <SummaryCard :label="t('dashboard.netCash')" :minor="summary.net_cash_movement_minor" :currency="currency" :locale="locale" signed />
+        <RouterLink :to="{ name: 'customers' }" class="block rounded-xl">
+          <SummaryCard :label="t('dashboard.customerDebts')" :minor="summary.customer_debts_minor" :currency="currency" :locale="locale" />
+        </RouterLink>
       </div>
       <p class="text-sm text-slate-600">{{ t('dashboard.profitNote') }}</p>
-      <h2 class="text-base font-semibold text-slate-900">{{ t('dashboard.moneyAvailable') }}</h2>
-      <ul class="divide-y divide-slate-200 bg-white rounded-xl border border-slate-200">
-        <li v-for="account in summary.accounts" :key="account.id">
-          <RouterLink
-            :to="{ name: 'account-statement', params: { accountId: account.id } }"
-            class="px-4 py-3 min-h-14 flex items-center justify-between"
-          >
-            <span>{{ account.name }}</span>
-            <span>{{ formatMoney(BigInt(account.balance_minor), currency, locale) }}</span>
-          </RouterLink>
-        </li>
-      </ul>
     </template>
     <p v-else-if="!error" class="text-slate-600">{{ t('app.loading') }}</p>
   </section>

@@ -62,3 +62,22 @@ export async function getAccountStatement(
     p_filters: { money_account_id: accountId },
   })
 }
+
+/** Owner money in or out. It is not a sale and not an expense. */
+export async function recordOwnerMovement(input: {
+  businessId: string
+  accountId: string
+  amountMinor: bigint
+  direction: 'contribution' | 'withdrawal'
+  note: string | null
+}) {
+  return callRpc('rpc_record_owner_movement', {
+    p_client_operation_id: crypto.randomUUID(),
+    p_business_id: input.businessId,
+    p_occurred_at: new Date().toISOString(),
+    p_amount_minor: minorForRpc(input.amountMinor),
+    p_money_account_id: input.accountId,
+    p_direction: input.direction,
+    p_note: input.note,
+  })
+}

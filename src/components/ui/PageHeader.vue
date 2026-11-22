@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { RouterLink, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import BrandMark from '@/components/BrandMark.vue'
+import ProfileMenu from '@/components/ui/ProfileMenu.vue'
 import { useAuthStore } from '@/stores/auth'
 
 defineProps<{ title: string; back?: boolean }>()
 const router = useRouter()
 const { t } = useI18n()
 const auth = useAuthStore()
-// First letter of the signed-in email; a plain dot shape if there is no user yet.
-const initial = computed(() => (auth.user?.email ?? '').trim().charAt(0).toUpperCase() || '?')
 </script>
 
 <template>
@@ -27,14 +25,6 @@ const initial = computed(() => (auth.user?.email ?? '').trim().charAt(0).toUpper
     <BrandMark v-if="!back" class="size-9 shrink-0 md:hidden" />
     <h1 class="text-lg font-semibold text-slate-900 truncate flex-1">{{ title }}</h1>
     <slot name="actions" />
-    <RouterLink
-      v-if="auth.isSignedIn"
-      :to="{ name: 'profile' }"
-      class="size-10 shrink-0 rounded-full bg-brand-700 text-white font-semibold flex items-center justify-center hover:bg-brand-800"
-      :aria-label="t('nav.profile')"
-      :title="t('nav.profile')"
-    >
-      <span aria-hidden="true">{{ initial }}</span>
-    </RouterLink>
+    <ProfileMenu v-if="auth.isSignedIn" />
   </header>
 </template>

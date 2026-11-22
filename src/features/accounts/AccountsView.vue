@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageHeader from '@/components/ui/PageHeader.vue'
 import AppAlert from '@/components/ui/AppAlert.vue'
@@ -10,6 +10,8 @@ import { formatMoney } from '@/utils/money'
 
 const { t, locale } = useI18n()
 const business = useBusinessStore()
+const route = useRoute()
+const canOwnerMoney = computed(() => business.current?.role === 'owner' || business.current?.role === 'manager')
 const rows = ref<AccountBalance[]>([])
 const error = ref<string | null>(null)
 const currency = computed(() => business.current?.currency_code ?? 'GHS')
@@ -37,6 +39,13 @@ watch(
       class="block rounded-xl bg-brand-700 text-white font-semibold min-h-14 leading-[3.5rem] text-center"
       >{{ t('accounts.transfer') }}</RouterLink
     >
+    <RouterLink
+      v-if="canOwnerMoney"
+      :to="{ name: 'owner-money' }"
+      class="block rounded-xl bg-white border border-brand-200 text-brand-800 font-semibold min-h-14 leading-[3.5rem] text-center"
+      >{{ t('owner.title') }}</RouterLink
+    >
+    <AppAlert v-if="route.query.saved === 'owner'" kind="success">{{ t('owner.saved') }}</AppAlert>
     <AppAlert v-if="error" kind="error">{{ error }}</AppAlert>
     <ul class="divide-y divide-slate-200 bg-white rounded-xl border border-slate-200">
       <li v-for="row in rows" :key="row.id">

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useBusinessStore } from '@/stores/business'
+import { i18n } from '@/i18n'
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -144,6 +145,12 @@ const router = createRouter({
           meta: { titleKey: 'transfer.title' },
         },
         {
+          path: 'accounts/owner-money',
+          name: 'owner-money',
+          component: () => import('@/features/accounts/OwnerMoneyView.vue'),
+          meta: { titleKey: 'owner.title' },
+        },
+        {
           path: 'accounts/:accountId',
           name: 'account-statement',
           component: () => import('@/features/accounts/AccountStatementView.vue'),
@@ -221,7 +228,7 @@ router.onError((error) => {
 
 router.afterEach((to) => {
   const suffix = ' · Azaria'
-  document.title = to.meta.titleKey ? `${to.meta.titleKey}${suffix}` : 'Azaria'
+  document.title = to.meta.titleKey ? `${i18n.global.t(to.meta.titleKey)}${suffix}` : 'Azaria'
 })
 
 export default router

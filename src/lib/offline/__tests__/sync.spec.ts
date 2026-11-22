@@ -27,7 +27,7 @@ describe('syncAll', () => {
   it('sends operations in order and removes them when the server accepts them', async () => {
     await enqueue(op('second', '2026-01-02T00:00:00.000Z'))
     await enqueue(op('first', '2026-01-01T00:00:00.000Z'))
-    const rpc = vi.fn().mockResolvedValue({ transaction_id: 't' })
+    const rpc = vi.fn<(name: string, params: Record<string, unknown>) => Promise<unknown>>().mockResolvedValue({ transaction_id: 't' })
     const report = await syncAll({ userId: 'user' }, rpc)
     expect(rpc.mock.calls.map((call) => call[1].p_client_operation_id)).toEqual(['first', 'second'])
     expect(report.synced).toBe(2)
@@ -36,7 +36,7 @@ describe('syncAll', () => {
 
   it('keeps a network failure and counts the attempt', async () => {
     await enqueue(op('net', '2026-01-01T00:00:00.000Z'))
-    const rpc = vi.fn().mockRejectedValue(new RpcError('network', 'offline'))
+    const rpc = vi.fn<(name: string, params: Record<string, unknown>) => Promise<unknown>>().mockRejectedValue(new RpcError('network', 'offline'))
     const report = await syncAll({ userId: 'user' }, rpc)
     expect(report.kept).toBe(1)
     const row = await db.pending_operations.get('net')
@@ -46,7 +46,7 @@ describe('syncAll', () => {
 
   it('marks a rejected entry as needing attention', async () => {
     await enqueue(op('bad', '2026-01-01T00:00:00.000Z'))
-    const rpc = vi.fn().mockRejectedValue(new RpcError('AZ_INVALID_AMOUNT', 'AZ_INVALID_AMOUNT'))
+    const rpc = vi.fn<(name: string, params: Record<string, unknown>) => Promise<unknown>>().mockRejectedValue(new RpcError('AZ_INVALID_AMOUNT', 'AZ_INVALID_AMOUNT'))
     const report = await syncAll({ userId: 'user' }, rpc)
     expect(report.needsAttention).toBe(1)
     expect((await db.pending_operations.get('bad'))?.status).toBe('needs_attention')
@@ -54,14 +54,14 @@ describe('syncAll', () => {
 
   it('removes an operation the server already accepted', async () => {
     await enqueue(op('dup', '2026-01-01T00:00:00.000Z'))
-    const rpc = vi.fn().mockResolvedValue({ transaction_id: 'already' })
+    const rpc = vi.fn<(name: string, params: Record<string, unknown>) => Promise<unknown>>().mockResolvedValue({ transaction_id: 'already' })
     await syncAll({ userId: 'user' }, rpc)
     expect(await db.pending_operations.get('dup')).toBeUndefined()
   })
 
   it('does not send another user’s saved entries', async () => {
     await enqueue(op('other', '2026-01-01T00:00:00.000Z', 'someone-else'))
-    const rpc = vi.fn()
+    const rpc = vi.fn<(name: string, params: Record<string, unknown>) => Promise<unknown>>()
     const report = await syncAll({ userId: 'user' }, rpc)
     expect(rpc).not.toHaveBeenCalled()
     expect(report.needsAttention).toBe(1)

@@ -10,6 +10,9 @@ export interface DaybookRow {
   note: string | null
   created_at: string
   status: string
+  /** Only on daybook list rows. */
+  contact?: { name: string } | null
+  money_movements?: { amount_minor: number; money_account: { name: string } | null }[]
 }
 
 export interface DaybookCursor {
@@ -32,7 +35,9 @@ export async function getDaybook(opts: {
   const limit = Math.min(Math.max(opts.limit ?? 50, 1), PAGE_CAP)
   let query = getSupabase()
     .from('transactions')
-    .select('id, kind, business_date, amount_minor, description, note, created_at, status')
+    .select(
+      'id, kind, business_date, amount_minor, description, note, created_at, status, contact:contacts(name), money_movements(amount_minor, money_account:money_accounts(name))',
+    )
     .eq('business_id', opts.businessId)
     .order('business_date', { ascending: false })
     .order('created_at', { ascending: false })
@@ -49,7 +54,7 @@ export async function getDaybook(opts: {
   }
   const { data, error } = await query
   if (error) throw error
-  const rows = data ?? []
+  const rows = (data ?? []) as unknown as DaybookRow[]
   const last = rows.at(-1)
   const nextCursor =
     rows.length === limit && last

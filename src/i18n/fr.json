@@ -11,7 +11,8 @@
     "close": "Fermer",
     "optional": "facultatif",
     "today": "Aujourd'hui",
-    "all": "Tout"
+    "all": "Tout",
+    "yesterday": "Hier"
   },
   "install": {
     "title": "Installer l'application",
@@ -32,7 +33,8 @@
     "help": "Aide",
     "profile": "Profil",
     "signOut": "Se déconnecter",
-    "more": "Plus"
+    "more": "Plus",
+    "accountMenu": "Menu du compte"
   },
   "auth": {
     "welcome": "Bienvenue sur Azaria",
@@ -141,7 +143,8 @@
       "week": "Cette semaine",
       "month": "Ce mois"
     },
-    "profitNote": "Ventes moins dépenses n'est pas votre bénéfice. Le stock, les ventes à crédit et l'argent du propriétaire changent le tableau."
+    "profitNote": "Ventes moins dépenses n'est pas votre bénéfice. Le stock, les ventes à crédit et l'argent du propriétaire changent le tableau.",
+    "periodLabel": "Période"
   },
   "daybook": {
     "title": "Journal",
@@ -169,7 +172,9 @@
       "owner_withdrawal": "Retrait du propriétaire",
       "opening_balance": "Solde d'ouverture",
       "reversal": "Annulation"
-    }
+    },
+    "notPaid": "Pas encore payé : {amount}",
+    "transferRoute": "{from} vers {to}"
   },
   "customers": {
     "title": "Clients",
@@ -188,7 +193,13 @@
     "save": "Enregistrer le client",
     "phoneHint": "Facultatif. Sert pour un rappel WhatsApp.",
     "duplicate": "Vous avez déjà un client avec ce nom.",
-    "savedOne": "{name} ajouté."
+    "savedOne": "{name} ajouté.",
+    "edit": "Modifier",
+    "editOne": "Modifier {name}",
+    "editTitle": "Modifier le client",
+    "updated": "{name} mis à jour.",
+    "choosePayer": "Choisissez le client qui a payé.",
+    "nameTooLong": "Le nom est trop long."
   },
   "accounts": {
     "title": "Comptes d'argent",
@@ -215,7 +226,31 @@
     "accountStatement": "Relevé de compte",
     "cashMovement": "Mouvements de trésorerie",
     "customerDebts": "Dettes des clients",
-    "total": "Total"
+    "total": "Total",
+    "pdf": "Télécharger PDF",
+    "excel": "Télécharger Excel",
+    "empty": "Rien d'enregistré pour cette période.",
+    "choose": "Rapport",
+    "opening": "Solde d'ouverture",
+    "closing": "Solde de clôture",
+    "net": "Mouvement net de trésorerie",
+    "notCounted": "Déplacé entre vos comptes, non compté",
+    "noCategory": "Sans catégorie",
+    "amountsIn": "Montants en {currency}",
+    "period": "{from} au {to}",
+    "col": {
+      "date": "Date",
+      "count": "Ventes",
+      "amount": "Montant",
+      "account": "Compte",
+      "category": "Catégorie",
+      "customer": "Client",
+      "moneyIn": "Entrées",
+      "moneyOut": "Sorties",
+      "entry": "Entrée",
+      "note": "Note",
+      "owes": "Doit"
+    }
   },
   "sync": {
     "title": "État de synchronisation",
@@ -328,5 +363,28 @@
     "AZ_ALREADY_REVERSED": "Cette entrée a déjà été annulée.",
     "AZ_NOT_FOUND": "Enregistrement introuvable.",
     "AZ_NO_MONEY_RECEIVED": "Aucun argent reçu sur cette entrée, donc pas de reçu."
+  },
+  "add": {
+    "everyday": "Tous les jours",
+    "money": "Argent",
+    "papers": "Documents",
+    "saleHint": "Espèces, Mobile Money ou à crédit",
+    "expenseHint": "Frais courants, ou marchandises achetées pour la revente",
+    "paymentHint": "Un client paie ce qu'il doit",
+    "transferHint": "Entre espèces, Mobile Money et banque",
+    "ownerHint": "Votre propre argent, entré ou sorti de l'entreprise",
+    "invoiceHint": "Une facture pour un client, en PDF",
+    "receiptHint": "Une preuve d'argent reçu, en PDF"
+  },
+  "owner": {
+    "title": "Argent du propriétaire",
+    "what": "Que s'est-il passé ?",
+    "in": "J'ai mis mon propre argent dans l'entreprise",
+    "out": "J'ai pris de l'argent pour moi",
+    "account": "Quel compte ?",
+    "amount": "Montant",
+    "note": "Note",
+    "hint": "L'argent du propriétaire n'est ni une vente ni une dépense.",
+    "saved": "Argent du propriétaire enregistré"
   }
 }

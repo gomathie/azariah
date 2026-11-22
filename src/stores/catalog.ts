@@ -60,5 +60,20 @@ export const useCatalogStore = defineStore('catalog', () => {
     return data
   }
 
-  return { businessId, accounts, categories, contacts, loading, load, addContact }
+  async function updateContact(id: string, name: string, phone: string | null): Promise<CatalogContact> {
+    if (!businessId.value) throw new Error('No business selected')
+    // business_id in the filter keeps the write inside this shop; the database policy enforces it too.
+    const { data, error } = await getSupabase()
+      .from('contacts')
+      .update({ name: name.trim(), phone })
+      .eq('id', id)
+      .eq('business_id', businessId.value)
+      .select('id, name, phone')
+      .single()
+    if (error) throw error
+    contacts.value = contacts.value.map((c) => (c.id === id ? data : c)).sort((a, b) => a.name.localeCompare(b.name))
+    return data
+  }
+
+  return { businessId, accounts, categories, contacts, loading, load, addContact, updateContact }
 })

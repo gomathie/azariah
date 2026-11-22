@@ -6,7 +6,7 @@ import { useBusinessStore } from '@/stores/business'
 import HomeView from '../HomeView.vue'
 
 vi.mock('@/features/dashboard/api', () => ({
-  getDashboard: vi.fn(async () => ({
+  getDashboard: async () => ({
     sales_minor: 20000,
     money_received_minor: 20000,
     operating_expenses_minor: 2500,
@@ -14,7 +14,7 @@ vi.mock('@/features/dashboard/api', () => ({
     net_cash_movement_minor: 26500,
     customer_debts_minor: 0,
     accounts: [{ id: 'cash', name: 'Cash', type: 'cash', balance_minor: 15500 }],
-  })),
+  }),
 }))
 
 describe('HomeView', () => {

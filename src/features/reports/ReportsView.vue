@@ -8,11 +8,12 @@ import AppSelect from '@/components/ui/AppSelect.vue'
 import DateRangePicker from '@/features/reports/DateRangePicker.vue'
 import ReportTable from '@/features/reports/ReportTable.vue'
 import { runReport, type ReportName } from '@/features/reports/api'
+import { buildReport, reportToSheet } from '@/features/reports/build'
 import { useBusinessStore } from '@/stores/business'
 import { useCatalogStore } from '@/stores/catalog'
-import { toCsv } from '@/utils/csv'
-import { localDate, startOfMonth } from '@/utils/dates'
+import { dateLocale, friendlyDate, localDate, startOfMonth } from '@/utils/dates'
 import { formatMoney } from '@/utils/money'
+import { buildXlsx, XLSX_MIME } from '@/utils/xlsx'
 
 const { t, locale } = useI18n()
 const business = useBusinessStore()
@@ -26,22 +27,48 @@ const options: { id: ReportName; label: string }[] = [
   { id: 'cash_movement', label: 'reports.cashMovement' },
   { id: 'customer_debts', label: 'reports.customerDebts' },
 ]
-const name = ref('sales')
-const reportOptions = computed(() =>
-  options.map((option) => ({ value: option.id, label: t(option.label) })),
-)
+const name = ref<ReportName>('sales')
+const reportOptions = computed(() => options.map((option) => ({ value: option.id, label: t(option.label) })))
 const accountOptions = computed(() => catalog.accounts.map((account) => ({ value: account.id, label: account.name })))
 const from = ref(startOfMonth())
 const to = ref(localDate())
 const accountId = ref('')
-const rows = ref<Record<string, unknown>[]>([])
+/** The raw answer from the database. The table is derived from it so a language change redraws the labels. */
+const payload = ref<unknown>(null)
+const loaded = ref(false)
 const error = ref<string | null>(null)
 const loading = ref(false)
+const exporting = ref<'pdf' | 'excel' | null>(null)
 const currency = computed(() => business.current?.currency_code ?? 'GHS')
+const minorUnit = computed(() => business.current?.minor_unit ?? 2)
 
-const columns = computed(() =>
-  Object.keys(rows.value[0] ?? {}).map((key) => ({ key, label: key.replaceAll('_', ' ') })),
+const day = (iso: string) => friendlyDate(iso, locale.value, { today: t('app.today'), yesterday: t('app.yesterday') })
+/** A date with its year, for file contents that are read long after today. */
+const plainDay = (iso: string) => {
+  const [y, m, d] = iso.split('-').map(Number)
+  if (!y || !m || !d) return iso
+  return new Intl.DateTimeFormat(dateLocale(locale.value), { day: 'numeric', month: 'short', year: 'numeric' }).format(
+    new Date(y, m - 1, d),
+  )
+}
+
+function tableFor(dayLabel: (iso: string) => string) {
+  return buildReport(name.value, payload.value, {
+    t,
+    money: (minor) => formatMoney(BigInt(Math.round(minor)), currency.value, locale.value),
+    major: (minor) => minor / 10 ** minorUnit.value,
+    day: dayLabel,
+    contactName: (id) => catalog.contacts.find((c) => c.id === id)?.name ?? t('customers.title'),
+  })
+}
+
+const table = computed(() => tableFor(day))
+const title = computed(() => t(options.find((o) => o.id === name.value)?.label ?? 'reports.title'))
+const accountName = computed(() => catalog.accounts.find((a) => a.id === accountId.value)?.name ?? '')
+const fullTitle = computed(() =>
+  name.value === 'account_statement' && accountName.value ? `${title.value}: ${accountName.value}` : title.value,
 )
+const period = computed(() => t('reports.period', { from: plainDay(from.value), to: plainDay(to.value) }))
 
 watch(
   () => business.current?.id,
@@ -59,86 +86,109 @@ watch(
   { immediate: true },
 )
 
-function money(value: unknown) {
-  const minor = typeof value === 'number' ? value : Number(value ?? 0)
-  return formatMoney(BigInt(Number.isFinite(minor) ? minor : 0), currency.value, locale.value)
-}
-
-function asRows(payload: unknown): Record<string, unknown>[] {
-  if (Array.isArray(payload)) {
-    return payload.map((row) => {
-      const record = row as Record<string, unknown>
-      return 'outstanding_minor' in record ? { ...record, outstanding: money(record.outstanding_minor) } : record
-    })
-  }
-  if (!payload || typeof payload !== 'object') return []
-  const record = payload as Record<string, unknown>
-  if (Array.isArray(record.lines)) {
-    const lines = (record.lines as Record<string, unknown>[]).map((line) => ({
-      date: line.date ?? '',
-      kind: line.kind ?? '',
-      amount: money(line.amount_minor),
-      counted: line.counted ?? '',
-    }))
-    return [
-      { date: '', kind: 'opening', amount: money(record.opening_minor), counted: '' },
-      ...lines,
-      { date: '', kind: 'closing', amount: money(record.closing_minor ?? record.net_minor), counted: '' },
-    ]
-  }
-  if ('total_minor' in record) return [{ total: money(record.total_minor) }]
-  if ('net_minor' in record) return [{ net: money(record.net_minor) }]
-  return [record]
-}
-
 async function load() {
   const id = business.current?.id
   if (!id) return
+  if (name.value === 'account_statement' && !accountId.value) return
   error.value = null
   loading.value = true
   try {
     const filters: Record<string, string> = name.value === 'account_statement' ? { money_account_id: accountId.value } : {}
-    rows.value = asRows(await runReport(name.value as ReportName, id, from.value, to.value, filters))
+    payload.value = await runReport(name.value, id, from.value, to.value, filters)
+    loaded.value = true
   } catch {
-    error.value = t('errors.generic')
-    rows.value = []
+    error.value = navigator.onLine ? t('errors.generic') : t('errors.network')
+    loaded.value = false
   } finally {
     loading.value = false
   }
 }
 
-function download() {
-  const text = toCsv(rows.value)
-  const blob = new Blob([text], { type: 'text/csv;charset=utf-8' })
+function save(bytes: Uint8Array, type: string, extension: string) {
+  const blob = new Blob([bytes.slice()], { type })
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
-  link.download = `azaria-${name.value}.csv`
+  link.download = `azaria-${name.value.replaceAll('_', '-')}-${from.value}-to-${to.value}.${extension}`
   link.click()
   URL.revokeObjectURL(url)
 }
 
-function printReport() {
-  window.print()
+async function downloadPdf() {
+  exporting.value = 'pdf'
+  error.value = null
+  try {
+    // The PDF library is large, so it is fetched only when someone asks for a PDF.
+    const { buildReportPdf } = await import('@/features/reports/pdf')
+    const bytes = await buildReportPdf({
+      businessName: business.current?.name ?? '',
+      title: fullTitle.value,
+      period: period.value,
+      amountsNote: t('reports.amountsIn', { currency: currency.value }),
+      decimals: minorUnit.value,
+      table: tableFor(plainDay),
+      emptyText: t('reports.empty'),
+    })
+    save(bytes, 'application/pdf', 'pdf')
+  } catch {
+    error.value = navigator.onLine ? t('errors.generic') : t('errors.network')
+  } finally {
+    exporting.value = null
+  }
+}
+
+function downloadExcel() {
+  exporting.value = 'excel'
+  error.value = null
+  try {
+    const data = tableFor(plainDay)
+    const body = reportToSheet(data)
+    const rows = [
+      [business.current?.name ?? 'Azaria'],
+      [fullTitle.value],
+      [`${period.value} · ${t('reports.amountsIn', { currency: currency.value })}`],
+      [],
+      ...body,
+    ]
+    const bold = [0, 1, 4, ...(data.footer ? [rows.length - 1] : [])]
+    const widths = data.columns.map((_, i) => (i === 0 ? 30 : 18))
+    save(buildXlsx(title.value, rows, { boldRows: bold, decimals: minorUnit.value, widths }), XLSX_MIME, 'xlsx')
+  } catch {
+    error.value = t('errors.generic')
+  } finally {
+    exporting.value = null
+  }
 }
 
 watch([() => business.current?.id, name, from, to, accountId], () => void load(), { immediate: true })
 </script>
 
 <template>
-  <PageHeader :title="t('reports.title')">
-    <template #actions>
-      <button type="button" class="no-print min-h-12 px-3" @click="download">{{ t('reports.exportCsv') }}</button>
-      <button type="button" class="no-print min-h-12 px-3" @click="printReport">{{ t('reports.print') }}</button>
-    </template>
-  </PageHeader>
+  <PageHeader :title="t('reports.title')" />
   <section class="p-4 space-y-4 max-w-3xl">
-    <AppSelect v-model="name" :label="t('reports.title')" :options="reportOptions" />
-    <AppSelect v-if="name === 'account_statement'" v-model="accountId" :label="t('accounts.title')" :options="accountOptions" />
-    <DateRangePicker v-model:from="from" v-model:to="to" />
-    <AppAlert v-if="error" kind="error">{{ error }}</AppAlert>
-    <p v-if="loading" class="text-slate-600">{{ t('app.loading') }}</p>
-    <ReportTable v-else-if="rows.length" :columns="columns" :rows="rows" />
-    <AppButton class="no-print" type="button" variant="secondary" @click="load">{{ t('app.retry') }}</AppButton>
+    <AppSelect v-model="name" :label="t('reports.choose')" :options="reportOptions" />
+    <AppSelect
+      v-if="name === 'account_statement'"
+      v-model="accountId"
+      :label="t('reports.col.account')"
+      :options="accountOptions"
+    />
+    <DateRangePicker v-if="name !== 'customer_debts'" v-model:from="from" v-model:to="to" />
+    <AppAlert v-if="error" kind="error">
+      {{ error }}
+      <button type="button" class="underline font-semibold ml-2 min-h-10" @click="load">{{ t('app.retry') }}</button>
+    </AppAlert>
+    <p v-if="loading && !loaded" class="text-slate-600">{{ t('app.loading') }}</p>
+    <template v-if="loaded">
+      <ReportTable :table="table" :empty-text="t('reports.empty')" :aria-busy="loading || undefined" />
+      <div class="no-print grid grid-cols-2 gap-3">
+        <AppButton type="button" variant="secondary" :loading="exporting === 'pdf'" @click="downloadPdf">
+          {{ t('reports.pdf') }}
+        </AppButton>
+        <AppButton type="button" variant="secondary" :loading="exporting === 'excel'" @click="downloadExcel">
+          {{ t('reports.excel') }}
+        </AppButton>
+      </div>
+    </template>
   </section>
 </template>

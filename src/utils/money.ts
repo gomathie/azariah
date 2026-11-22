@@ -84,3 +84,10 @@ export function toMajorString(minor: bigint | number, minorUnit: number): string
   if (minorUnit === 0) return s
   return `${s.slice(0, -minorUnit)}.${s.slice(-minorUnit)}`
 }
+
+/** Money with its direction spelled out, so in and out never rely on colour alone: "+GH₵60.00", "−GH₵25.00". */
+export function formatSignedMoney(minor: bigint | number, currency: string, locale = 'en-GH'): string {
+  const value = BigInt(minor)
+  if (value === 0n) return formatMoney(0n, currency, locale)
+  return `${value > 0n ? '+' : '−'}${formatMoney(value < 0n ? -value : value, currency, locale)}`
+}

@@ -2,8 +2,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 
 const { callRpc, from } = vi.hoisted(() => ({
-  callRpc: vi.fn(),
-  from: vi.fn(),
+  callRpc: vi.fn<(name: string, params: Record<string, unknown>) => Promise<unknown>>(),
+  from: vi.fn<(table: string) => unknown>(),
 }))
 
 vi.mock('@/lib/supabase/rpc', () => ({ callRpc }))

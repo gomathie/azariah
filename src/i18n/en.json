@@ -11,7 +11,8 @@
     "close": "Close",
     "optional": "optional",
     "today": "Today",
-    "all": "All"
+    "all": "All",
+    "yesterday": "Yesterday"
   },
   "install": {
     "title": "Install app",
@@ -32,7 +33,8 @@
     "help": "Help",
     "profile": "Profile",
     "signOut": "Sign out",
-    "more": "More"
+    "more": "More",
+    "accountMenu": "Account menu"
   },
   "auth": {
     "welcome": "Welcome to Azaria",
@@ -141,7 +143,8 @@
       "week": "This week",
       "month": "This month"
     },
-    "profitNote": "Sales minus spending is not your profit. Stock on hand, credit sales and owner money change the picture."
+    "profitNote": "Sales minus spending is not your profit. Stock on hand, credit sales and owner money change the picture.",
+    "periodLabel": "Period"
   },
   "daybook": {
     "title": "Daybook",
@@ -169,7 +172,9 @@
       "owner_withdrawal": "Owner took money",
       "opening_balance": "Opening balance",
       "reversal": "Reversal"
-    }
+    },
+    "notPaid": "Not yet paid: {amount}",
+    "transferRoute": "{from} to {to}"
   },
   "customers": {
     "title": "Customers",
@@ -188,7 +193,13 @@
     "save": "Save customer",
     "phoneHint": "Optional. Used for a WhatsApp reminder.",
     "duplicate": "You already have a customer with this name.",
-    "savedOne": "{name} added."
+    "savedOne": "{name} added.",
+    "edit": "Edit",
+    "editOne": "Edit {name}",
+    "editTitle": "Edit customer",
+    "updated": "{name} updated.",
+    "choosePayer": "Choose the customer who paid.",
+    "nameTooLong": "The name is too long."
   },
   "accounts": {
     "title": "Money accounts",
@@ -215,7 +226,31 @@
     "accountStatement": "Account statement",
     "cashMovement": "Cash movement",
     "customerDebts": "Customer debts",
-    "total": "Total"
+    "total": "Total",
+    "pdf": "Download PDF",
+    "excel": "Download Excel",
+    "empty": "Nothing recorded for this period.",
+    "choose": "Report",
+    "opening": "Opening balance",
+    "closing": "Closing balance",
+    "net": "Net cash movement",
+    "notCounted": "Moved between your accounts, not counted",
+    "noCategory": "No category",
+    "amountsIn": "Amounts in {currency}",
+    "period": "{from} to {to}",
+    "col": {
+      "date": "Date",
+      "count": "Sales",
+      "amount": "Amount",
+      "account": "Account",
+      "category": "Category",
+      "customer": "Customer",
+      "moneyIn": "Money in",
+      "moneyOut": "Money out",
+      "entry": "Entry",
+      "note": "Note",
+      "owes": "Owes"
+    }
   },
   "sync": {
     "title": "Sync status",
@@ -328,5 +363,28 @@
     "AZ_ALREADY_REVERSED": "This entry was already reversed.",
     "AZ_NOT_FOUND": "We could not find that record.",
     "AZ_NO_MONEY_RECEIVED": "There is no money received on this entry, so there is no receipt."
+  },
+  "add": {
+    "everyday": "Every day",
+    "money": "Money",
+    "papers": "Papers",
+    "saleHint": "Cash, Mobile Money or on credit",
+    "expenseHint": "Running costs, or goods you bought to sell",
+    "paymentHint": "A customer pays what they owe",
+    "transferHint": "Between cash, Mobile Money and bank",
+    "ownerHint": "Your own money in or out of the business",
+    "invoiceHint": "A bill for a customer, as a PDF",
+    "receiptHint": "Proof of money received, as a PDF"
+  },
+  "owner": {
+    "title": "Owner money",
+    "what": "What happened?",
+    "in": "I put my own money into the business",
+    "out": "I took money out for myself",
+    "account": "Which account?",
+    "amount": "Amount",
+    "note": "Note",
+    "hint": "Owner money is not a sale and not an expense.",
+    "saved": "Owner money recorded"
   }
 }
