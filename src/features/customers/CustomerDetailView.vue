@@ -29,7 +29,8 @@ const reminder = computed(() =>
 )
 const whatsAppHref = computed(() => {
   const digits = (phone.value ?? '').replace(/\D/g, '')
-  if (!digits) return ''
+  // Only digits reach the link, and only a plausible phone length, so a stored value cannot become a different URL.
+  if (digits.length < 7 || digits.length > 15) return ''
   return `https://wa.me/${digits}?text=${encodeURIComponent(reminder.value)}`
 })
 

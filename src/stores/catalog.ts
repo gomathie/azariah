@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { getSupabase } from '@/lib/supabase/client'
+import { cleanLine } from '@/utils/safe'
 
 export interface CatalogAccount {
   id: string
@@ -52,7 +53,7 @@ export const useCatalogStore = defineStore('catalog', () => {
     if (!businessId.value) throw new Error('No business selected')
     const { data, error } = await getSupabase()
       .from('contacts')
-      .insert({ business_id: businessId.value, name: name.trim(), phone, kind: 'customer' })
+      .insert({ business_id: businessId.value, name: cleanLine(name, 120), phone: phone ? cleanLine(phone, 32) : null, kind: 'customer' })
       .select('id, name, phone')
       .single()
     if (error) throw error
@@ -65,7 +66,7 @@ export const useCatalogStore = defineStore('catalog', () => {
     // business_id in the filter keeps the write inside this shop; the database policy enforces it too.
     const { data, error } = await getSupabase()
       .from('contacts')
-      .update({ name: name.trim(), phone })
+      .update({ name: cleanLine(name, 120), phone: phone ? cleanLine(phone, 32) : null })
       .eq('id', id)
       .eq('business_id', businessId.value)
       .select('id, name, phone')

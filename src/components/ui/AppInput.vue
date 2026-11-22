@@ -12,8 +12,10 @@ withDefaults(
     autocomplete?: string
     inputmode?: 'text' | 'decimal' | 'numeric' | 'tel' | 'email' | 'search'
     disabled?: boolean
+    /** The browser stops typing here. The database has its own limits; this one is a courtesy. */
+    maxlength?: number
   }>(),
-  { type: 'text', placeholder: '', hint: '', error: null, required: false, autocomplete: undefined, inputmode: undefined, disabled: false },
+  { type: 'text', placeholder: '', hint: '', error: null, required: false, autocomplete: undefined, inputmode: undefined, disabled: false, maxlength: 240 },
 )
 
 const model = defineModel<string>({ default: '' })
@@ -37,6 +39,7 @@ const id = useId()
       :autocomplete="autocomplete"
       :inputmode="inputmode"
       :disabled="disabled"
+      :maxlength="maxlength"
       :aria-invalid="error ? 'true' : undefined"
       :aria-describedby="error ? `${id}-error` : hint ? `${id}-hint` : undefined"
       class="block w-full min-h-12 rounded-xl border border-slate-300 bg-white px-4 text-base text-slate-900 placeholder:text-slate-400 focus:border-brand-600 focus:ring-2 focus:ring-brand-200 disabled:bg-slate-100"

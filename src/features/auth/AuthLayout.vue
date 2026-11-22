@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import BrandMark from '@/components/BrandMark.vue'
-import { persistLocale, SUPPORTED_LOCALES, type Locale } from '@/i18n'
+import { LOCALE_NAMES, persistLocale, SUPPORTED_LOCALES, type Locale } from '@/i18n'
 
 const { t, locale } = useI18n()
 
@@ -21,7 +21,7 @@ function setLocale(next: string) {
           :value="locale"
           @change="setLocale(($event.target as HTMLSelectElement).value)"
         >
-          <option v-for="l in SUPPORTED_LOCALES" :key="l" :value="l">{{ l.toUpperCase() }}</option>
+          <option v-for="l in SUPPORTED_LOCALES" :key="l" :value="l">{{ LOCALE_NAMES[l] }}</option>
         </select>
       </label>
     </div>

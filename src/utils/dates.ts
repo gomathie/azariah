@@ -19,6 +19,8 @@ export function startOfWeek(date = new Date()): string {
 
 /** Plain "en" formats dates the American way. The pilot market writes day before month. */
 export function dateLocale(locale: string): string {
+  // Browsers have no date or number formats for Twi, so Twi uses Ghana's English formats.
+  if (locale === 'tw') return 'en-GH'
   return locale === 'en' ? 'en-GB' : locale
 }
 

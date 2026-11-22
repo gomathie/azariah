@@ -199,7 +199,8 @@
     "editTitle": "Edit customer",
     "updated": "{name} updated.",
     "choosePayer": "Choose the customer who paid.",
-    "nameTooLong": "The name is too long."
+    "nameTooLong": "The name is too long.",
+    "phoneInvalid": "Enter a phone number using digits, spaces and + ( ) . - only."
   },
   "accounts": {
     "title": "Money accounts",
@@ -451,6 +452,7 @@
     "readUser": "Read the user guide",
     "contents": "In this guide",
     "other": "Other guide",
-    "loadError": "The guide could not be opened. Check your connection and try again."
+    "loadError": "The guide could not be opened. Check your connection and try again.",
+    "englishOnly": "This guide is in English for now."
   }
 }

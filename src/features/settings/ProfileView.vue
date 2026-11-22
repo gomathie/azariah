@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 import PageHeader from '@/components/ui/PageHeader.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppSelect from '@/components/ui/AppSelect.vue'
-import { persistLocale, SUPPORTED_LOCALES, type Locale } from '@/i18n'
+import { LOCALE_NAMES, persistLocale, SUPPORTED_LOCALES, type Locale } from '@/i18n'
 import { useAuthStore } from '@/stores/auth'
 import { useBusinessStore } from '@/stores/business'
 import { canReadAdminGuide } from '@/features/guide/access'
@@ -16,7 +16,7 @@ const router = useRouter()
 const business = useBusinessStore()
 const showAdminGuide = computed(() => canReadAdminGuide(business.current?.role, business.platformAdmin))
 
-const languageOptions = SUPPORTED_LOCALES.map((code) => ({ value: code, label: code === 'fr' ? 'Français' : 'English' }))
+const languageOptions = SUPPORTED_LOCALES.map((code) => ({ value: code, label: LOCALE_NAMES[code] }))
 
 function setLanguage(value: string) {
   const next = value as Locale

@@ -1,4 +1,5 @@
 import { getSupabase } from './client'
+import { cleanPayload } from '@/utils/safe'
 
 /** Error codes raised by `rpc_*` functions (see supabase/migrations). They map 1:1 to `errors.*` i18n keys. */
 export type AzariaErrorCode =
@@ -43,7 +44,8 @@ export async function callRpc<T = unknown>(name: string, params: Record<string, 
   let response
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    response = await (getSupabase().rpc as any)(name, params)
+    // Every write goes through here, so invisible control characters are stripped in one place.
+    response = await (getSupabase().rpc as any)(name, cleanPayload(params))
   } catch (err) {
     throw new RpcError(isNetworkFailure(err) ? 'network' : 'generic', String(err), err)
   }

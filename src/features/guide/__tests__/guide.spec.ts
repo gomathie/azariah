@@ -73,10 +73,11 @@ describe('the guide files', () => {
     expect(fr.sections).toHaveLength(en.sections.length)
     en.sections.forEach((section, index) => {
       const other = fr.sections[index]
-      expect(section.blocks.length, `section ${index + 1}: "${section.title}"`).toBeGreaterThan(0)
-      expect(other?.blocks.map((b) => b.type), `section ${index + 1}: "${section.title}"`).toEqual(
-        section.blocks.map((b) => b.type),
-      )
+      expect(section.blocks.length).toBeGreaterThan(0)
+      expect({ section: section.title, shape: other?.blocks.map((b) => b.type) }).toEqual({
+        section: section.title,
+        shape: section.blocks.map((b) => b.type),
+      })
     })
   })
 
@@ -95,14 +96,14 @@ describe('the guide files', () => {
       'without internet',
       'Add to home screen',
     ]) {
-      expect(text, topic).toContain(topic)
+      expect(text).toContain(topic)
     }
   })
 
   it('the admin guide covers what only owners and admins do', () => {
     const text = readFileSync(resolve(process.cwd(), 'docs', 'ADMIN_GUIDE.md'), 'utf8')
     for (const topic of ['Who can do what', 'Reverse this entry', 'Owner money', 'Download all my data', 'Support access', 'Support console']) {
-      expect(text, topic).toContain(topic)
+      expect(text).toContain(topic)
     }
   })
 })

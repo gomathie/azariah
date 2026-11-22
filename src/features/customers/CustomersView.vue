@@ -10,6 +10,7 @@ import { getSupabase } from '@/lib/supabase/client'
 import { useBusinessStore } from '@/stores/business'
 import { useCatalogStore, type CatalogContact } from '@/stores/catalog'
 import { formatMoney } from '@/utils/money'
+import { cleanLine, isPhone } from '@/utils/safe'
 
 const { t, locale } = useI18n()
 const route = useRoute()
@@ -72,14 +73,14 @@ function closeForm() {
 async function save() {
   formError.value = null
   saved.value = null
-  const cleanName = name.value.trim()
-  const cleanPhone = phone.value.trim() || null
+  const cleanName = cleanLine(name.value, 120)
+  const cleanPhone = cleanLine(phone.value, 32) || null
   if (!cleanName) {
     formError.value = t('errors.required')
     return
   }
-  if (cleanName.length > 120) {
-    formError.value = t('customers.nameTooLong')
+  if (cleanPhone && !isPhone(cleanPhone)) {
+    formError.value = t('customers.phoneInvalid')
     return
   }
   const clash = catalog.contacts.some(
@@ -128,13 +129,14 @@ async function save() {
       <h2 class="font-semibold text-slate-900">
         {{ editing === 'new' ? t('customers.add') : t('customers.editTitle') }}
       </h2>
-      <AppInput v-model="name" :label="t('customers.name')" autocomplete="off" required />
+      <AppInput v-model="name" :label="t('customers.name')" autocomplete="off" :maxlength="120" required />
       <AppInput
         v-model="phone"
         :label="t('customers.phone')"
         type="tel"
         inputmode="tel"
         autocomplete="off"
+        :maxlength="32"
         :hint="t('customers.phoneHint')"
       />
       <AppAlert v-if="formError" kind="error">{{ formError }}</AppAlert>

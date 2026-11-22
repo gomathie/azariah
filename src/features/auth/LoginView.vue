@@ -7,6 +7,7 @@ import AppInput from '@/components/ui/AppInput.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppAlert from '@/components/ui/AppAlert.vue'
 import { useAuthStore } from '@/stores/auth'
+import { safeInternalPath } from '@/utils/safe'
 
 const { t } = useI18n()
 const auth = useAuthStore()
@@ -23,7 +24,7 @@ async function submit() {
   loading.value = true
   try {
     await auth.signIn(email.value.trim(), password.value)
-    const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/'
+    const redirect = safeInternalPath(route.query.redirect)
     await router.replace(redirect)
   } catch (e) {
     error.value = e instanceof Error ? e.message : t('errors.generic')

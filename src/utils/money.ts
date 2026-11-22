@@ -49,12 +49,17 @@ export function parseMoney(text: string, minorUnit: number): bigint | null {
   return value
 }
 
+/** Browsers have no number formats for Twi, so amounts in Twi use Ghana's English format. */
+function numberLocale(locale: string): string {
+  return locale === 'tw' ? 'en-GH' : locale
+}
+
 /** Format minor units as a currency string for display only; never used for arithmetic. */
 export function formatMoney(minor: bigint | number, currency: string, locale = 'en-GH'): string {
   const minorUnit = minorUnitFor(currency)
   const major = Number(minor) / 10 ** minorUnit
   try {
-    return new Intl.NumberFormat(locale, {
+    return new Intl.NumberFormat(numberLocale(locale), {
       style: 'currency',
       currency,
       currencyDisplay: 'narrowSymbol',

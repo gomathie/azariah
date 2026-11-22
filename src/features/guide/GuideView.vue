@@ -26,6 +26,8 @@ const router = useRouter()
 const business = useBusinessStore()
 const guide = ref<Guide | null>(null)
 const error = ref<string | null>(null)
+/** True when the reader's language has no guide yet and the English one is shown. */
+const fallback = ref(false)
 
 const which = computed(() => (route.params.which === 'admin' ? 'admin' : 'user'))
 const allowedAdmin = computed(() => canReadAdminGuide(business.current?.role, business.platformAdmin))
@@ -41,7 +43,9 @@ watch(
     }
     error.value = null
     try {
-      const load = SOURCES[`${which.value}.${locale.value}`] ?? SOURCES[`${which.value}.en`]
+      const own = SOURCES[`${which.value}.${locale.value}`]
+      fallback.value = !own
+      const load = own ?? SOURCES[`${which.value}.en`]
       if (!load) throw new Error('unknown guide')
       guide.value = parseGuide((await load()).default)
     } catch {
@@ -63,6 +67,7 @@ function jump(id: string) {
     <article class="p-4 pb-16 space-y-6 max-w-2xl mx-auto">
       <AppAlert v-if="error" kind="error">{{ error }}</AppAlert>
       <template v-if="guide">
+        <AppAlert v-if="fallback" kind="info">{{ t('guide.englishOnly') }}</AppAlert>
         <p v-for="(spans, index) in guide.intro" :key="index" class="text-slate-700 leading-relaxed">
           <template v-for="(span, s) in spans" :key="s"
             ><strong v-if="span.bold" class="font-semibold text-slate-900">{{ span.text }}</strong

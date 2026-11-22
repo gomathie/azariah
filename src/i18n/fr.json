@@ -199,7 +199,8 @@
     "editTitle": "Modifier le client",
     "updated": "{name} mis à jour.",
     "choosePayer": "Choisissez le client qui a payé.",
-    "nameTooLong": "Le nom est trop long."
+    "nameTooLong": "Le nom est trop long.",
+    "phoneInvalid": "Saisissez un numéro avec des chiffres, des espaces et + ( ) . - uniquement."
   },
   "accounts": {
     "title": "Comptes d'argent",
@@ -451,6 +452,7 @@
     "readUser": "Lire le guide de l'utilisateur",
     "contents": "Dans ce guide",
     "other": "Autre guide",
-    "loadError": "Le guide n'a pas pu s'ouvrir. Vérifiez votre connexion et réessayez."
+    "loadError": "Le guide n'a pas pu s'ouvrir. Vérifiez votre connexion et réessayez.",
+    "englishOnly": "Ce guide est en anglais pour le moment."
   }
 }

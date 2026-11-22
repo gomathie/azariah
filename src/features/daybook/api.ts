@@ -1,5 +1,6 @@
 import { callRpc } from '@/lib/supabase/rpc'
 import { getSupabase } from '@/lib/supabase/client'
+import { isIsoDate, isIsoTimestamp, isUuid } from '@/utils/safe'
 
 export interface DaybookRow {
   id: string
@@ -48,8 +49,13 @@ export async function getDaybook(opts: {
   if (opts.kinds && opts.kinds.length > 0) query = query.in('kind', opts.kinds as never)
   if (opts.cursor) {
     const c = opts.cursor
+    // These three values are placed inside a filter string. Anything that is not exactly a date,
+    // a timestamp and an id could change the filter, so it is refused instead of sent.
+    if (!isIsoDate(c.business_date) || !isIsoTimestamp(c.created_at) || !isUuid(c.id)) {
+      throw new Error('Invalid daybook cursor')
+    }
     query = query.or(
-      `business_date.lt.${c.business_date},and(business_date.eq.${c.business_date},created_at.lt.${c.created_at}),and(business_date.eq.${c.business_date},created_at.eq.${c.created_at},id.lt.${c.id})`,
+      `business_date.lt.${c.business_date},and(business_date.eq.${c.business_date},created_at.lt."${c.created_at}"),and(business_date.eq.${c.business_date},created_at.eq."${c.created_at}",id.lt.${c.id})`,
     )
   }
   const { data, error } = await query
