@@ -2,14 +2,12 @@
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import AuthLayout from './AuthLayout.vue'
-import InstallApp from '@/components/ui/InstallApp.vue'
 
 const { t } = useI18n()
 </script>
 
 <template>
   <AuthLayout>
-    <InstallApp />
     <h1 class="text-xl font-semibold text-slate-900">{{ t('auth.welcome') }}</h1>
     <p class="text-slate-600">{{ t('auth.intro') }}</p>
     <div class="space-y-3 pt-2">

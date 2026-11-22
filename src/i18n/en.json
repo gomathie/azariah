@@ -184,7 +184,11 @@
     "paid": "Payment",
     "stillOwes": "Still owes",
     "remind": "Send reminder",
-    "reminderText": "Hello {name}, a friendly reminder that {amount} is outstanding at {business}. Thank you!"
+    "reminderText": "Hello {name}, a friendly reminder that {amount} is outstanding at {business}. Thank you!",
+    "save": "Save customer",
+    "phoneHint": "Optional. Used for a WhatsApp reminder.",
+    "duplicate": "You already have a customer with this name.",
+    "savedOne": "{name} added."
   },
   "accounts": {
     "title": "Money accounts",

@@ -184,7 +184,11 @@
     "paid": "Paiement",
     "stillOwes": "Doit encore",
     "remind": "Envoyer un rappel",
-    "reminderText": "Bonjour {name}, petit rappel : {amount} reste à payer chez {business}. Merci !"
+    "reminderText": "Bonjour {name}, petit rappel : {amount} reste à payer chez {business}. Merci !",
+    "save": "Enregistrer le client",
+    "phoneHint": "Facultatif. Sert pour un rappel WhatsApp.",
+    "duplicate": "Vous avez déjà un client avec ce nom.",
+    "savedOne": "{name} ajouté."
   },
   "accounts": {
     "title": "Comptes d'argent",

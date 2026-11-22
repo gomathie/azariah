@@ -50,7 +50,6 @@ async function download() {
 <template>
   <PageHeader :title="t('settings.title')" />
   <section class="p-4 space-y-3 max-w-lg">
-    <InstallApp />
     <AppAlert v-if="error" kind="error">{{ error }}</AppAlert>
     <nav class="flex flex-col gap-2">
       <RouterLink
@@ -60,6 +59,7 @@ async function download() {
         class="rounded-xl border border-slate-200 bg-white px-4 min-h-14 flex items-center font-medium"
         >{{ t(link.label) }}</RouterLink
       >
+      <InstallApp />
     </nav>
     <AppButton v-if="business.current?.role === 'owner'" type="button" block :loading="loading" @click="download">
       {{ t('settings.export') }}

@@ -8,12 +8,15 @@
 
 ### Changed
 
+- Add to home screen is now in the Settings menu, not on the welcome screen.
 - The app icon is a teal tile: the letter A, with a flame standing in it.
 - A sale saved without a connection says so on the same screen. The daybook opens when the connection is back.
 - Recording a payment waits until the amount the customer owes has loaded, so the exact amount owed is accepted.
 
 ### Added
 
+- Add a customer from the Customers screen, with an optional phone number.
+- A round profile button at the top right of every screen opens your profile.
 - Make an invoice for a customer, or a receipt for money received, and download it as a PDF.
 - Sign up, sign in and password reset.
 - Create your business with its country, currency and time zone; Cash and Mobile Money accounts and starter categories are set up for you.

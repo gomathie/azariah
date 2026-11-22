@@ -42,6 +42,42 @@ Never run `supabase db reset --linked` or `--remote`.
 
 Auth redirects in `supabase/config.toml` allow localhost and 127.0.0.1 on ports 5173 and 4173. A stack restart is required after that file changes.
 
+## Cloudflare Pages
+
+The frontend is a static build. The owner connects the GitHub repository in the Cloudflare dashboard; agents do not deploy. As of 2026-11-22 no deployment has been made.
+
+| Setting | Value |
+|---|---|
+| Framework preset | Vue |
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+| Production branch | `main` |
+
+Production variables (Settings, Variables and Secrets). `.env.cloudflare` in the project root holds the same four lines ready to copy. It is gitignored, so each machine keeps its own copy.
+
+| Variable | Value |
+|---|---|
+| `VITE_SUPABASE_URL` | `https://zqxmlgeqvrmbczjsurtj.supabase.co` |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | the publishable key from `npx supabase projects api-keys` |
+| `VITE_DEFAULT_LOCALE` | `en` |
+| `NODE_VERSION` | `22.18.0` (the project needs Node 22.18 or newer) |
+
+- Only the publishable key goes to Cloudflare. The secret key and the database password never do.
+- Leave the Preview environment without these variables until a staging project exists. With them, every preview build would write to the production database.
+- `npm run build` runs the type-check first. A type error fails the deploy.
+- Page refreshes on deep links work because the build has no `404.html`, so Pages serves the app shell.
+
+After the first deploy, in the Supabase dashboard under Authentication, URL Configuration: set Site URL to the Pages address and add `https://<pages-address>/**` to Redirect URLs. Until then, confirmation and password-reset emails link to localhost.
+
+### Response headers
+
+`public/_headers` is copied to `dist/_headers` and applied by Cloudflare Pages. It sets a Content Security Policy, `X-Frame-Options: DENY`, `nosniff`, a referrer policy, a permissions policy and HSTS. Hashed files under `/assets/` are cached for a year; `sw.js`, `index.html` and the manifest are always revalidated so a new version reaches phones.
+
+- `connect-src` names the Supabase host. If `VITE_SUPABASE_URL` changes, change `public/_headers` in the same commit, or every request to Supabase is blocked.
+- `style-src` allows inline styles because Vue sets element styles at run time. Scripts are limited to the site itself.
+- A custom domain needs no header change.
+- Checked on 2026-11-22: the production build was served locally with this policy in Chromium. The welcome, sign-up and login screens rendered, the service worker registered, a sign-in request reached Supabase, and the console showed no policy violation. Not checked: the headers as served by Cloudflare itself, and the PDF and CSV downloads under the policy.
+
 ## CI
 
 `.github/workflows/ci.yml` installs dependencies, lints, type-checks, runs Vitest, starts the local stack, runs `supabase test db`, builds with the local publishable key, and runs Playwright on Chromium. It has not been executed.

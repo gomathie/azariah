@@ -3,6 +3,22 @@
 Change-rationale entries for guards, constraints, refusals and defaults that a later agent might
 be tempted to undo. Format: Why / How / Benefit / Trade-off / Verification / Rollback. Newest first.
 
+## 2026-11-22 — Content Security Policy names the Supabase host
+
+- **Why:** the spec asks for a CSP. A policy that allowed any host would not stop a injected script from sending shop data elsewhere.
+- **How:** `public/_headers` limits scripts to the site and network calls to the site plus `zqxmlgeqvrmbczjsurtj.supabase.co` (https and wss).
+- **Benefit:** injected code cannot load from, or post to, another origin. The app cannot be framed.
+- **Trade-off:** changing the Supabase project, or adding any third-party script, font or API, needs a matching change in `public/_headers`. The symptom of forgetting is a blank or broken screen with a CSP error in the console.
+- **Verification:** production build served locally with the policy on 2026-11-22; three screens, service worker and a Supabase sign-in call worked with no violation.
+- **Rollback:** remove the `Content-Security-Policy` line from `public/_headers`.
+
+## 2026-11-22 — `npm run build` was failing its type-check
+
+- **Why:** three type errors (test `lib` setting, the i18n instance type, a report filter type) made `npm run build` exit non-zero. Cloudflare runs that command, so the first deploy would have failed.
+- **How:** `tsconfig.vitest.json` lists `ES2022` and DOM libs; `createI18n` is typed as composition mode; the report filter is typed `Record<string, string>`.
+- **Verification:** `vue-tsc --build` clean, `npm run build` exit 0, unit tests 31 passed.
+- **Rollback:** n/a.
+
 ## 2026-11-22 — Local `.env` stays on the local stack after the cloud project was linked
 
 - **Why:** the Playwright tests and manual dev sign-ups create throwaway users and shops. In the cloud project they would sit beside real traders' data.
