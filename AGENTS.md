@@ -55,6 +55,7 @@ RPC-only mutations (ADR-002), derived balances (ADR-003), RLS + explicit grants 
 - 2026-11-16: Tasks 1–18 have passing checks. SQL suite: 13 files, 134 tests, PASS. Playwright onboarding, sale, collection, daybook, and offline passed on chromium and mobile. MoneyInput, Home, offline queue, sync, and CSV unit tests passed.
 - In progress: Task 19 is still the position marker. Invoices and receipt PDFs are written. PDF unit test PASS (3). SQL `0014_documents` PASS (18). Migration `20261116001500` is applied locally.
 - Blockers: Windows reserves TCP 54323–54422, so local Supabase uses 54423, 54424, and 54427 for Studio, mail, and analytics. Analytics is off. Start the stack with the project binary, not `npx supabase start -x`, because npm swallows `-x`.
+- Cloud: Supabase project `azaria` (ref `zqxmlgeqvrmbczjsurtj`, London) was created and linked on 2026-11-22. All 15 migrations are applied there. `.env` stays local; cloud values are in the gitignored `.env.production.local`. See `docs/DEPLOYMENT.md`. No frontend is deployed.
 - Next: Task 19 has no automated check yet. Task 20 is the CI workflow, not run. Owner commits and pushes; agents do not.
 
 ## Rules for every runtime
@@ -72,4 +73,6 @@ RPC-only mutations (ADR-002), derived balances (ADR-003), RLS + explicit grants 
 
 - Commit real keys. `.env` is gitignored; `.env.example` has placeholders only.
 - Run `supabase db reset --linked` or any destructive command against a remote project.
+- Point `.env`, `npm run dev` or any test at the cloud project. Tests create throwaway users and shops.
+- Run `supabase db push --remote` without a dry run and the owner's go-ahead.
 - Push, deploy or create cloud resources without the owner's explicit instruction.
