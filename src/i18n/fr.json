@@ -65,6 +65,7 @@
       "retail": "Boutique / commerce",
       "food": "Alimentation / traiteur",
       "services": "Services / artisanat",
+      "salon": "Salon de coiffure / beauté",
       "other": "Autre"
     },
     "country": "Pays",

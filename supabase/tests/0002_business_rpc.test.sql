@@ -1,6 +1,6 @@
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(14);
+select plan(19);
 
 -- helpers --------------------------------------------------------------------
 create schema if not exists tests;
@@ -70,6 +70,21 @@ select throws_like(
 -- XOF business has 0 minor units
 select public.rpc_create_business_and_owner('44444444-4444-4444-4444-444444444444', 'Boutique', 'retail', 'CI', 'Africa/Abidjan', 'XOF') as xof \gset
 select is((select minor_unit from public.businesses where id = ((:'xof')::jsonb ->> 'business_id')::uuid), 0::smallint, 'XOF has 0 minor units');
+
+-- a salon gets its own starting categories
+select public.rpc_create_business_and_owner('55555555-5555-5555-5555-555555555555', 'Akos Beauty Salon', 'salon', 'GH', 'Africa/Accra', 'GHS') as salon \gset
+select (:'salon')::jsonb ->> 'business_id' as sid \gset
+select is((select business_type from public.businesses where id = :'sid'), 'salon', 'salon is an accepted kind of shop');
+select is(
+  (select array_agg(name order by sort_order) from public.categories where business_id = :'sid' and kind = 'sale'),
+  array['Sales', 'Hair', 'Nails and beauty', 'Products sold'], 'salon money-in categories seeded'
+);
+select is((select count(*) from public.categories where business_id = :'sid' and kind = 'operating_expense' and name in ('Tools and repairs', 'Towels and cleaning')), 2::bigint, 'salon spending categories seeded');
+select is((select count(*) from public.categories where business_id = :'sid' and kind = 'stock_purchase' and name = 'Hair and beauty supplies'), 1::bigint, 'salon stock category seeded');
+select throws_like(
+  $$select public.rpc_create_business_and_owner('66666666-6666-6666-6666-666666666666', 'Shop', 'spaceport', 'GH', 'Africa/Accra', 'GHS')$$,
+  '%AZ_INVALID_INPUT%', 'unknown kind of shop rejected'
+);
 
 select tests.clear_auth();
 -- audit_events is only readable by the superuser (no API grant), so check it after clear_auth

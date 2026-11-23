@@ -26,7 +26,7 @@ const error = ref<string | null>(null)
 const loading = ref(false)
 
 const typeOptions = computed(() =>
-  (['retail', 'food', 'services', 'other'] as const).map((v) => ({ value: v, label: t(`onboarding.types.${v}`) })),
+  (['retail', 'food', 'services', 'salon', 'other'] as const).map((v) => ({ value: v, label: t(`onboarding.types.${v}`) })),
 )
 const countryOptions = COUNTRIES.map((c) => ({ value: c.code, label: c.name }))
 const currencyOptions = CURRENCIES.map((c) => ({ value: c.code, label: `${c.code} — ${c.name}` }))

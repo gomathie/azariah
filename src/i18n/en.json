@@ -65,6 +65,7 @@
       "retail": "Shop / trading",
       "food": "Food / catering",
       "services": "Services / artisan",
+      "salon": "Salon / barber / beauty",
       "other": "Other"
     },
     "country": "Country",

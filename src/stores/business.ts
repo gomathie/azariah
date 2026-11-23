@@ -17,7 +17,7 @@ export interface Business {
 
 export interface CreateBusinessInput {
   name: string
-  businessType: 'retail' | 'food' | 'services' | 'other'
+  businessType: 'retail' | 'food' | 'services' | 'salon' | 'other'
   countryCode: string
   timezone: string
   currencyCode: string

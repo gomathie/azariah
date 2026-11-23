@@ -63,8 +63,9 @@
     "businessType": "Adwuma bɛn na woyɛ?",
     "types": {
       "retail": "Sotɔɔ / adetɔn",
-      "food": "Aduan",
+      "food": "Aduane",
       "services": "Dwumadi / nsaanodwuma",
+      "salon": "Tirinwoyɛ / ahoɔfɛ adwuma",
       "other": "Foforo"
     },
     "country": "Ɔman",
