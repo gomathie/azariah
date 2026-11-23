@@ -240,6 +240,15 @@ router.beforeEach(async (to) => {
   const auth = useAuthStore()
   await auth.ready()
 
+  // The one-time token from an email link has been used by now. Take it out of the address
+  // so it is not kept in history or shared.
+  if ('token_hash' in to.query) {
+    const rest = { ...to.query }
+    delete rest.token_hash
+    delete rest.type
+    return { path: to.path, query: rest, hash: to.hash, replace: true }
+  }
+
   if (to.meta.guestOnly && auth.isSignedIn) return { name: 'home' }
   if ((to.meta.requiresAuth || to.meta.requiresBusiness) && !auth.isSignedIn) {
     return { name: 'welcome', query: to.fullPath !== '/' ? { redirect: to.fullPath } : {} }

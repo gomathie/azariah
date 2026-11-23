@@ -54,6 +54,7 @@
     "updatePassword": "Sesa password",
     "checkEmail": "Hwɛ wo email na si wo akawnt no so dua, afei hyɛn mu.",
     "alreadyRegistered": "Email yi wɔ akawnt dedaw. Mia Hyɛn mu wɔ ase hɔ. Sɛ wo werɛ afi wo password a, mia Wo werɛ afi password no wɔ baabi a wohyɛn mu no.",
+    "linkExpired": "Link no akyɛ dodo anaasɛ wɔde adi dwuma dedaw. Kyerɛw wo email na nya foforo.",
     "language": "Kasa"
   },
   "emailConfirm": {

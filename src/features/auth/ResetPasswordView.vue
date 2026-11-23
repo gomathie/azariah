@@ -70,6 +70,7 @@ async function setNewPassword() {
       <AppButton type="submit" block :loading="loading">{{ t('auth.updatePassword') }}</AppButton>
     </form>
     <form v-else class="space-y-4" novalidate @submit.prevent="requestEmail">
+      <AppAlert v-if="auth.emailLinkFailed" kind="warning">{{ t('auth.linkExpired') }}</AppAlert>
       <AppInput v-model="email" :label="t('auth.email')" type="email" autocomplete="email" inputmode="email" required />
       <AppAlert v-if="error" kind="error">{{ error }}</AppAlert>
       <AppButton type="submit" block :loading="loading">{{ t('auth.resetSend') }}</AppButton>

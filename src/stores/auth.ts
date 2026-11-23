@@ -2,12 +2,15 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import type { Session, User } from '@supabase/supabase-js'
 import { getSupabase } from '@/lib/supabase/client'
+import { readEmailLink } from '@/features/auth/emailLink'
 
 export const useAuthStore = defineStore('auth', () => {
   const session = ref<Session | null>(null)
   const user = computed<User | null>(() => session.value?.user ?? null)
   const isSignedIn = computed(() => session.value !== null)
   const initialized = ref(false)
+  /** True when the page was opened from an email link that is too old or already used. */
+  const emailLinkFailed = ref(false)
   let initPromise: Promise<void> | null = null
 
   /** Resolve once the persisted session (if any) has been restored. Safe to call repeatedly. */
@@ -16,6 +19,12 @@ export const useAuthStore = defineStore('auth', () => {
     if (!initPromise) {
       initPromise = (async () => {
         const supabase = getSupabase()
+        // Arriving from a link in one of our emails: trade its one-time token for a session.
+        const link = readEmailLink(window.location.search)
+        if (link) {
+          const { error } = await supabase.auth.verifyOtp({ token_hash: link.tokenHash, type: link.type })
+          emailLinkFailed.value = error !== null
+        }
         const { data } = await supabase.auth.getSession()
         session.value = data.session
         supabase.auth.onAuthStateChange((_event, next) => {
@@ -67,5 +76,5 @@ export const useAuthStore = defineStore('auth', () => {
     session.value = null
   }
 
-  return { session, user, isSignedIn, ready, signIn, signUp, resetPassword, updatePassword, signOut }
+  return { session, user, isSignedIn, emailLinkFailed, ready, signIn, signUp, resetPassword, updatePassword, signOut }
 })

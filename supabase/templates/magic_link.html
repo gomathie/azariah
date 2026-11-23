@@ -36,7 +36,7 @@
             <tr>
               <td align="center" style="padding:0 24px 8px 24px;">
                 <a
-                  href="{{ .ConfirmationURL }}"
+                  href="{{ .SiteURL }}/?token_hash={{ .TokenHash }}&type=magiclink"
                   style="display:block;background:#0f766e;color:#ffffff;text-decoration:none;font-size:18px;font-weight:bold;padding:16px 20px;border-radius:12px;text-align:center;"
                   >Open Azaria</a
                 >
@@ -48,7 +48,7 @@
                   If the button does not work, copy this link into your browser:
                 </p>
                 <p style="margin:0 0 20px 0;font-size:13px;line-height:1.5;word-break:break-all;">
-                  <a href="{{ .ConfirmationURL }}" style="color:#0f766e;">{{ .ConfirmationURL }}</a>
+                  <a href="{{ .SiteURL }}/?token_hash={{ .TokenHash }}&type=magiclink" style="color:#0f766e;">{{ .SiteURL }}/?token_hash={{ .TokenHash }}&type=magiclink</a>
                 </p>
                 <p style="margin:0 0 20px 0;font-size:14px;line-height:1.5;color:#475569;">
                   Did not ask for this? You can ignore this email. Nobody gets into your account without this code or link.

@@ -54,6 +54,7 @@
     "updatePassword": "Mettre à jour",
     "checkEmail": "Vérifiez votre e-mail pour confirmer votre compte, puis connectez-vous.",
     "alreadyRegistered": "Cet e-mail a déjà un compte. Touchez Se connecter ci-dessous. Si vous avez oublié votre mot de passe, touchez Mot de passe oublié sur l'écran de connexion.",
+    "linkExpired": "Ce lien est trop ancien ou a déjà servi. Entrez votre e-mail pour en recevoir un nouveau.",
     "language": "Langue"
   },
   "emailConfirm": {
