@@ -126,7 +126,7 @@ What a report may contain is described in `docs/SECURITY.md`, "Error tracking".
 
 ## Sign-up and password emails
 
-The emails Supabase sends are designed in `supabase/templates/confirmation.html` and `recovery.html`. The local stack reads them through `supabase/config.toml`. The cloud project does not: in the Supabase dashboard open Authentication, Emails, Templates, choose "Confirm signup" or "Reset password", paste the file's HTML into the message body, set the subject from `config.toml`, and save.
+The emails Supabase sends are designed in `supabase/templates/`: `confirmation.html`, `recovery.html` and `invite.html`. The local stack reads them through `supabase/config.toml`. The cloud project does not: in the Supabase dashboard open Authentication, Emails, Templates, choose "Confirm signup", "Reset password" or "Invite user", paste the file's HTML into the message body, set the subject from `config.toml`, and save.
 
 Also on the cloud project, Authentication, URL Configuration: Site URL `https://azariabooks.com` and redirect URL `https://azariabooks.com/**`. Without them the links in these emails go to `localhost`.
 

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>You are invited to Azaria</title>
+  </head>
+  <body style="margin:0;padding:0;background:#f1f5f9;font-family:Arial,Helvetica,sans-serif;color:#0f172a;">
+    <!-- Shown beside the subject in the inbox list -->
+    <div style="display:none;max-height:0;overflow:hidden;opacity:0;">
+      One tap to accept and set up your account.
+    </div>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f1f5f9;">
+      <tr>
+        <td align="center" style="padding:24px 12px;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;background:#ffffff;border-radius:16px;overflow:hidden;">
+            <tr>
+              <td style="background:#0f766e;padding:20px 24px;">
+                <span style="font-size:22px;font-weight:bold;color:#ffffff;letter-spacing:0.3px;">Azaria</span>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:28px 24px 8px 24px;">
+                <h1 style="margin:0 0 12px 0;font-size:22px;line-height:1.3;color:#0f172a;">You are invited</h1>
+                <p style="margin:0 0 20px 0;font-size:16px;line-height:1.5;color:#334155;">
+                  You have been invited to use Azaria, simple bookkeeping for a small business. Tap the button to accept and set up your account.
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="padding:0 24px 8px 24px;">
+                <a
+                  href="{{ .ConfirmationURL }}"
+                  style="display:block;background:#0f766e;color:#ffffff;text-decoration:none;font-size:18px;font-weight:bold;padding:16px 20px;border-radius:12px;text-align:center;"
+                  >Accept the invitation</a
+                >
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 24px 8px 24px;">
+                <p style="margin:0 0 8px 0;font-size:14px;line-height:1.5;color:#475569;">
+                  If the button does not work, copy this link into your browser:
+                </p>
+                <p style="margin:0 0 20px 0;font-size:13px;line-height:1.5;word-break:break-all;">
+                  <a href="{{ .ConfirmationURL }}" style="color:#0f766e;">{{ .ConfirmationURL }}</a>
+                </p>
+                <p style="margin:0 0 20px 0;font-size:14px;line-height:1.5;color:#475569;">
+                  Not expecting this? You can ignore this email. No account is made unless you accept.
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 24px 24px 24px;border-top:1px solid #e2e8f0;">
+                <p style="margin:0 0 6px 0;font-size:14px;line-height:1.5;color:#475569;">
+                  <strong>Français :</strong> touchez « Accept the invitation » pour accepter et créer votre compte.
+                </p>
+                <p style="margin:0;font-size:13px;line-height:1.5;color:#64748b;">
+                  Azaria · Simple bookkeeping for your business ·
+                  <a href="{{ .SiteURL }}" style="color:#0f766e;">{{ .SiteURL }}</a>
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

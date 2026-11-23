@@ -272,6 +272,10 @@ content_path = "./supabase/templates/confirmation.html"
 subject = "Reset your Azaria password"
 content_path = "./supabase/templates/recovery.html"
 
+[auth.email.template.invite]
+subject = "You are invited to Azaria"
+content_path = "./supabase/templates/invite.html"
+
 # Uncomment to customize email template
 # [auth.email.template.invite]
 # subject = "You have been invited"
