@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageHeader from '@/components/ui/PageHeader.vue'
@@ -8,7 +8,16 @@ import AppButton from '@/components/ui/AppButton.vue'
 import AppInput from '@/components/ui/AppInput.vue'
 import DiscountCodesPanel from '@/features/support/DiscountCodesPanel.vue'
 import PaymentsPanel from '@/features/support/PaymentsPanel.vue'
-import { listShops, setShopStatus, type DirectoryShop } from '@/features/support/api'
+import AdminsPanel from '@/features/support/AdminsPanel.vue'
+import AccountsPanel from '@/features/support/AccountsPanel.vue'
+import AppSelect from '@/components/ui/AppSelect.vue'
+import {
+  listShops,
+  setShopPayments,
+  setShopStatus,
+  type DirectoryShop,
+  type PaymentsMode,
+} from '@/features/support/api'
 import { RpcError } from '@/lib/supabase/rpc'
 import { useBusinessStore } from '@/stores/business'
 import { dateLocale, friendlyDate } from '@/utils/dates'
@@ -18,7 +27,15 @@ const { t, locale } = useI18n()
 const router = useRouter()
 const business = useBusinessStore()
 /** The console has two parts: the shop directory, and discount codes for Azaria Plus. */
-const tab = ref<'shops' | 'discounts' | 'payments'>('shops')
+type Tab = 'shops' | 'accounts' | 'discounts' | 'payments' | 'admins'
+const tab = ref<Tab>('shops')
+/** Tabs follow the admin's rights. The database refuses anything the tab would have hidden. */
+const tabs = computed<Tab[]>(() => [
+  'shops',
+  'accounts',
+  ...(business.can('billing') ? (['discounts', 'payments'] as const) : []),
+  ...(business.superAdmin ? (['admins'] as const) : []),
+])
 const search = ref('')
 const shops = ref<DirectoryShop[]>([])
 const hasMore = ref(false)
@@ -48,16 +65,39 @@ async function load(reset: boolean) {
   }
 }
 
-async function open(shop: DirectoryShop) {
+async function open(shop: DirectoryShop, edit: boolean) {
   busy.value = shop.id
   error.value = null
   try {
-    await business.openSupport(shop.id)
+    await business.openSupport(shop.id, edit)
     await router.push({ name: 'home' })
   } catch (e) {
     error.value = message(e)
   } finally {
     busy.value = null
+  }
+}
+
+const notice = ref<string | null>(null)
+const paymentOptions = computed(() => [
+  { value: 'default', label: t('support.shopPaymentsDefault') },
+  { value: 'on', label: t('support.shopPaymentsOn') },
+  { value: 'off', label: t('support.shopPaymentsOff') },
+])
+
+async function changePayments(shop: DirectoryShop, mode: string) {
+  if (mode !== 'default' && mode !== 'on' && mode !== 'off') return
+  const previous: PaymentsMode = shop.payments_mode ?? 'default'
+  if (mode === previous) return
+  error.value = null
+  notice.value = null
+  shop.payments_mode = mode
+  try {
+    await setShopPayments(shop.id, mode)
+    notice.value = t('support.shopPaymentsSaved', { name: shop.name })
+  } catch (e) {
+    shop.payments_mode = previous
+    error.value = message(e)
   }
 }
 
@@ -104,9 +144,9 @@ onMounted(() => void load(true))
           t('guide.admin')
         }}</RouterLink>
       </AppAlert>
-      <div class="flex gap-2" role="tablist">
+      <div v-if="tabs.length > 1" class="flex flex-wrap gap-2" role="tablist">
         <button
-          v-for="name in ['shops', 'discounts', 'payments'] as const"
+          v-for="name in tabs"
           :key="name"
           type="button"
           role="tab"
@@ -120,6 +160,8 @@ onMounted(() => void load(true))
       </div>
       <DiscountCodesPanel v-if="tab === 'discounts'" />
       <PaymentsPanel v-else-if="tab === 'payments'" />
+      <AdminsPanel v-else-if="tab === 'admins'" />
+      <AccountsPanel v-else-if="tab === 'accounts'" />
       <template v-else>
       <form class="flex gap-2 items-end" role="search" @submit.prevent="load(true)">
         <div class="flex-1">
@@ -128,6 +170,7 @@ onMounted(() => void load(true))
         <AppButton type="submit" :loading="loading">{{ t('support.searchAction') }}</AppButton>
       </form>
       <AppAlert v-if="error" kind="error">{{ error }}</AppAlert>
+      <AppAlert v-if="notice" kind="success">{{ notice }}</AppAlert>
       <p v-if="!loading && !error && shops.length === 0" class="text-slate-600">{{ t('support.none') }}</p>
 
       <ul class="space-y-3">
@@ -156,18 +199,32 @@ onMounted(() => void load(true))
                 : t('support.noPlus')
             }}
           </p>
-          <p class="text-sm" :class="shop.support_expires_at ? 'text-emerald-800' : 'text-slate-600'">
-            {{
-              shop.support_expires_at
-                ? t('support.accessUntil', { time: time(shop.support_expires_at) })
-                : t('support.noAccess')
-            }}
-          </p>
+          <AppSelect
+            v-if="business.can('billing')"
+            :model-value="shop.payments_mode ?? 'default'"
+            :label="t('support.shopPayments')"
+            :options="paymentOptions"
+            @update:model-value="changePayments(shop, String($event))"
+          />
           <div class="flex flex-wrap gap-2">
-            <AppButton v-if="shop.support_expires_at" type="button" :loading="busy === shop.id" @click="open(shop)">
+            <AppButton
+              v-if="business.can('view_shops') || business.can('edit_shops')"
+              type="button"
+              :loading="busy === shop.id"
+              @click="open(shop, false)"
+            >
               {{ t('support.open') }}
             </AppButton>
-            <AppButton type="button" variant="secondary" @click="startAction(shop)">
+            <AppButton
+              v-if="business.can('edit_shops')"
+              type="button"
+              variant="secondary"
+              :disabled="busy === shop.id"
+              @click="open(shop, true)"
+            >
+              {{ t('support.openEdit') }}
+            </AppButton>
+            <AppButton v-if="business.can('suspend_shops')" type="button" variant="secondary" @click="startAction(shop)">
               {{ shop.status === 'suspended' ? t('support.reactivate') : t('support.suspend') }}
             </AppButton>
           </div>

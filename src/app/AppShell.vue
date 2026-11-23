@@ -61,7 +61,11 @@ const tabs = [
         role="status"
         class="no-print bg-amber-100 text-amber-900 px-4 py-2 flex items-center justify-between gap-3 text-sm"
       >
-        <span>{{ t('support.viewing', { name: business.supportBusiness.name }) }}</span>
+        <span>{{
+          t(business.supportBusiness.role === 'owner' ? 'support.editing' : 'support.viewing', {
+            name: business.supportBusiness.name,
+          })
+        }}</span>
         <button type="button" class="underline font-semibold min-h-10 shrink-0" @click="leaveSupport">
           {{ t('support.leave') }}
         </button>

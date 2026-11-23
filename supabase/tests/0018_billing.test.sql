@@ -31,7 +31,7 @@ select tests.create_user('bill-owner-a@example.test') as owner_a \gset
 select tests.create_user('bill-owner-b@example.test') as owner_b \gset
 select tests.create_user('bill-staff@example.test') as staff \gset
 select tests.create_user('bill-admin@example.test') as admin \gset
-insert into public.platform_admins (user_id, note) values (:'admin', 'billing test admin');
+insert into public.platform_admins (user_id, note, is_super) values (:'admin', 'billing test admin', true);
 
 select tests.authenticate(:'owner_a');
 select (public.rpc_create_business_and_owner(gen_random_uuid(), 'Zqx Billing Shop A', 'retail', 'GH', 'Africa/Accra', 'GHS') ->> 'business_id') as biz_a \gset
@@ -71,7 +71,7 @@ select tests.clear_auth();
 select tests.authenticate(:'admin');
 select public.rpc_admin_update_billing_product('plus_3m', 8000, true);
 select tests.clear_auth();
-select is((select count(*) from public.audit_events where action in ('billing.payments_switched', 'billing.product_changed')), 3::bigint, 'the switch and plan changes are written to the audit trail');
+select is((select count(*) from public.audit_events where action in ('billing.payments_switched', 'billing.product_changed') and actor_id = :'admin'), 3::bigint, 'the switch and plan changes are written to the audit trail');
 
 -- 1. Tables are closed and row security is on ---------------------------------------------------------
 select ok((select bool_and(relrowsecurity) from pg_class where relname in

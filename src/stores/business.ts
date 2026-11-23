@@ -41,10 +41,14 @@ export const useBusinessStore = defineStore('business', () => {
 
   /** True for a member of the Azaria support team. Decided by the database, never by the browser. */
   const platformAdmin = ref(false)
+  /** True for a superadmin, who holds every right and manages the support team. */
+  const superAdmin = ref(false)
+  /** What this admin may do: view_shops, edit_shops, suspend_shops, billing. Set by a superadmin. */
+  const adminRights = ref<string[]>([])
   /**
-   * A shop a platform admin is looking at with the owner's permission. Held in memory only, so a
-   * reload ends the look. The role is 'viewer': the screens hide write actions and the database
-   * refuses them regardless.
+   * A shop a platform admin has open. Held in memory only, so a reload ends it. The role is
+   * 'viewer' when the shop is open to look and 'owner' when it is open for changes. The screens
+   * follow the role; the database decides on every call what is really allowed.
    */
   const supportBusiness = ref<Business | null>(null)
 
@@ -84,10 +88,17 @@ export const useBusinessStore = defineStore('business', () => {
       }
       // A database without the support migration simply has no admins; that must not block sign-in.
       try {
-        const who = await callRpc<{ is_platform_admin?: boolean }>('rpc_admin_whoami', {})
+        const who = await callRpc<{ is_platform_admin?: boolean; is_super?: boolean; rights?: string[] }>(
+          'rpc_admin_whoami',
+          {},
+        )
         platformAdmin.value = who?.is_platform_admin === true
+        superAdmin.value = who?.is_super === true
+        adminRights.value = Array.isArray(who?.rights) ? who.rights : []
       } catch {
         platformAdmin.value = false
+        superAdmin.value = false
+        adminRights.value = []
       }
       loaded.value = true
     } finally {
@@ -124,18 +135,31 @@ export const useBusinessStore = defineStore('business', () => {
     return businessId
   }
 
-  async function openSupport(businessId: string) {
-    const row = await callRpc<Omit<Business, 'role'>>('rpc_admin_open_business', { p_business_id: businessId })
-    supportBusiness.value = { ...row, role: 'viewer' }
+  /** Whether this admin holds a right. Only for showing or hiding buttons; the database checks again. */
+  function can(right: string): boolean {
+    return superAdmin.value || adminRights.value.includes(right)
+  }
+
+  async function openSupport(businessId: string, edit = false) {
+    const { can_edit, ...row } = await callRpc<Omit<Business, 'role'> & { can_edit?: boolean }>(
+      'rpc_admin_open_business',
+      { p_business_id: businessId, p_edit: edit },
+    )
+    supportBusiness.value = { ...row, role: can_edit === true ? 'owner' : 'viewer' }
   }
 
   function closeSupport() {
+    const id = supportBusiness.value?.id
     supportBusiness.value = null
+    // Close the shop on the server too. If this fails, it closes by itself after two hours.
+    if (id) void callRpc('rpc_admin_close_business', { p_business_id: id }).catch(() => undefined)
   }
 
   function reset() {
     businesses.value = []
     platformAdmin.value = false
+    superAdmin.value = false
+    adminRights.value = []
     supportBusiness.value = null
     loaded.value = false
     select(null)
@@ -154,6 +178,9 @@ export const useBusinessStore = defineStore('business', () => {
     loaded,
     loading,
     platformAdmin,
+    superAdmin,
+    adminRights,
+    can,
     supportBusiness,
     load,
     ensureLoaded,

@@ -82,15 +82,3 @@ export interface SupportAccess {
 export async function getSupportAccess(businessId: string): Promise<SupportAccess> {
   return callRpc<SupportAccess>('rpc_list_support_access', { p_business_id: businessId })
 }
-
-export async function grantSupportAccess(businessId: string, hours: number, reason: string | null) {
-  return callRpc<{ id: string; expires_at: string }>('rpc_grant_support_access', {
-    p_business_id: businessId,
-    p_hours: hours,
-    p_reason: reason,
-  })
-}
-
-export async function revokeSupportAccess(businessId: string) {
-  return callRpc<{ revoked: number }>('rpc_revoke_support_access', { p_business_id: businessId })
-}

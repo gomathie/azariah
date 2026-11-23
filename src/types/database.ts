@@ -183,6 +183,26 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"business_payment_switches": {
+                  Row: {
+                    "business_id": string,"payments_on": boolean,"updated_at": string,"updated_by": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "business_id": string,"payments_on": boolean,"updated_at"?: string,"updated_by"?: string | null
+                  }
+                  Update: {
+                    "business_id"?: string,"payments_on"?: boolean,"updated_at"?: string,"updated_by"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "business_payment_switches_business_id_fkey"
+      columns: ["business_id"]
+isOneToOne: true
+      referencedRelation: "businesses"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"business_preferences": {
                   Row: {
                     "business_id": string,"settings": NonNullable<Json>,"updated_at": string
@@ -409,14 +429,14 @@ isOneToOne: false
                   ]
                 },"platform_admins": {
                   Row: {
-                    "created_at": string,"note": string | null,"user_id": string
+                    "added_by": string | null,"created_at": string,"is_super": boolean,"note": string | null,"rights": (string)[],"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"note"?: string | null,"user_id": string
+                    "added_by"?: string | null,"created_at"?: string,"is_super"?: boolean,"note"?: string | null,"rights"?: (string)[],"user_id": string
                   }
                   Update: {
-                    "created_at"?: string,"note"?: string | null,"user_id"?: string
+                    "added_by"?: string | null,"created_at"?: string,"is_super"?: boolean,"note"?: string | null,"rights"?: (string)[],"user_id"?: string
                   }
                   Relationships: [
                     
@@ -501,6 +521,26 @@ isOneToOne: false
                   Relationships: [
                     {
       foreignKeyName: "support_grants_business_id_fkey"
+      columns: ["business_id"]
+isOneToOne: false
+      referencedRelation: "businesses"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"support_sessions": {
+                  Row: {
+                    "admin_id": string,"business_id": string,"can_edit": boolean,"expires_at": string,"opened_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "admin_id": string,"business_id": string,"can_edit"?: boolean,"expires_at": string,"opened_at"?: string
+                  }
+                  Update: {
+                    "admin_id"?: string,"business_id"?: string,"can_edit"?: boolean,"expires_at"?: string,"opened_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "support_sessions_business_id_fkey"
       columns: ["business_id"]
 isOneToOne: false
       referencedRelation: "businesses"
@@ -615,6 +655,9 @@ isOneToOne: false
 { Args: { "p_business_id": string,"p_roles"?: (Database["public"]['Enums']["business_role"])[] }; Returns: undefined
                            },
 "assert_platform_admin":
+{ Args: { "p_right"?: string }; Returns: undefined
+                           },
+"assert_super_admin":
 { Args: Record<PropertyKey, never>; Returns: undefined
                            },
 "audit":
@@ -652,6 +695,8 @@ isOneToOne: false
                            },
 "billing_payments_on":
 { Args: Record<PropertyKey, never>; Returns: boolean
+                           } |
+{ Args: { "p_business_id": string }; Returns: boolean
                            },
 "billing_record_event":
 { Args: { "p_event_key": string,"p_event_type": string,"p_payload": Json,"p_reference": string }; Returns: boolean
@@ -668,10 +713,16 @@ isOneToOne: false
 "document_payload":
 { Args: { "p_id": string }; Returns: Json
                            },
+"has_admin_right":
+{ Args: { "p_right": string }; Returns: boolean
+                           },
 "has_plus":
 { Args: { "p_business_id": string }; Returns: boolean
                            },
 "has_support_access":
+{ Args: { "p_business_id": string }; Returns: boolean
+                           },
+"has_support_edit":
 { Args: { "p_business_id": string }; Returns: boolean
                            },
 "is_member":
@@ -689,8 +740,17 @@ isOneToOne: false
 "rpc_admin_billing_settings":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
+"rpc_admin_close_business":
+{ Args: { "p_business_id": string }; Returns: Json
+                           },
 "rpc_admin_create_discount_code":
 { Args: { "p_code": string,"p_max_uses"?: number,"p_note"?: string,"p_percent_off": number,"p_valid_days"?: number }; Returns: Json
+                           },
+"rpc_admin_list_accounts":
+{ Args: { "p_before"?: string,"p_limit"?: number,"p_search"?: string }; Returns: Json
+                           },
+"rpc_admin_list_admins":
+{ Args: Record<PropertyKey, never>; Returns: Json
                            },
 "rpc_admin_list_businesses":
 { Args: { "p_before"?: string,"p_limit"?: number,"p_search"?: string }; Returns: Json
@@ -699,7 +759,16 @@ isOneToOne: false
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
 "rpc_admin_open_business":
-{ Args: { "p_business_id": string }; Returns: Json
+{ Args: { "p_business_id": string,"p_edit"?: boolean }; Returns: Json
+                           },
+"rpc_admin_remove_admin":
+{ Args: { "p_user_id": string }; Returns: Json
+                           },
+"rpc_admin_save_admin":
+{ Args: { "p_email": string,"p_is_super"?: boolean,"p_note"?: string,"p_rights": (string)[] }; Returns: Json
+                           },
+"rpc_admin_set_business_payments":
+{ Args: { "p_business_id": string,"p_mode": string }; Returns: Json
                            },
 "rpc_admin_set_business_status":
 { Args: { "p_business_id": string,"p_reason": string,"p_status": string }; Returns: Json
@@ -745,9 +814,6 @@ isOneToOne: false
                            },
 "rpc_get_document":
 { Args: { "p_business_id": string,"p_document_id": string }; Returns: Json
-                           },
-"rpc_grant_support_access":
-{ Args: { "p_business_id": string,"p_hours"?: number,"p_reason"?: string }; Returns: Json
                            },
 "rpc_invite_member":
 { Args: { "p_business_id": string,"p_client_operation_id": string,"p_email": string,"p_role": string }; Returns: Json
@@ -799,9 +865,6 @@ isOneToOne: false
                            },
 "rpc_reverse_transaction":
 { Args: { "p_business_id": string,"p_client_operation_id": string,"p_reason": string,"p_transaction_id": string }; Returns: Json
-                           },
-"rpc_revoke_support_access":
-{ Args: { "p_business_id": string }; Returns: Json
                            },
 "rpc_start_trial":
 { Args: { "p_business_id": string,"p_client_operation_id": string }; Returns: Json

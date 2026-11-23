@@ -3,13 +3,8 @@ import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import PageHeader from '@/components/ui/PageHeader.vue'
 import AppAlert from '@/components/ui/AppAlert.vue'
-import AppButton from '@/components/ui/AppButton.vue'
-import AppInput from '@/components/ui/AppInput.vue'
-import AppSelect from '@/components/ui/AppSelect.vue'
 import {
   getSupportAccess,
-  grantSupportAccess,
-  revokeSupportAccess,
   type SupportAccess,
 } from '@/features/settings/api'
 import { RpcError } from '@/lib/supabase/rpc'
@@ -19,21 +14,11 @@ import { dateLocale } from '@/utils/dates'
 const { t, locale } = useI18n()
 const business = useBusinessStore()
 const access = ref<SupportAccess | null>(null)
-const hours = ref('24')
-const reason = ref('')
 const error = ref<string | null>(null)
-const notice = ref<string | null>(null)
-const busy = ref(false)
 
 const role = computed(() => business.current?.role)
-const isOwner = computed(() => role.value === 'owner' && !business.supportBusiness)
 // Owners and managers may see the record of what support did. Staff and viewers may not.
 const canSee = computed(() => (role.value === 'owner' || role.value === 'manager') && !business.supportBusiness)
-const hourOptions = computed(() => [
-  { value: '24', label: t('support.hours24') },
-  { value: '72', label: t('support.hours72') },
-  { value: '168', label: t('support.hours168') },
-])
 
 const time = (iso: string) =>
   new Intl.DateTimeFormat(dateLocale(locale.value), { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(iso))
@@ -57,41 +42,6 @@ async function refresh() {
   }
 }
 
-async function allow() {
-  const id = business.current?.id
-  if (!id) return
-  busy.value = true
-  error.value = null
-  notice.value = null
-  try {
-    await grantSupportAccess(id, Number(hours.value), reason.value.trim() || null)
-    reason.value = ''
-    notice.value = t('support.allowed')
-    await refresh()
-  } catch (e) {
-    error.value = message(e)
-  } finally {
-    busy.value = false
-  }
-}
-
-async function stop() {
-  const id = business.current?.id
-  if (!id) return
-  busy.value = true
-  error.value = null
-  notice.value = null
-  try {
-    await revokeSupportAccess(id)
-    notice.value = t('support.stopped')
-    await refresh()
-  } catch (e) {
-    error.value = message(e)
-  } finally {
-    busy.value = false
-  }
-}
-
 watch(() => business.current?.id, () => void refresh(), { immediate: true })
 </script>
 
@@ -103,21 +53,7 @@ watch(() => business.current?.id, () => void refresh(), { immediate: true })
     <div v-if="canSee" class="space-y-3">
       <h2 class="text-base font-semibold text-slate-900">{{ t('support.ownerTitle') }}</h2>
       <p class="text-slate-700 leading-relaxed">{{ t('support.ownerIntro') }}</p>
-      <AppAlert v-if="notice" kind="success">{{ notice }}</AppAlert>
       <AppAlert v-if="error" kind="error">{{ error }}</AppAlert>
-
-      <template v-if="access?.active">
-        <AppAlert kind="warning">{{ t('support.activeUntil', { time: time(access.active.expires_at) }) }}</AppAlert>
-        <AppButton v-if="isOwner" type="button" variant="danger" block :loading="busy" @click="stop">
-          {{ t('support.stop') }}
-        </AppButton>
-      </template>
-      <form v-else-if="isOwner" class="space-y-3" novalidate @submit.prevent="allow">
-        <AppSelect v-model="hours" :label="t('support.howLong')" :options="hourOptions" />
-        <AppInput v-model="reason" :label="t('support.why')" />
-        <AppButton type="submit" variant="secondary" block :loading="busy">{{ t('support.allow') }}</AppButton>
-      </form>
-      <p v-if="!isOwner" class="text-sm text-slate-600">{{ t('support.ownerOnly') }}</p>
 
       <template v-if="access && access.history.length">
         <h3 class="text-sm font-semibold text-slate-600">{{ t('support.historyTitle') }}</h3>

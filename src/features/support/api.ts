@@ -1,10 +1,14 @@
 import { callRpc } from '@/lib/supabase/rpc'
 
+export type PaymentsMode = 'default' | 'on' | 'off'
+
 /** One line of the shop directory. It carries no sales, balances or customers by design. */
 export interface DirectoryShop {
   id: string
   name: string
   business_type: string
+  /** 'default' follows the switch for everyone; 'on' and 'off' are set for this shop alone. */
+  payments_mode?: PaymentsMode
   country_code: string
   currency_code: string
   status: 'active' | 'suspended' | 'archived'
@@ -101,3 +105,55 @@ export const updateBillingProduct = (code: string, amountMinor: number, active: 
     p_amount_minor: amountMinor,
     p_active: active,
   })
+
+export const ADMIN_RIGHTS = ['view_shops', 'edit_shops', 'suspend_shops', 'billing'] as const
+export type AdminRight = (typeof ADMIN_RIGHTS)[number]
+
+export interface TeamAdmin {
+  user_id: string
+  email: string | null
+  is_super: boolean
+  rights: AdminRight[]
+  note: string | null
+  created_at: string
+  is_me: boolean
+}
+
+/** Everyone on the support team. Superadmin only. */
+export async function listAdmins(): Promise<TeamAdmin[]> {
+  return (await callRpc<TeamAdmin[]>('rpc_admin_list_admins', {})) ?? []
+}
+
+/** Add a person to the team, or change what they may do. The person must already have an account. */
+export const saveAdmin = (email: string, rights: AdminRight[], isSuper: boolean) =>
+  callRpc<{ user_id: string }>('rpc_admin_save_admin', {
+    p_email: email,
+    p_rights: isSuper ? [] : rights,
+    p_is_super: isSuper,
+  })
+
+export const removeAdmin = (userId: string) =>
+  callRpc<{ removed: boolean }>('rpc_admin_remove_admin', { p_user_id: userId })
+
+export const setShopPayments = (businessId: string, mode: PaymentsMode) =>
+  callRpc<{ id: string; payments_mode: PaymentsMode }>('rpc_admin_set_business_payments', {
+    p_business_id: businessId,
+    p_mode: mode,
+  })
+
+export interface Account {
+  id: string
+  email: string | null
+  created_at: string
+  last_sign_in_at: string | null
+  confirmed: boolean
+  is_admin: boolean
+  shops: { id: string; name: string; role: 'owner' | 'manager' | 'staff' | 'viewer'; status: string }[]
+}
+
+/** Every account that was created, newest first. Any platform admin. */
+export async function listAccounts(search: string | null, before: string | null = null): Promise<Account[]> {
+  return (
+    (await callRpc<Account[]>('rpc_admin_list_accounts', { p_search: search, p_limit: 25, p_before: before })) ?? []
+  )
+}

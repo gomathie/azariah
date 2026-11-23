@@ -1,6 +1,6 @@
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(49);
+select plan(75);
 
 create schema if not exists tests;
 grant usage on schema tests to anon, authenticated;
@@ -32,7 +32,8 @@ select tests.create_user('owner-a@example.test') as owner_a \gset
 select tests.create_user('owner-b@example.test') as owner_b \gset
 select tests.create_user('support@example.test') as admin \gset
 select tests.create_user('nobody@example.test') as nobody \gset
-insert into public.platform_admins (user_id, note) values (:'admin', 'test admin');
+select tests.create_user('helper@example.test') as helper \gset
+insert into public.platform_admins (user_id, note, is_super) values (:'admin', 'test admin', true);
 
 select tests.authenticate(:'owner_a');
 select (public.rpc_create_business_and_owner(gen_random_uuid(), 'Zqx Support Shop A', 'retail', 'GH', 'Africa/Accra', 'GHS') ->> 'business_id') as biz_a \gset
@@ -51,71 +52,106 @@ select tests.authenticate(:'nobody');
 select is(public.rpc_admin_whoami() ->> 'is_platform_admin', 'false', 'ordinary user is not a platform admin');
 select throws_like($$select public.rpc_admin_list_businesses()$$, '%AZ_FORBIDDEN%', 'ordinary user cannot list shops');
 select throws_like(format($$select public.rpc_admin_set_business_status(%L, 'suspended', 'because')$$, :'biz_a'), '%AZ_FORBIDDEN%', 'ordinary user cannot suspend a shop');
+select throws_like(format($$select public.rpc_admin_open_business(%L, true)$$, :'biz_a'), '%AZ_FORBIDDEN%', 'ordinary user cannot open someone else''s shop');
 select throws_ok(format($$insert into public.platform_admins (user_id) values (%L)$$, :'nobody'), '42501', null, 'nobody can insert themselves as admin');
 select throws_ok($$select count(*) from public.platform_admins$$, '42501', null, 'the admin list is not readable through the API');
-select throws_like(format($$select public.rpc_grant_support_access(%L, 24, null)$$, :'biz_a'), '%AZ_FORBIDDEN%', 'a non-owner cannot grant support access to a shop');
+select throws_ok($$select count(*) from public.support_sessions$$, '42501', null, 'open-shop records are not readable through the API');
+select throws_like($$select public.rpc_admin_save_admin('nobody@example.test', array['edit_shops'], true)$$, '%AZ_FORBIDDEN%', 'ordinary user cannot make themselves an admin through the function');
+select throws_like($$select public.rpc_admin_list_admins()$$, '%AZ_FORBIDDEN%', 'ordinary user cannot list admins');
 select tests.clear_auth();
 
--- 2. An admin WITHOUT a grant sees the directory and nothing inside any shop -------------------------
+-- 2. A superadmin who has not opened a shop sees the directory and nothing inside any shop -----------
 select tests.authenticate(:'admin');
-select is(public.rpc_admin_whoami() ->> 'is_platform_admin', 'true', 'admin is recognised');
-select is((select count(*) from public.businesses), 0::bigint, 'admin without a grant sees no business rows');
-select is((select count(*) from public.transactions), 0::bigint, 'admin without a grant sees no entries');
-select is((select count(*) from public.v_account_balances), 0::bigint, 'admin without a grant sees no balances');
-select throws_like(format($$select public.rpc_get_dashboard_summary(%L, current_date, current_date)$$, :'biz_a'), '%AZ_FORBIDDEN%', 'admin without a grant cannot read the dashboard');
-select throws_like(format($$select public.rpc_admin_open_business(%L)$$, :'biz_a'), '%AZ_SUPPORT_NOT_GRANTED%', 'admin cannot open a shop without the owner''s grant');
+select is(public.rpc_admin_whoami() ->> 'is_super', 'true', 'the superadmin is recognised');
+select is(jsonb_array_length(public.rpc_admin_whoami() -> 'rights'), 4, 'a superadmin holds every right');
+select is((select count(*) from public.businesses), 0::bigint, 'before opening a shop the admin sees no business rows');
+select is((select count(*) from public.transactions), 0::bigint, 'before opening a shop the admin sees no entries');
+select throws_like(format($$select public.rpc_get_dashboard_summary(%L, current_date, current_date)$$, :'biz_a'), '%AZ_FORBIDDEN%', 'before opening a shop the admin cannot read its dashboard');
+select throws_like(format($$select public.rpc_create_sale(gen_random_uuid(), %L, now(), 100, 100, %L, null, null, 'x', null)$$, :'biz_a', :'cash_a'), '%AZ_FORBIDDEN%', 'before opening a shop the admin cannot write in it');
 select public.rpc_admin_list_businesses('Zqx Support Shop') as directory \gset
 select is(jsonb_array_length((:'directory')::jsonb), 2, 'directory lists both shops');
 select ok(not ((:'directory')::jsonb -> 0) ?| array['sales_minor','balance_minor','amount_minor','contacts','transactions'], 'directory rows carry no money or customer fields');
 select is(jsonb_array_length(public.rpc_admin_list_businesses('owner-a@')), 1, 'admin can find a shop by its owner''s email');
 select is(jsonb_array_length(public.rpc_admin_list_businesses('%')), 0, 'a percent sign in the search is matched literally, not as a wildcard');
+select throws_like($$select public.rpc_admin_open_business(gen_random_uuid())$$, '%AZ_NOT_FOUND%', 'opening a shop that does not exist is refused');
+
+-- 3. Opened to look: reads that shop only, writes nothing ---------------------------------------------
+select is(public.rpc_admin_open_business(:'biz_a') ->> 'can_edit', 'false', 'superadmin opens Shop A to look, with no grant from the owner');
+select is((select count(*) from public.transactions where business_id = :'biz_a'), 1::bigint, 'the admin reads the open shop''s entries');
+select is((public.rpc_get_dashboard_summary(:'biz_a', current_date - 1, current_date + 1) ->> 'sales_minor'), '10000', 'the admin reads the open shop''s dashboard');
+select is((select count(*) from public.transactions where business_id = :'biz_b'), 0::bigint, 'opening Shop A does not open Shop B');
+select throws_like(format($$select public.rpc_create_sale(gen_random_uuid(), %L, now(), 100, 100, %L, null, null, 'x', null)$$, :'biz_a', :'cash_a'), '%AZ_FORBIDDEN%', 'a shop opened to look cannot be written to, even by a superadmin');
+select throws_ok(format($$insert into public.contacts (business_id, name) values (%L, 'Planted')$$, :'biz_a'), '42501', null, 'a shop opened to look takes no direct insert');
+
+-- 4. Opened for changes: the superadmin can do what the owner can -------------------------------------
+select is(public.rpc_admin_open_business(:'biz_a', true) ->> 'can_edit', 'true', 'superadmin opens Shop A for changes');
+select ok((public.rpc_create_sale(gen_random_uuid(), :'biz_a', now(), 2500, 2500, :'cash_a', null, null, 'Support fix', null) ->> 'transaction_id') is not null, 'superadmin records a sale in the shop');
+select ok(public.rpc_reverse_transaction(gen_random_uuid(), :'biz_a', :'sale_a', 'entered twice') is not null, 'superadmin reverses an entry in the shop');
+select is((select count(*) from public.transactions where business_id = :'biz_a' and created_by = :'admin'), 2::bigint, 'what the admin wrote is stored under the admin, not the owner');
+select throws_like(format($$select public.rpc_create_sale(gen_random_uuid(), %L, now(), 100, 100, %L, null, null, 'x', null)$$, :'biz_b', :'cash_b'), '%AZ_FORBIDDEN%', 'the open Shop A does not let the admin write in Shop B');
+
+-- 5. Closing and time both shut the door --------------------------------------------------------------
+select public.rpc_admin_close_business(:'biz_a');
+select is((select count(*) from public.transactions), 0::bigint, 'after closing the shop the admin reads nothing');
+select public.rpc_admin_open_business(:'biz_a', true);
+select tests.clear_auth();
+update public.support_sessions set expires_at = now() - interval '1 minute' where admin_id = :'admin';
+select tests.authenticate(:'admin');
+select is((select count(*) from public.transactions), 0::bigint, 'after two hours the open shop closes by itself');
+select throws_like(format($$select public.rpc_create_sale(gen_random_uuid(), %L, now(), 100, 100, %L, null, null, 'x', null)$$, :'biz_a', :'cash_a'), '%AZ_FORBIDDEN%', 'and nothing can be written after that');
+
+-- 6. The superadmin decides what other admins can do --------------------------------------------------
+select throws_like($$select public.rpc_admin_save_admin('nobody-registered@example.test', array['view_shops'])$$, '%AZ_NOT_FOUND%', 'a person without an account cannot be made an admin');
+select throws_like($$select public.rpc_admin_save_admin('helper@example.test', array['everything'])$$, '%AZ_INVALID_INPUT%', 'an unknown right is refused');
+select throws_like($$select public.rpc_admin_save_admin('support@example.test', array[]::text[], false)$$, '%AZ_INVALID_INPUT%', 'a superadmin cannot change their own entry');
+select throws_like(format($$select public.rpc_admin_remove_admin(%L)$$, :'admin'), '%AZ_INVALID_INPUT%', 'a superadmin cannot remove themselves');
+select is(public.rpc_admin_save_admin('helper@example.test', array['view_shops']) ->> 'is_super', 'false', 'superadmin adds a helper who may only look');
+select is((select count(*) from jsonb_array_elements(public.rpc_admin_list_admins()) e where e ->> 'email' in ('support@example.test', 'helper@example.test')), 2::bigint, 'the superadmin sees both admins');
 select tests.clear_auth();
 
--- 3. The owner grants access; the admin can read that shop and only that shop ------------------------
-select tests.authenticate(:'owner_a');
-select throws_like(format($$select public.rpc_grant_support_access(%L, 500, null)$$, :'biz_a'), '%AZ_INVALID_INPUT%', 'a grant longer than 7 days is refused');
-select throws_like(format($$select public.rpc_grant_support_access(%L, 0, null)$$, :'biz_a'), '%AZ_INVALID_INPUT%', 'a zero-hour grant is refused');
-select ok((public.rpc_grant_support_access(:'biz_a', 24, 'Balance looks wrong') ->> 'expires_at') is not null, 'owner grants 24 hours');
-select ok((public.rpc_list_support_access(:'biz_a') -> 'active') is not null, 'owner sees the live grant');
+select tests.authenticate(:'helper');
+select is(public.rpc_admin_whoami() -> 'rights', '["view_shops"]'::jsonb, 'the helper is told exactly which rights they hold');
+select is(public.rpc_admin_open_business(:'biz_a') ->> 'name', 'Zqx Support Shop A', 'the helper opens a shop to look');
+select is((select count(*) from public.transactions where business_id = :'biz_a'), 3::bigint, 'the helper reads the shop');
+select throws_like(format($$select public.rpc_admin_open_business(%L, true)$$, :'biz_a'), '%AZ_FORBIDDEN%', 'a helper without the edit right cannot open a shop for changes');
+select throws_like(format($$select public.rpc_create_sale(gen_random_uuid(), %L, now(), 100, 100, %L, null, null, 'x', null)$$, :'biz_a', :'cash_a'), '%AZ_FORBIDDEN%', 'a helper without the edit right cannot record a sale');
+select throws_like(format($$select public.rpc_start_trial(gen_random_uuid(), %L)$$, :'biz_a'), '%AZ_FORBIDDEN%', 'a helper without the edit right cannot start a Plus trial for the shop');
+select throws_like(format($$select public.rpc_billing_start_payment(gen_random_uuid(), %L, 'plus_1m')$$, :'biz_a'), '%AZ_FORBIDDEN%', 'a helper without the edit right cannot start a payment for the shop');
+select throws_like(format($$select public.rpc_export_business_data(%L)$$, :'biz_a'), '%AZ_FORBIDDEN%', 'a helper without the edit right cannot download the whole shop');
+select throws_like(format($$select public.rpc_admin_set_business_status(%L, 'suspended', 'because')$$, :'biz_b'), '%AZ_FORBIDDEN%', 'a helper without the suspend right cannot suspend a shop');
+select throws_like($$select public.rpc_admin_list_discount_codes()$$, '%AZ_FORBIDDEN%', 'a helper without the billing right cannot see discount codes');
+select throws_like($$select public.rpc_admin_set_payments_on(true)$$, '%AZ_FORBIDDEN%', 'a helper without the billing right cannot turn payments on');
+select throws_like($$select public.rpc_admin_save_admin('nobody@example.test', array['edit_shops'])$$, '%AZ_FORBIDDEN%', 'a helper cannot add admins');
+select throws_like($$select public.rpc_admin_save_admin('helper@example.test', array['edit_shops'], true)$$, '%AZ_FORBIDDEN%', 'a helper cannot give themselves more rights');
 select tests.clear_auth();
 
 select tests.authenticate(:'admin');
-select is(public.rpc_admin_open_business(:'biz_a') ->> 'name', 'Zqx Support Shop A', 'admin opens the shop the owner allowed');
-select is((select count(*) from public.transactions where business_id = :'biz_a'), 1::bigint, 'admin with a grant reads that shop''s entries');
-select is((public.rpc_get_dashboard_summary(:'biz_a', current_date - 1, current_date + 1) ->> 'sales_minor'), '10000', 'admin with a grant reads that shop''s dashboard');
-select is((select count(*) from public.transactions where business_id = :'biz_b'), 0::bigint, 'a grant for Shop A does not open Shop B');
-select throws_like(format($$select public.rpc_admin_open_business(%L)$$, :'biz_b'), '%AZ_SUPPORT_NOT_GRANTED%', 'admin still cannot open Shop B');
-
--- 4. Support access is read-only: every kind of write is refused ------------------------------------
-select throws_like(format($$select public.rpc_create_sale(gen_random_uuid(), %L, now(), 100, 100, %L, null, null, 'x', null)$$, :'biz_a', :'cash_a'), '%AZ_FORBIDDEN%', 'admin cannot record a sale');
-select throws_like(format($$select public.rpc_reverse_transaction(gen_random_uuid(), %L, %L, 'support')$$, :'biz_a', :'sale_a'), '%AZ_FORBIDDEN%', 'admin cannot reverse an entry');
-select throws_like(format($$select public.rpc_record_owner_movement(gen_random_uuid(), %L, now(), 100, %L, 'withdrawal', null)$$, :'biz_a', :'cash_a'), '%AZ_FORBIDDEN%', 'admin cannot move owner money');
-select throws_like(format($$select public.rpc_export_business_data(%L)$$, :'biz_a'), '%AZ_FORBIDDEN%', 'admin cannot download the whole shop');
-select throws_like(format($$select public.rpc_grant_support_access(%L, 24, null)$$, :'biz_a'), '%AZ_FORBIDDEN%', 'admin cannot extend their own access');
-select throws_like(format($$select public.rpc_start_trial(gen_random_uuid(), %L)$$, :'biz_a'), '%AZ_FORBIDDEN%', 'admin cannot start a Plus trial for the shop');
-select throws_like(format($$select public.rpc_billing_start_payment(gen_random_uuid(), %L, 'plus_1m')$$, :'biz_a'), '%AZ_FORBIDDEN%', 'admin cannot start a payment for the shop');
-select throws_ok(format($$insert into public.contacts (business_id, name) values (%L, 'Planted')$$, :'biz_a'), '42501', null, 'admin cannot add a customer');
-select lives_ok(format($$update public.businesses set name = 'Renamed' where id = %L$$, :'biz_a'), 'rename attempt by admin runs');
+select public.rpc_admin_save_admin('helper@example.test', array['edit_shops', 'billing']);
 select tests.clear_auth();
-select is((select name from public.businesses where id = :'biz_a'), 'Zqx Support Shop A', 'the shop name is unchanged: zero rows matched for the admin');
-
--- 5. Revoke and expiry both close the door ----------------------------------------------------------
-select tests.authenticate(:'owner_a');
-select is(public.rpc_revoke_support_access(:'biz_a') ->> 'revoked', '1', 'owner revokes the grant');
+select tests.authenticate(:'helper');
+select is(public.rpc_admin_open_business(:'biz_a', true) ->> 'can_edit', 'true', 'with the edit right the helper opens a shop for changes');
+select ok((public.rpc_create_sale(gen_random_uuid(), :'biz_a', now(), 700, 700, :'cash_a', null, null, 'Helper fix', null) ->> 'transaction_id') is not null, 'and records a sale');
+select lives_ok($$select public.rpc_admin_list_discount_codes()$$, 'with the billing right the helper sees discount codes');
 select tests.clear_auth();
+
 select tests.authenticate(:'admin');
-select is((select count(*) from public.transactions), 0::bigint, 'after revoke the admin reads nothing');
+select public.rpc_admin_save_admin('helper@example.test', array['view_shops']);
+select tests.clear_auth();
+select tests.authenticate(:'helper');
+select throws_like(format($$select public.rpc_create_sale(gen_random_uuid(), %L, now(), 100, 100, %L, null, null, 'x', null)$$, :'biz_a', :'cash_a'), '%AZ_FORBIDDEN%', 'taking the edit right away stops writes at once, with the shop still open');
+select is((select count(*) from public.transactions where business_id = :'biz_a'), 4::bigint, 'but the helper can still look');
 select tests.clear_auth();
 
-select tests.authenticate(:'owner_a');
-select public.rpc_grant_support_access(:'biz_a', 1, null);
-select tests.clear_auth();
-update public.support_grants set created_at = now() - interval '3 hours', expires_at = now() - interval '2 hours'
-where business_id = :'biz_a' and revoked_at is null;
 select tests.authenticate(:'admin');
-select is((select count(*) from public.transactions), 0::bigint, 'after expiry the admin reads nothing');
+select is(public.rpc_admin_remove_admin(:'helper') ->> 'removed', 'true', 'superadmin removes the helper');
+select tests.clear_auth();
+select tests.authenticate(:'helper');
+select is(public.rpc_admin_whoami() ->> 'is_platform_admin', 'false', 'a removed helper is no longer an admin');
+select is((select count(*) from public.transactions), 0::bigint, 'and reads nothing');
+select tests.clear_auth();
 
--- 6. Suspend and reactivate --------------------------------------------------------------------------
+-- 7. Suspend and reactivate --------------------------------------------------------------------------
+select tests.authenticate(:'admin');
 select throws_like(format($$select public.rpc_admin_set_business_status(%L, 'suspended', '')$$, :'biz_b'), '%AZ_INVALID_INPUT%', 'suspending needs a reason');
 select throws_like(format($$select public.rpc_admin_set_business_status(%L, 'archived', 'tidy up')$$, :'biz_b'), '%AZ_INVALID_INPUT%', 'admin can only set active or suspended');
 select is(public.rpc_admin_set_business_status(:'biz_b', 'suspended', 'Reported fraud') ->> 'status', 'suspended', 'admin suspends Shop B');
@@ -130,10 +166,15 @@ select tests.authenticate(:'owner_b');
 select is((select count(*) from public.businesses), 1::bigint, 'the owner is back in after reactivation');
 select tests.clear_auth();
 
--- 7. Everything support did is on the record ---------------------------------------------------------
-select is((select count(*) from public.audit_events where business_id = :'biz_a' and action = 'support.granted'), 2::bigint, 'both grants are logged');
+-- 8. The owner can see what support did, and everything is on the record -----------------------------
+select tests.authenticate(:'owner_a');
+select ok(jsonb_array_length(public.rpc_list_support_access(:'biz_a') -> 'history') >= 4, 'the owner sees each time support opened the shop');
+select tests.clear_auth();
 select is((select count(*) from public.audit_events where business_id = :'biz_a' and action = 'support.viewed' and actor_id = :'admin'), 1::bigint, 'the look is logged against the admin');
-select is((select count(*) from public.audit_events where business_id = :'biz_a' and action = 'support.revoked'), 1::bigint, 'the revoke is logged');
+select is((select count(*) from public.audit_events where business_id = :'biz_a' and action = 'support.edit_opened' and actor_id = :'admin'), 2::bigint, 'each opening for changes is logged against the admin');
+select is((select count(*) from public.audit_events where business_id = :'biz_a' and action like 'support.%' and actor_id = :'helper'), 2::bigint, 'the helper''s openings are logged against the helper');
+select is((select count(*) from public.audit_events where action = 'admin.saved'), 3::bigint, 'every change of rights is logged');
+select is((select count(*) from public.audit_events where action = 'admin.removed'), 1::bigint, 'removing an admin is logged');
 select is((select count(*) from public.audit_events where business_id = :'biz_b' and action = 'support.status_changed'), 2::bigint, 'suspend and reactivate are logged');
 select ok((select count(*) from public.audit_events where action = 'support.searched' and actor_id = :'admin') >= 2, 'searches are logged');
 
