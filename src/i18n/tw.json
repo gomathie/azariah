@@ -56,6 +56,22 @@
     "alreadyRegistered": "Email yi wɔ akawnt dedaw. Mia Hyɛn mu wɔ ase hɔ. Sɛ wo werɛ afi wo password a, mia Wo werɛ afi password no wɔ baabi a wohyɛn mu no.",
     "language": "Kasa"
   },
+  "emailConfirm": {
+    "title": "Si wo email so dua",
+    "why": "Sɛ wo werɛ fi wo password a, yɛde ɔkwan a wobɛfa so asan aba no kɔ wo email so. Si so dua seesei na ama ayɛ adwuma.",
+    "sendTo": "Yɛde code bi bɛkɔ",
+    "send": "Soma code no brɛ me",
+    "later": "Akyiri yi",
+    "sent": "Yɛde code bi akɔ",
+    "typeCode": "Kyerɛw wɔ ha. Ebetumi adi simma baako ansa na aba. Hwɛ spam mu nso.",
+    "code": "Code a ɛwɔ email no mu",
+    "confirm": "Si so dua",
+    "again": "Soma bio",
+    "wrongCode": "Code no nyɛ, anaasɛ akyɛ dodo. Hwɛ no yiye, anaa mia Soma bio.",
+    "wait": "Woasɔ ahwɛ mpɛn pii. Twɛn simma kakra, na san sɔ hwɛ.",
+    "done": "Wɔasi wo email so dua. Yɛda wo ase.",
+    "close": "To mu"
+  },
   "onboarding": {
     "title": "Hyehyɛ wo adwuma",
     "intro": "Nea ɛho hia nko ara. Wubetumi asesa akyiri yi.",

@@ -56,6 +56,22 @@
     "alreadyRegistered": "Cet e-mail a déjà un compte. Touchez Se connecter ci-dessous. Si vous avez oublié votre mot de passe, touchez Mot de passe oublié sur l'écran de connexion.",
     "language": "Langue"
   },
+  "emailConfirm": {
+    "title": "Confirmez votre e-mail",
+    "why": "Si vous oubliez votre mot de passe, nous envoyons le moyen de revenir à votre e-mail. Confirmez-le maintenant pour que cela marche.",
+    "sendTo": "Nous enverrons un code à",
+    "send": "Envoyez-moi le code",
+    "later": "Plus tard",
+    "sent": "Nous avons envoyé un code à",
+    "typeCode": "Tapez-le ici. Il peut mettre une minute à arriver. Regardez aussi dans les spams.",
+    "code": "Code reçu par e-mail",
+    "confirm": "Confirmer",
+    "again": "Renvoyer",
+    "wrongCode": "Ce code n'est pas bon, ou il est trop ancien. Vérifiez-le, ou touchez Renvoyer.",
+    "wait": "Trop d'essais. Attendez quelques minutes, puis réessayez.",
+    "done": "Votre e-mail est confirmé. Merci.",
+    "close": "Fermer"
+  },
   "onboarding": {
     "title": "Configurez votre entreprise",
     "intro": "Juste l'essentiel. Vous pourrez modifier plus tard.",

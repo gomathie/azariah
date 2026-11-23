@@ -3,6 +3,7 @@ import { RouterLink, RouterView, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import BrandMark from '@/components/BrandMark.vue'
 import AppIcon from '@/components/ui/AppIcon.vue'
+import EmailConfirmReminder from '@/features/auth/EmailConfirmReminder.vue'
 import { useBusinessStore } from '@/stores/business'
 
 const { t } = useI18n()
@@ -72,6 +73,9 @@ const tabs = [
       </div>
       <RouterView />
     </main>
+
+    <!-- Not while an admin has someone's shop open: the reminder is about the admin's own account. -->
+    <EmailConfirmReminder v-if="!business.supportBusiness" />
 
     <!-- Mobile bottom navigation: Home · Daybook · Add · Customers · Reports -->
     <nav

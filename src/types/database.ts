@@ -369,6 +369,20 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"email_confirmations": {
+                  Row: {
+                    "confirmed_at": string,"email": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "confirmed_at"?: string,"email": string,"user_id": string
+                  }
+                  Update: {
+                    "confirmed_at"?: string,"email"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"money_accounts": {
                   Row: {
                     "business_id": string,"created_at": string,"currency_code": string,"id": string,"is_active": boolean,"is_default": boolean,"name": string,"sort_order": number,"type": Database["public"]['Enums']["account_type"],"updated_at": string
@@ -805,6 +819,9 @@ isOneToOne: false
                            },
 "rpc_create_sale":
 { Args: { "p_amount_minor": number,"p_business_id": string,"p_category_id"?: string,"p_client_operation_id": string,"p_contact_id"?: string,"p_description"?: string,"p_money_account_id"?: string,"p_note"?: string,"p_occurred_at": string,"p_received_minor": number }; Returns: Json
+                           },
+"rpc_email_confirmation":
+{ Args: Record<PropertyKey, never>; Returns: Json
                            },
 "rpc_export_business_data":
 { Args: { "p_business_id": string }; Returns: Json

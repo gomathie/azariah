@@ -56,6 +56,22 @@
     "alreadyRegistered": "This email already has an account. Tap Sign in below. If you forgot your password, tap Forgot password on the sign-in screen.",
     "language": "Language"
   },
+  "emailConfirm": {
+    "title": "Confirm your email",
+    "why": "If you forget your password, we send the way back in to your email. Confirm it now so that works.",
+    "sendTo": "We will send a code to",
+    "send": "Send me the code",
+    "later": "Later",
+    "sent": "We sent a code to",
+    "typeCode": "Type it here. It can take a minute to arrive. Look in spam too.",
+    "code": "Code from the email",
+    "confirm": "Confirm",
+    "again": "Send again",
+    "wrongCode": "That code is not right, or it is too old. Check it, or tap Send again.",
+    "wait": "Too many tries. Wait a few minutes, then try again.",
+    "done": "Your email is confirmed. Thank you.",
+    "close": "Close"
+  },
   "onboarding": {
     "title": "Set up your business",
     "intro": "Just the basics. You can change these later.",
