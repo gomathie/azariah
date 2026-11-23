@@ -1,253 +1,145 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
-import { RouterLink, useRouter } from 'vue-router'
+import { computed } from 'vue'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import BrandMark from '@/components/BrandMark.vue'
+import AppIcon from '@/components/ui/AppIcon.vue'
 import PageHeader from '@/components/ui/PageHeader.vue'
-import AppAlert from '@/components/ui/AppAlert.vue'
-import AppButton from '@/components/ui/AppButton.vue'
-import AppInput from '@/components/ui/AppInput.vue'
-import DiscountCodesPanel from '@/features/support/DiscountCodesPanel.vue'
-import PaymentsPanel from '@/features/support/PaymentsPanel.vue'
-import AdminsPanel from '@/features/support/AdminsPanel.vue'
 import AccountsPanel from '@/features/support/AccountsPanel.vue'
-import AppSelect from '@/components/ui/AppSelect.vue'
-import {
-  listShops,
-  setShopPayments,
-  setShopStatus,
-  type DirectoryShop,
-  type PaymentsMode,
-} from '@/features/support/api'
-import { RpcError } from '@/lib/supabase/rpc'
+import AdminsPanel from '@/features/support/AdminsPanel.vue'
+import DiscountCodesPanel from '@/features/support/DiscountCodesPanel.vue'
+import OverviewPanel from '@/features/support/OverviewPanel.vue'
+import PaymentsPanel from '@/features/support/PaymentsPanel.vue'
+import ShopsPanel from '@/features/support/ShopsPanel.vue'
 import { useBusinessStore } from '@/stores/business'
-import { dateLocale, friendlyDate } from '@/utils/dates'
 
-const PAGE = 25
-const { t, locale } = useI18n()
+/**
+ * The admin console: an overview, then one section each for shops, accounts, discount codes,
+ * payments and the team. Sections follow the admin's rights; the database refuses anything a
+ * hidden section would have done.
+ */
+type Section = 'overview' | 'shops' | 'accounts' | 'discounts' | 'payments' | 'admins'
+const ICONS = {
+  overview: 'home',
+  shops: 'book',
+  accounts: 'people',
+  discounts: 'sale',
+  payments: 'payment',
+  admins: 'owner',
+} as const satisfies Record<Section, string>
+
+const { t } = useI18n()
+const route = useRoute()
 const router = useRouter()
 const business = useBusinessStore()
-/** The console has two parts: the shop directory, and discount codes for Azaria Plus. */
-type Tab = 'shops' | 'accounts' | 'discounts' | 'payments' | 'admins'
-const tab = ref<Tab>('shops')
-/** Tabs follow the admin's rights. The database refuses anything the tab would have hidden. */
-const tabs = computed<Tab[]>(() => [
+
+const sections = computed<Section[]>(() => [
+  'overview',
   'shops',
   'accounts',
   ...(business.can('billing') ? (['discounts', 'payments'] as const) : []),
   ...(business.superAdmin ? (['admins'] as const) : []),
 ])
-const search = ref('')
-const shops = ref<DirectoryShop[]>([])
-const hasMore = ref(false)
-const loading = ref(false)
-const error = ref<string | null>(null)
-/** The shop whose suspend or reactivate form is open, with the reason being typed. */
-const acting = ref<string | null>(null)
-const reason = ref('')
-const reasonError = ref<string | null>(null)
-const busy = ref<string | null>(null)
 
-const message = (e: unknown) =>
-  e instanceof RpcError ? t(e.i18nKey) : navigator.onLine ? t('errors.generic') : t('errors.network')
+/** The open section lives in the address, so Back and reload keep the admin where they were. */
+const section = computed<Section>(() => {
+  const wanted = route.query.section
+  return typeof wanted === 'string' && (sections.value as string[]).includes(wanted) ? (wanted as Section) : 'overview'
+})
 
-async function load(reset: boolean) {
-  loading.value = true
-  error.value = null
-  try {
-    const before = reset ? null : (shops.value.at(-1)?.created_at ?? null)
-    const rows = await listShops(search.value.trim() || null, before)
-    shops.value = reset ? rows : [...shops.value, ...rows]
-    hasMore.value = rows.length === PAGE
-  } catch (e) {
-    error.value = message(e)
-  } finally {
-    loading.value = false
-  }
+function go(next: Section) {
+  void router.push({ name: 'support-console', query: next === 'overview' ? {} : { section: next } })
 }
-
-async function open(shop: DirectoryShop, edit: boolean) {
-  busy.value = shop.id
-  error.value = null
-  try {
-    await business.openSupport(shop.id, edit)
-    await router.push({ name: 'home' })
-  } catch (e) {
-    error.value = message(e)
-  } finally {
-    busy.value = null
-  }
-}
-
-const notice = ref<string | null>(null)
-const paymentOptions = computed(() => [
-  { value: 'default', label: t('support.shopPaymentsDefault') },
-  { value: 'on', label: t('support.shopPaymentsOn') },
-  { value: 'off', label: t('support.shopPaymentsOff') },
-])
-
-async function changePayments(shop: DirectoryShop, mode: string) {
-  if (mode !== 'default' && mode !== 'on' && mode !== 'off') return
-  const previous: PaymentsMode = shop.payments_mode ?? 'default'
-  if (mode === previous) return
-  error.value = null
-  notice.value = null
-  shop.payments_mode = mode
-  try {
-    await setShopPayments(shop.id, mode)
-    notice.value = t('support.shopPaymentsSaved', { name: shop.name })
-  } catch (e) {
-    shop.payments_mode = previous
-    error.value = message(e)
-  }
-}
-
-function startAction(shop: DirectoryShop) {
-  acting.value = acting.value === shop.id ? null : shop.id
-  reason.value = ''
-  reasonError.value = null
-}
-
-async function confirmStatus(shop: DirectoryShop) {
-  reasonError.value = null
-  if (reason.value.trim().length < 3) {
-    reasonError.value = t('support.reasonNeeded')
-    return
-  }
-  busy.value = shop.id
-  try {
-    const next = shop.status === 'suspended' ? 'active' : 'suspended'
-    await setShopStatus(shop.id, next, reason.value.trim())
-    shop.status = next
-    acting.value = null
-  } catch (e) {
-    reasonError.value = message(e)
-  } finally {
-    busy.value = null
-  }
-}
-
-const day = (iso: string | null) =>
-  iso ? friendlyDate(iso, locale.value, { today: t('app.today'), yesterday: t('app.yesterday') }) : t('support.never')
-const time = (iso: string) =>
-  new Intl.DateTimeFormat(dateLocale(locale.value), { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(iso))
-
-onMounted(() => void load(true))
 </script>
 
 <template>
-  <div class="min-h-dvh">
-    <PageHeader :title="t('support.console')" />
-    <section class="p-4 space-y-4 max-w-2xl mx-auto">
-      <AppAlert kind="info">
-        {{ t('support.intro') }}
-        <RouterLink :to="{ name: 'guide', params: { which: 'admin' } }" class="underline font-semibold">{{
-          t('guide.admin')
-        }}</RouterLink>
-      </AppAlert>
-      <div v-if="tabs.length > 1" class="flex flex-wrap gap-2" role="tablist">
+  <div class="min-h-dvh bg-slate-50 md:flex">
+    <!-- Computer: navigation at the side -->
+    <aside class="no-print hidden md:flex w-60 shrink-0 flex-col gap-1 bg-brand-900 text-white p-4 sticky top-0 h-dvh">
+      <div class="flex items-center gap-3 px-2 pb-4">
+        <BrandMark class="size-9 shrink-0" />
+        <span class="font-semibold leading-tight">{{ t('support.console') }}</span>
+      </div>
+      <nav class="flex flex-col gap-1" role="tablist" :aria-label="t('support.console')">
         <button
-          v-for="name in tabs"
+          v-for="name in sections"
           :key="name"
           type="button"
           role="tab"
-          :aria-selected="tab === name"
-          class="flex-1 min-h-12 rounded-xl border font-semibold"
-          :class="tab === name ? 'bg-brand-700 text-white border-brand-700' : 'bg-white text-brand-800 border-brand-200'"
-          @click="tab = name"
+          :aria-selected="section === name"
+          class="flex items-center gap-3 rounded-xl px-3 min-h-11 text-left"
+          :class="section === name ? 'bg-white text-brand-900 font-semibold' : 'text-brand-50 hover:bg-brand-800'"
+          @click="go(name)"
         >
-          {{ t(`support.${name}`) }}
+          <AppIcon :name="ICONS[name]" class="size-5 shrink-0" />{{ t(`support.${name}`) }}
         </button>
+      </nav>
+      <div class="mt-auto flex flex-col gap-1 text-sm">
+        <RouterLink
+          :to="{ name: 'guide', params: { which: 'admin' } }"
+          class="rounded-xl px-3 min-h-11 flex items-center text-brand-50 hover:bg-brand-800"
+          >{{ t('guide.admin') }}</RouterLink
+        >
+        <RouterLink
+          v-if="business.businesses.length"
+          :to="{ name: 'home' }"
+          class="rounded-xl px-3 min-h-11 flex items-center text-brand-50 hover:bg-brand-800"
+          >{{ t('support.myShop') }}</RouterLink
+        >
       </div>
-      <DiscountCodesPanel v-if="tab === 'discounts'" />
-      <PaymentsPanel v-else-if="tab === 'payments'" />
-      <AdminsPanel v-else-if="tab === 'admins'" />
-      <AccountsPanel v-else-if="tab === 'accounts'" />
-      <template v-else>
-      <form class="flex gap-2 items-end" role="search" @submit.prevent="load(true)">
-        <div class="flex-1">
-          <AppInput v-model="search" :label="t('support.search')" inputmode="search" autocomplete="off" />
-        </div>
-        <AppButton type="submit" :loading="loading">{{ t('support.searchAction') }}</AppButton>
-      </form>
-      <AppAlert v-if="error" kind="error">{{ error }}</AppAlert>
-      <AppAlert v-if="notice" kind="success">{{ notice }}</AppAlert>
-      <p v-if="!loading && !error && shops.length === 0" class="text-slate-600">{{ t('support.none') }}</p>
+    </aside>
 
-      <ul class="space-y-3">
-        <li v-for="shop in shops" :key="shop.id" class="rounded-xl border border-slate-200 bg-white p-4 space-y-3">
-          <div class="flex items-start justify-between gap-3">
-            <div class="min-w-0">
-              <h2 class="font-semibold text-slate-900 truncate">{{ shop.name }}</h2>
-              <p class="text-sm text-slate-600 break-all">{{ t('support.owner') }}: {{ shop.owner_email ?? '—' }}</p>
-            </div>
-            <span
-              class="shrink-0 text-xs font-medium rounded-full px-2 py-1"
-              :class="shop.status === 'active' ? 'bg-emerald-50 text-emerald-800' : 'bg-red-50 text-red-800'"
-              >{{ shop.status === 'active' ? t('support.statusActive') : t('support.statusSuspended') }}</span
-            >
-          </div>
-          <dl class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
-            <dt class="text-slate-600">{{ t('support.lastEntry') }}</dt>
-            <dd class="text-slate-900">{{ day(shop.last_entry_date) }}</dd>
-            <dt class="text-slate-600">{{ t('support.members') }}</dt>
-            <dd class="text-slate-900">{{ shop.member_count }} · {{ shop.country_code }} · {{ shop.currency_code }}</dd>
-          </dl>
-          <p class="text-sm text-slate-600">
-            {{
-              shop.plus_until && new Date(shop.plus_until) > new Date()
-                ? t('support.plusUntil', { date: day(shop.plus_until) })
-                : t('support.noPlus')
-            }}
-          </p>
-          <AppSelect
-            v-if="business.can('billing')"
-            :model-value="shop.payments_mode ?? 'default'"
-            :label="t('support.shopPayments')"
-            :options="paymentOptions"
-            @update:model-value="changePayments(shop, String($event))"
-          />
-          <div class="flex flex-wrap gap-2">
-            <AppButton
-              v-if="business.can('view_shops') || business.can('edit_shops')"
-              type="button"
-              :loading="busy === shop.id"
-              @click="open(shop, false)"
-            >
-              {{ t('support.open') }}
-            </AppButton>
-            <AppButton
-              v-if="business.can('edit_shops')"
-              type="button"
-              variant="secondary"
-              :disabled="busy === shop.id"
-              @click="open(shop, true)"
-            >
-              {{ t('support.openEdit') }}
-            </AppButton>
-            <AppButton v-if="business.can('suspend_shops')" type="button" variant="secondary" @click="startAction(shop)">
-              {{ shop.status === 'suspended' ? t('support.reactivate') : t('support.suspend') }}
-            </AppButton>
-          </div>
-          <form v-if="acting === shop.id" class="space-y-2" novalidate @submit.prevent="confirmStatus(shop)">
-            <AppInput v-model="reason" :label="t('support.reason')" required />
-            <AppAlert v-if="reasonError" kind="error">{{ reasonError }}</AppAlert>
-            <div class="flex gap-2">
-              <AppButton
-                type="submit"
-                :variant="shop.status === 'suspended' ? 'primary' : 'danger'"
-                :loading="busy === shop.id"
-              >
-                {{ t('support.confirm') }}
-              </AppButton>
-              <AppButton type="button" variant="ghost" @click="acting = null">{{ t('app.cancel') }}</AppButton>
-            </div>
-          </form>
-        </li>
-      </ul>
-      <AppButton v-if="hasMore" type="button" variant="secondary" block :loading="loading" @click="load(false)">
-        {{ t('support.more') }}
-      </AppButton>
-      </template>
-    </section>
+    <div class="flex-1 min-w-0">
+      <PageHeader :title="t('support.console')" />
+
+      <!-- Phone: the same navigation as a row that scrolls sideways inside itself -->
+      <nav
+        class="no-print md:hidden sticky top-[61px] z-10 bg-white border-b border-slate-200 overflow-x-auto"
+        role="tablist"
+        :aria-label="t('support.console')"
+      >
+        <div class="flex gap-2 px-4 py-2 w-max">
+          <button
+            v-for="name in sections"
+            :key="name"
+            type="button"
+            role="tab"
+            :aria-selected="section === name"
+            class="flex items-center gap-2 rounded-full border px-4 min-h-11 whitespace-nowrap font-medium"
+            :class="
+              section === name ? 'bg-brand-700 text-white border-brand-700' : 'bg-white text-slate-700 border-slate-200'
+            "
+            @click="go(name)"
+          >
+            <AppIcon :name="ICONS[name]" class="size-4 shrink-0" />{{ t(`support.${name}`) }}
+          </button>
+        </div>
+      </nav>
+
+      <main class="p-4 md:p-6 max-w-4xl mx-auto space-y-4">
+        <header class="space-y-1">
+          <p class="text-2xl font-semibold text-slate-900">{{ t(`support.${section}`) }}</p>
+          <p class="text-slate-600">{{ t(`support.about.${section}`) }}</p>
+        </header>
+
+        <OverviewPanel
+          v-if="section === 'overview'"
+          :can-billing="business.can('billing')"
+          :can-team="business.superAdmin"
+          @go="go"
+        />
+        <ShopsPanel v-else-if="section === 'shops'" />
+        <AccountsPanel v-else-if="section === 'accounts'" />
+        <DiscountCodesPanel v-else-if="section === 'discounts'" />
+        <PaymentsPanel v-else-if="section === 'payments'" />
+        <AdminsPanel v-else-if="section === 'admins'" />
+
+        <p class="md:hidden text-sm pt-2">
+          <RouterLink :to="{ name: 'guide', params: { which: 'admin' } }" class="underline font-semibold text-brand-800">{{
+            t('guide.admin')
+          }}</RouterLink>
+        </p>
+      </main>
+    </div>
   </div>
 </template>

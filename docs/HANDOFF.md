@@ -206,3 +206,11 @@ Protected decisions are listed in `AGENTS.md`; design context is in `docs/archit
   canonical copy in `supabase/tests/_helpers.inc`.
 - **Verification:** `npx supabase test db` passes.
 - **Rollback:** n/a.
+
+## 2026-11-23: admin rights, accounts, per-shop payments, admin console, Sentry
+
+- **What:** migrations `20261123000400` to `000700`. Admins open any shop without the owner's consent; rights per admin set by a superadmin; a list of created accounts; a payments switch per shop; an overview. The support console became the Admin console (`SupportConsoleView.vue` is the shell, one panel file per section). Sentry error tracking behind `VITE_SENTRY_DSN`.
+- **Why:** the owner will employ a support team and wants them able to see and fix any shop, with himself deciding who may do what (ADR-011, replacing part of ADR-009).
+- **How:** `is_member` passes role checks for an admin who has the shop open for changes and holds `edit_shops`. Existing admin functions got their right by swapping one line in place with `pg_get_functiondef` inside the migration.
+- **Watch:** an admin working in a shop is not a member, so a function that looks up the caller's own membership row would find none. The sale, reversal and billing paths are tested; others are not.
+- **Not done:** two-step sign-in for admins; a Playwright spec; the owner's Sentry DSN.

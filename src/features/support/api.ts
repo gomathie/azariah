@@ -157,3 +157,19 @@ export async function listAccounts(search: string | null, before: string | null 
     (await callRpc<Account[]>('rpc_admin_list_accounts', { p_search: search, p_limit: 25, p_before: before })) ?? []
   )
 }
+
+export interface AdminOverview {
+  shops_total: number
+  shops_suspended: number
+  shops_new_7d: number
+  shops_active_7d: number
+  accounts_total: number
+  accounts_new_7d: number
+  accounts_no_shop: number
+  shops_paid: number
+  payments_on: boolean
+  team: number
+}
+
+/** Counts for the first screen of the admin console. Any platform admin. */
+export const getOverview = () => callRpc<AdminOverview>('rpc_admin_overview', {})

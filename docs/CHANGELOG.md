@@ -22,6 +22,12 @@
 
 ### Added
 
+- The Azaria support team can now open a shop to help without you allowing it first. Settings, Privacy and data lists each time they did. Anything support adds or corrects is saved under their name.
+- Support has a new Admin console with an overview, shops, accounts, discount codes, payments and the team.
+- The superadmin adds support team members and chooses what each one may do.
+- Support can see every account that signed up, also people who have not made a shop yet.
+- Payments can be turned on or off for one shop, apart from everyone else.
+- Errors in the app can be reported to the Azaria team automatically, without your figures, customer names or email.
 - Azaria is free for every shop for now. The Azaria Plus screen says so and shows no prices until payment starts.
 - Support can turn payments on or off for every shop at once, and change the price of each plan, from a new Payments tab.
 - Salon is now a choice under "What do you do?" when you set up a shop. A new salon starts with its own lists: Hair, Nails and beauty, and Products sold for money coming in; Tools and repairs, and Towels and cleaning for spending; Hair and beauty supplies for stock.

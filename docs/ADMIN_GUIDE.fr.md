@@ -13,7 +13,7 @@ Pour le propriétaire de la boutique et pour toute personne que le propriétaire
 | Enregistrer l'argent du propriétaire | Oui | Oui | Non |
 | Ajouter des personnes à la boutique | Oui | Oui | Non |
 | Télécharger toutes les données de la boutique | Oui | Non | Non |
-| Autoriser ou arrêter l'accès d'assistance | Oui | Non | Non |
+| Voir quand l'assistance a ouvert la boutique | Oui | Oui | Non |
 
 Un observateur peut seulement consulter.
 
@@ -65,26 +65,28 @@ Paramètres, **Comptes d'argent** liste chaque compte et son solde. Touchez-en u
 
 ## Confidentialité et accès d'assistance
 
-- Seules les personnes que vous ajoutez peuvent voir votre boutique. Les autres boutiques ne voient pas la vôtre.
-- L'équipe d'assistance Azaria ne peut pas voir vos enregistrements sans votre autorisation.
-- Pour l'autoriser : Paramètres, **Confidentialité et données**, **Accès d'assistance**. Choisissez 24 heures, 3 jours ou 7 jours et indiquez l'aide dont vous avez besoin.
-- Pendant ce temps, l'assistance peut lire votre boutique pour vous aider. Elle ne peut rien ajouter, modifier ni supprimer.
-- Touchez **Arrêter l'accès d'assistance maintenant** à tout moment. L'accès se termine aussi tout seul à la fin de la durée.
-- **Ce qui s'est passé**, sur le même écran, liste chaque fois que l'accès d'assistance a été autorisé, utilisé ou arrêté.
+- Seules les personnes que vous ajoutez, et l'équipe d'assistance Azaria, peuvent voir votre boutique. Les autres boutiques ne voient pas la vôtre.
+- L'équipe d'assistance peut ouvrir votre boutique pour vous aider. Certains membres peuvent seulement consulter. D'autres peuvent aussi ajouter ou corriger des écritures.
+- Une écriture faite par l'assistance est enregistrée sous le nom de cette personne, pas le vôtre.
+- Paramètres, **Confidentialité et données**, **Ce qui s'est passé** liste chaque ouverture de votre boutique par l'assistance.
 
 ## Pour l'équipe d'assistance Azaria
 
 Cette partie s'adresse au personnel d'assistance de la plateforme.
 
-- Ouvrez le bouton rond en haut à droite et choisissez **Console d'assistance**.
-- Cherchez par nom de boutique ou e-mail du propriétaire. Vous voyez le statut de la boutique, les personnes, la date de la dernière entrée et si l'accès d'assistance est actif.
-- Vous ne pouvez ouvrir une boutique que si son propriétaire a autorisé l'accès. Demandez-lui de l'autoriser dans Paramètres, Confidentialité et données.
-- **Ouvrir, lecture seule** montre la boutique telle que le propriétaire la voit, avec un bandeau. Vous ne pouvez rien enregistrer ni modifier. Recharger la page met fin à la consultation.
+- Ouvrez le bouton rond en haut à droite et choisissez **Console d'administration**.
+- **Vue d'ensemble** montre les chiffres : boutiques, boutiques actives, comptes, personnes inscrites sans boutique, et si les paiements sont activés.
+- **Boutiques** : cherchez par nom de boutique ou e-mail du propriétaire. Vous voyez le statut de la boutique, les personnes et la date de la dernière écriture.
+- **Ouvrir pour consulter** montre la boutique telle que le propriétaire la voit, avec un bandeau. Vous ne pouvez rien enregistrer ni modifier.
+- **Ouvrir pour modifier** vous permet de faire ce que le propriétaire peut faire. Ce que vous ajoutez ou modifiez est enregistré sous votre nom. Vous voyez ce bouton seulement si vous en avez le droit.
+- Une boutique reste ouverte deux heures, ou jusqu'à ce que vous touchiez **Quitter** ou rechargiez la page.
 - **Suspendre la boutique** ferme une boutique à ses membres. **Réactiver la boutique** la rouvre. Les deux demandent un motif.
-- Chaque recherche, consultation et changement de statut est enregistré et le propriétaire peut le voir.
-- Le nouveau personnel d'assistance est ajouté par la personne qui détient la base de données, pas dans l'application.
-- Choisissez **Codes de réduction** dans la Console d'assistance pour offrir une réduction sur Azaria Plus. Tapez un code de 6 à 24 lettres ou chiffres, le pourcentage de réduction et sa durée : 30 jours, 90 jours, 1 an ou pour toujours. Vous pouvez aussi limiter le nombre de paiements qui peuvent l'utiliser.
-- Choisissez **Paiements** dans la Console d'assistance pour activer ou désactiver les paiements pour toutes les boutiques à la fois. Au départ, ils sont désactivés : personne ne doit payer et chaque boutique utilise tout gratuitement. Quand vous les activez, chaque boutique doit payer à partir de ce moment, et une confirmation vous est demandée. Sur le même écran, vous pouvez changer le prix de chaque formule ou cesser d'en proposer une.
+- **Paiements pour cette boutique** met une boutique à part du réglage général : elle doit payer, ou elle est gratuite.
+- **Comptes** liste toutes les personnes inscrites, les plus récentes d'abord, avec leurs boutiques. Cherchez par e-mail.
+- **Équipe** est réservée au superadministrateur. Ajoutez une personne par l'e-mail de son compte Azaria et cochez ce qu'elle peut faire : ouvrir les boutiques et consulter, ajouter ou modifier tout dans les boutiques, suspendre des boutiques, ou gérer les codes de réduction, les paiements et les prix. Un changement s'applique tout de suite. Un superadministrateur peut tout faire et ne peut pas modifier sa propre entrée.
+- Chaque recherche, ouverture et modification est enregistrée, et le propriétaire peut voir quand sa boutique a été ouverte.
+- Choisissez **Codes de réduction** dans la Console d'administration pour offrir une réduction sur Azaria Plus. Tapez un code de 6 à 24 lettres ou chiffres, le pourcentage de réduction et sa durée : 30 jours, 90 jours, 1 an ou pour toujours. Vous pouvez aussi limiter le nombre de paiements qui peuvent l'utiliser.
+- Choisissez **Paiements** dans la Console d'administration pour activer ou désactiver les paiements pour toutes les boutiques à la fois. Au départ, ils sont désactivés : personne ne doit payer et chaque boutique utilise tout gratuitement. Quand vous les activez, chaque boutique doit payer à partir de ce moment, et une confirmation vous est demandée. Sur le même écran, vous pouvez changer le prix de chaque formule ou cesser d'en proposer une.
 - Un code à 100 % active Plus sans rien à payer. Ne donnez un tel code qu'à la personne concernée, et limitez-le à un seul paiement.
 - **Désactiver** arrête un code tout de suite. Le temps qu'une boutique a déjà obtenu avec le code reste acquis.
 - La liste des boutiques montre jusqu'à quand chaque boutique a Plus. Vous ne pouvez pas activer Plus vous-même pour une boutique ; donnez un code au propriétaire.

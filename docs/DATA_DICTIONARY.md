@@ -28,10 +28,12 @@ Amounts are minor units (`bigint`). GHS uses 2, so 100.00 is stored as 10000. A 
 
 | Table | What it holds |
 |---|---|
-| `platform_admins` | `user_id`, `note`, `created_at`. The support team. Not readable or writable through the API. |
-| `support_grants` | `business_id`, `granted_by`, `reason`, `created_at`, `expires_at`, `revoked_at`, `revoked_by`. A grant is live when `revoked_at` is null and `expires_at` is in the future. At most 7 days long. Owners and managers of the shop can read their rows. |
+| `platform_admins` | `user_id`, `is_super`, `rights` (any of `view_shops`, `edit_shops`, `suspend_shops`, `billing`), `note`, `added_by`, `created_at`. The support team. Not readable or writable through the API; a superadmin manages it through `rpc_admin_save_admin` and `rpc_admin_remove_admin`. |
+| `support_sessions` | `admin_id`, `business_id`, `can_edit`, `opened_at`, `expires_at`. A shop an admin has open, for two hours. Not readable or writable through the API. |
+| `business_payment_switches` | `business_id`, `payments_on`, `updated_at`, `updated_by`. Sets one shop apart from the general payments switch. No row means the shop follows the general switch. Not readable through the API. |
+| `support_grants` | `business_id`, `granted_by`, `reason`, `created_at`, `expires_at`, `revoked_at`, `revoked_by`. History only since 2026-11-23: owners no longer grant access (ADR-011). Owners and managers of the shop can read their rows. |
 
-Audit actions added: `support.granted`, `support.revoked`, `support.viewed`, `support.status_changed`, `support.searched`.
+Audit actions: `support.viewed`, `support.edit_opened`, `support.status_changed`, `support.searched`, `support.accounts_searched`, `admin.saved`, `admin.removed`, `billing.shop_payments_set`; older rows also hold `support.granted` and `support.revoked`.
 
 ### Billing tables (2026-11-23)
 

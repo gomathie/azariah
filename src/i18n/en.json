@@ -396,8 +396,7 @@
     "saved": "Owner money recorded"
   },
   "support": {
-    "console": "Support console",
-    "intro": "Find a shop to help. What you can do depends on the rights the superadmin gave you. Each time you open a shop it is recorded, and the owner can see it.",
+    "console": "Admin console",
     "search": "Shop name or owner email",
     "searchAction": "Search",
     "none": "No shops found.",
@@ -521,7 +520,33 @@
     "shopPaymentsDefault": "Same as everyone",
     "shopPaymentsOn": "This shop must pay",
     "shopPaymentsOff": "This shop is free",
-    "shopPaymentsSaved": "Saved for {name}."
+    "shopPaymentsSaved": "Saved for {name}.",
+    "overview": "Overview",
+    "about": {
+      "overview": "How Azaria is doing today.",
+      "shops": "Find a shop to help. Each time you open a shop it is recorded, and the owner can see it.",
+      "accounts": "Everyone who has signed up, with or without a shop.",
+      "discounts": "Codes that take money off Azaria Plus.",
+      "payments": "Turn payments on or off for everyone, and set the prices.",
+      "admins": "Who is on the support team and what each person may do."
+    },
+    "stats": {
+      "shops": "Shops",
+      "thisWeek": "+{n} this week",
+      "activeShops": "Active shops",
+      "activeShopsNote": "Made an entry this week",
+      "suspended": "Suspended",
+      "accounts": "Accounts",
+      "noShop": "No shop yet",
+      "noShopNote": "Signed up, did not finish",
+      "paid": "Shops that paid",
+      "payments": "Payments",
+      "on": "ON",
+      "off": "OFF",
+      "paymentsOnNote": "Shops are asked to pay",
+      "paymentsOffNote": "Free for everyone",
+      "team": "Team"
+    }
   },
   "home": {
     "quickLabel": "Quick actions",

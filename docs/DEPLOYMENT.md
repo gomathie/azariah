@@ -89,6 +89,7 @@ Production variables (Settings, Variables and Secrets). Section 2 of `.env` hold
 | `VITE_SUPABASE_PUBLISHABLE_KEY` | the publishable key from `npx supabase projects api-keys` |
 | `VITE_DEFAULT_LOCALE` | `en` |
 | `NODE_VERSION` | `22.18.0` (the project needs Node 22.18 or newer) |
+| `VITE_SENTRY_DSN` | Optional. The DSN from sentry.io, your project, Settings, Client Keys. Without it no error reports are sent. |
 
 - Only the publishable key goes to Cloudflare. The secret key and the database password never do.
 - Leave the Preview environment without these variables until a staging project exists. With them, every preview build would write to the production database.
@@ -113,3 +114,12 @@ After the first deploy, in the Supabase dashboard under Authentication, URL Conf
 ## Rollback
 
 On a local database, `npx supabase db reset` rebuilds from migrations. On the cloud project there is no automatic rollback. Repair forward: write a new migration that undoes the change, test it locally, then push it. Check which backups the plan includes in the dashboard before any real data goes in.
+
+## Error tracking (Sentry)
+
+1. Create a project of type Vue at sentry.io and copy its DSN.
+2. Add `VITE_SENTRY_DSN` to the Cloudflare Pages production variables and redeploy. The DSN is safe for the browser.
+3. If the DSN's host is not `*.ingest.sentry.io`, `*.ingest.us.sentry.io` or `*.ingest.de.sentry.io`, add it to `connect-src` in `public/_headers`, or the browser will block the reports.
+4. Reports are sent only from a production build. `npm run dev` and the tests send nothing.
+
+What a report may contain is described in `docs/SECURITY.md`, "Error tracking".

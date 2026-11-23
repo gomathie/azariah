@@ -56,6 +56,8 @@ Scaffolded with `create-vue` so the Vite/Vue/Vitest/Playwright versions are mutu
 
 ## ADR-009 Platform support access is consent-based and read-only
 
+**Replaced in part by ADR-011 on 2026-11-23.** Consent and read-only no longer hold. The audit trail, the directory and the rule that nobody signs in as another person still do.
+
 - A platform admin (the Azaria support team) is a row in `platform_admins`, added only with SQL by whoever holds the database. No API creates one.
 - Without the owner's consent an admin sees a directory only: shop name, country, currency, status, owner email, member count, last entry date. No sales, balances, customers or entries.
 - An owner grants access for 1 hour to 7 days with `rpc_grant_support_access` and can revoke it at any time. One live grant per shop.
@@ -80,3 +82,16 @@ Scaffolded with `create-vue` so the Vite/Vue/Vitest/Playwright versions are mutu
 - Plus features are aids, not locks. No bookkeeping action is refused because a shop has not paid.
 - The Paystack secret key lives only in Edge Function secrets.
 - Ruled out: Paystack's pop-up script; trusting the return address or the webhook body without the verify call; a boolean entitlement; letting support grant Plus by hand.
+
+## ADR-011 The support team opens any shop, with rights set by a superadmin
+
+- Decided by the owner on 2026-11-23, replacing the consent and read-only rules of ADR-009. The spec's principle 5 and §6.1 say otherwise; the owner's decision stands and the app tells traders so on the Privacy screen.
+- Admins hold rights in `platform_admins.rights`: `view_shops`, `edit_shops`, `suspend_shops`, `billing`. A superadmin (`is_super`) holds all of them and is the only one who adds, changes or removes admins. A superadmin cannot change their own entry, so one always remains. The first superadmins are the admins that existed before this change.
+- To read or write a shop an admin first opens it with `rpc_admin_open_business(p_business_id, p_edit)`. That writes a `support_sessions` row for two hours and an audit event against the admin. `is_member` then passes reads for that admin and, when the shop was opened for changes and the admin holds `edit_shops`, also every check that names roles.
+- Rights are read live inside `has_support_access` and `has_support_edit`, so taking a right away works at once.
+- Nobody signs in as someone else. What an admin writes carries the admin's user id in `created_by` and in the audit trail. No service-role key is used in the browser.
+- Admins also see every created account (`rpc_admin_list_accounts`): email, sign-up date, last sign-in, shops and roles. No password data.
+- Payments can be set per shop (`business_payment_switches`) as well as for everyone.
+- Why: the owner will employ a support team to serve shops and wants them able to fix a shop's records directly, with himself deciding who may do what.
+- Cost accepted: one stolen admin password with `edit_shops` exposes and can alter every shop. Two-step sign-in for admins should come before the team grows.
+- Rule for later work: a new admin function names the right it needs with `assert_platform_admin('<right>')`, or `assert_super_admin()`. A new table that holds rights is closed to the API. `supabase/tests/0016_support_access.test.sql` pins who can do what.

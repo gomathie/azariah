@@ -1,6 +1,6 @@
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(71);
+select plan(84);
 
 create schema if not exists tests;
 grant usage on schema tests to anon, authenticated;
@@ -190,6 +190,39 @@ select tests.clear_auth();
 select tests.authenticate(:'owner_b');
 select throws_like(format($$select public.rpc_check_discount_code(%L, 'ZQXHALF1')$$, :'biz_b'), '%AZ_DISCOUNT_INVALID%', 'a code that was switched off is refused');
 select tests.clear_auth();
+
+-- Payments for one shop, apart from the switch for everyone ------------------------------------------
+select tests.authenticate(:'owner_b');
+select throws_like(format($$select public.rpc_admin_set_business_payments(%L, 'off')$$, :'biz_b'), '%AZ_FORBIDDEN%', 'an owner cannot make their own shop free');
+select throws_ok($$select count(*) from public.business_payment_switches$$, '42501', null, 'the per-shop switch table is closed to the API');
+select tests.clear_auth();
+select tests.authenticate(:'admin');
+select throws_like(format($$select public.rpc_admin_set_business_payments(%L, 'maybe')$$, :'biz_b'), '%AZ_INVALID_INPUT%', 'only on, off or default is accepted for a shop');
+select is(public.rpc_admin_set_business_payments(:'biz_b', 'off') ->> 'payments_mode', 'off', 'admin makes Shop B free while everyone else pays');
+select is((select e ->> 'payments_mode' from jsonb_array_elements(public.rpc_admin_list_businesses('Zqx Billing Shop B')) e), 'off', 'the directory shows the shop is set to free');
+select tests.clear_auth();
+select tests.authenticate(:'owner_b');
+select is((public.rpc_billing_status(:'biz_b') ->> 'payments_on')::boolean, false, 'the free shop is told payments are off for it');
+select is(public.has_plus(:'biz_b'), true, 'the free shop has Plus without paying');
+select throws_like(format($$select public.rpc_billing_start_payment(gen_random_uuid(), %L, 'plus_1m')$$, :'biz_b'), '%AZ_PAYMENT_UNAVAILABLE%', 'the free shop cannot start a payment');
+select tests.clear_auth();
+select tests.authenticate(:'owner_a');
+select is((public.rpc_billing_status(:'biz_a') ->> 'payments_on')::boolean, true, 'another shop still follows the general switch');
+select tests.clear_auth();
+select tests.authenticate(:'admin');
+select public.rpc_admin_set_payments_on(false);
+select public.rpc_admin_set_business_payments(:'biz_b', 'on');
+select tests.clear_auth();
+select tests.authenticate(:'owner_b');
+select is((public.rpc_billing_status(:'biz_b') ->> 'can_pay')::boolean, true, 'a shop set to pay is asked to pay even while payments are off for everyone');
+select tests.clear_auth();
+select tests.authenticate(:'admin');
+select is(public.rpc_admin_set_business_payments(:'biz_b', 'default') ->> 'payments_mode', 'default', 'admin puts the shop back to the general switch');
+select tests.clear_auth();
+select tests.authenticate(:'owner_b');
+select is((public.rpc_billing_status(:'biz_b') ->> 'payments_on')::boolean, false, 'and it follows the general switch again');
+select tests.clear_auth();
+select is((select count(*) from public.audit_events where business_id = :'biz_b' and action = 'billing.shop_payments_set'), 3::bigint, 'each per-shop change is in the audit trail');
 
 select * from finish();
 rollback;

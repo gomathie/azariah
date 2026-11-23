@@ -103,7 +103,7 @@ describe('the guide files', () => {
 
   it('the admin guide covers what only owners and admins do', () => {
     const text = readFileSync(resolve(process.cwd(), 'docs', 'ADMIN_GUIDE.md'), 'utf8')
-    for (const topic of ['Who can do what', 'Reverse this entry', 'Owner money', 'Download all my data', 'Support access', 'Support console']) {
+    for (const topic of ['Who can do what', 'Reverse this entry', 'Owner money', 'Download all my data', 'support access', 'Admin console']) {
       expect(text).toContain(topic)
     }
   })

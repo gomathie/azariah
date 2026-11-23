@@ -36,29 +36,27 @@ Not covered: rate limiting and sign-in abuse controls are Supabase's defaults; t
 
 ## Support team access
 
-The Azaria support team has no standing access to any shop. See ADR-009.
+The support team can open any shop, by the owner's decision of 2026-11-23. See ADR-011, which replaces the consent rule of ADR-009.
 
-| What | Without the owner's consent | While the owner's grant is live |
-|---|---|---|
-| Find a shop by name or owner email | Yes | Yes |
-| See status, country, member count, last entry date | Yes | Yes |
-| Read sales, balances, customers, entries, reports | No | Yes, that shop only |
-| Add, change, reverse or delete anything | No | No |
-| Download the whole shop | No | No |
-| Suspend or reactivate a shop, with a reason | Yes | Yes |
+| Right | What it allows |
+|---|---|
+| (any admin) | The overview counts, the shop directory, the list of accounts |
+| `view_shops` | Open any shop and read it |
+| `edit_shops` | Open any shop and do what its owner can do; includes reading |
+| `suspend_shops` | Suspend or reactivate a shop, with a reason |
+| `billing` | Discount codes, the payments switch for everyone or one shop, plan prices |
+| superadmin | Every right, and adding, changing or removing admins |
 
-- The owner grants and revokes in Settings, Privacy and data. A grant lasts 24 hours, 3 days or 7 days and ends by itself.
-- The owner and managers see a list of what support did: granted, opened, stopped, status changed.
-- A support look lives in the browser's memory. Reloading the page ends it.
-- An admin is added with SQL only:
+What limits it:
 
-```sql
-insert into public.platform_admins (user_id, note)
-select id, 'who and why' from auth.users where email = 'person@example.com';
-```
+- An admin reads or writes a shop only after opening it. The opening is audited against the admin, lasts two hours, and the owner sees it in Settings, Privacy and data.
+- Rights are checked on every read and write, so removing a right or an admin takes effect at once, even with a shop open.
+- A shop opened to look cannot be written to, also by a superadmin.
+- What an admin writes is stored under the admin's own user id. Nobody signs in as another person and no password is shared.
+- Only a superadmin manages admins, and never their own entry, so there is always at least one superadmin.
+- No table that holds rights or open shops is readable or writable through the API.
 
-  Remove one with `delete from public.platform_admins where user_id = ...`. Keep this list short, and give each admin a strong password. Two-step sign-in for admins is not built yet.
-- Checked by `supabase/tests/0016_support_access.test.sql` (49 assertions) and a browser run on 2026-11-22.
+What this costs: a stolen admin password with `edit_shops` can read and change every shop's records. Keep the team small, give `edit_shops` to few people, use a strong unique password for each admin, and remove people who leave. Two-step sign-in for admins is not built yet.
 
 ## Payments and discount codes
 
@@ -69,7 +67,8 @@ See ADR-010.
 | Owner | Start the free trial, open a payment, check a discount code, see the shop's payments | Mark a payment paid, set a price, write any billing table |
 | Manager | See whether Plus is on and the shop's payments | Pay or start a trial |
 | Staff | See whether Plus is on | See payments, pay |
-| Platform admin | Make, list and switch off discount codes; see until when a shop has Plus | Give a shop Plus directly, read a shop's payments, pay for a shop |
+| Platform admin with `billing` | Make, list and switch off discount codes; turn payments on or off for everyone or one shop; set plan prices; see until when a shop has Plus | Give a shop Plus directly or mark a payment paid |
+| Platform admin with `edit_shops`, shop open for changes | What the shop's owner can do, including starting a trial or a payment | Mark a payment paid |
 | Paystack webhook | Report a payment | Change anything unless its signature is right and Paystack's verify call agrees on amount and currency |
 
 - `paystack-webhook` is the only address in the project that takes no sign-in. It accepts POST only, checks the `x-paystack-signature` header (HMAC-SHA512 of the raw body with the secret key) before parsing, and logs the event type and reference, never the payload.
@@ -93,3 +92,7 @@ The cloud project `azaria` has a database password and a secret API key. The own
 ## If something looks wrong
 
 Stop using the affected business, export a copy if an owner still can, and review `audit_events` for `transaction.reversed`, `membership.invited`, `export.created`, and every action that starts with `support.`. There is no hosted incident process yet because there is no production project.
+
+## Error tracking
+
+Errors in the browser are sent to Sentry when `VITE_SENTRY_DSN` is set at build time; without it nothing is sent. `src/lib/monitoring.ts` turns off user details, cookies, headers, request bodies and query strings, drops console lines and typed text, and cuts every web address down to its path, so a report carries no figures, customer names or emails. There is no session replay and no performance tracing. The Sentry hosts are listed in `connect-src` in `public/_headers`.

@@ -396,8 +396,7 @@
     "saved": "Wɔakyerɛw wura no sika"
   },
   "support": {
-    "console": "Mmoafo dwumadibea",
-    "intro": "Hwehwɛ sotɔɔ a wobɛboa. Nea wubetumi ayɛ no gyina tumi a superadmin de ama wo so. Bere biara a wubue sotɔɔ no wɔkyerɛw to hɔ, na ne wura betumi ahu.",
+    "console": "Admin dwumadibea",
     "search": "Sotɔɔ din anaa wura no email",
     "searchAction": "Hwehwɛ",
     "none": "Wɔanhu sotɔɔ biara.",
@@ -521,7 +520,33 @@
     "shopPaymentsDefault": "Te sɛ obiara",
     "shopPaymentsOn": "Ɛsɛ sɛ sotɔɔ yi tua ka",
     "shopPaymentsOff": "Sotɔɔ yi yɛ kwa",
-    "shopPaymentsSaved": "Wɔasie ama {name}."
+    "shopPaymentsSaved": "Wɔasie ama {name}.",
+    "overview": "Nhwɛso",
+    "about": {
+      "overview": "Sɛnea Azaria rekɔ so nnɛ.",
+      "shops": "Hwehwɛ sotɔɔ a wobɛboa. Bere biara a wubue sotɔɔ no wɔkyerɛw to hɔ, na ne wura betumi ahu.",
+      "accounts": "Obiara a wakyerɛw ne din, ɔwɔ sotɔɔ anaa onni bi.",
+      "discounts": "Koodu a ɛte Azaria Plus bo so.",
+      "payments": "Bue anaa to akatua mu ma obiara, na hyɛ bo.",
+      "admins": "Wɔn a wɔwɔ mmoa kuw no mu ne nea obiara betumi ayɛ."
+    },
+    "stats": {
+      "shops": "Sotɔɔ",
+      "thisWeek": "+{n} nnawɔtwe yi",
+      "activeShops": "Sotɔɔ a ɛreyɛ adwuma",
+      "activeShopsNote": "Wɔkyerɛw biribi nnawɔtwe yi",
+      "suspended": "Wɔagyina",
+      "accounts": "Akawnt",
+      "noShop": "Sotɔɔ biara nni hɔ",
+      "noShopNote": "Wɔkyerɛw din, wɔanwie",
+      "paid": "Sotɔɔ a atua ka",
+      "payments": "Akatua",
+      "on": "ABUE",
+      "off": "ATO MU",
+      "paymentsOnNote": "Sotɔɔ tua ka",
+      "paymentsOffNote": "Kwa ma obiara",
+      "team": "Kuw"
+    }
   },
   "home": {
     "quickLabel": "Ntɛm dwumadi",

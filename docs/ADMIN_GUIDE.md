@@ -13,7 +13,7 @@ For the shop owner and for anyone the owner has made an admin. It covers what st
 | Record owner money | Yes | Yes | No |
 | Add people to the shop | Yes | Yes | No |
 | Download all of the shop's data | Yes | No | No |
-| Allow or stop support access | Yes | No | No |
+| See when support opened the shop | Yes | Yes | No |
 
 A viewer can only read.
 
@@ -65,26 +65,28 @@ Settings, **Money accounts** lists each account and its balance. Tap one for its
 
 ## Privacy and support access
 
-- Only people you add can see your shop. Other shops cannot see yours.
-- The Azaria support team cannot see your records unless you allow it.
-- To allow it: Settings, **Privacy and data**, **Support access**. Choose 24 hours, 3 days or 7 days and say what you need help with.
-- While it is on, support can read your shop to help you. They cannot add, change or delete anything.
-- Tap **Stop support access now** at any time. It also ends by itself when the time is up.
-- **What happened** on the same screen lists each time support access was allowed, used or stopped.
+- Only people you add, and the Azaria support team, can see your shop. Other shops cannot see yours.
+- The support team can open your shop to help you. Some team members can only look. Some can also add or correct entries.
+- An entry made by support is saved under that support person's name, not yours.
+- Settings, **Privacy and data**, **What happened** lists each time support opened your shop.
 
 ## For the Azaria support team
 
 This part is for platform support staff.
 
-- Open the round button at the top right and choose **Support console**.
-- Search by shop name or owner email. You see the shop's status, people, last entry date, and whether support access is on.
-- You can open a shop only while its owner has allowed access. Ask the owner to allow it in Settings, Privacy and data.
-- **Open, read only** shows the shop as the owner sees it, with a banner. You cannot record or change anything. Reloading the page ends the look.
+- Open the round button at the top right and choose **Admin console**.
+- **Overview** shows the counts: shops, active shops, accounts, people who signed up without making a shop, and whether payments are on.
+- **Shops**: search by shop name or owner email. You see the shop's status, people and last entry date.
+- **Open to look** shows the shop as the owner sees it, with a banner. You cannot record or change anything.
+- **Open to make changes** lets you do what the owner can do. What you add or change is saved under your own name. You see this button only if you have the right.
+- A shop stays open for two hours, or until you tap **Leave** or reload the page.
 - **Suspend shop** closes a shop to its members. **Reactivate shop** opens it again. Both need a reason.
-- Every search, look and status change is recorded and the owner can see it.
-- New support staff are added by the person who holds the database, not in the app.
-- Choose **Discount codes** in the Support console to give someone money off Azaria Plus. Type a code of 6 to 24 letters or numbers, the percent off, and how long it works: 30 days, 90 days, 1 year or for ever. You can also limit how many payments may use it.
-- Choose **Payments** in the Support console to turn payments on or off for every shop at once. Payments start off: nobody is asked to pay and every shop uses everything for free. When you turn them on, every shop is asked to pay from that moment, and you are asked to confirm first. On the same screen you can change the price of each plan or stop offering one.
+- **Payments for this shop** sets one shop apart from the general switch: it must pay, or it is free.
+- **Accounts** lists everyone who signed up, newest first, with their shops. Search by email.
+- **Team** is for the superadmin. Add a person by the email of their Azaria account and tick what they may do: open shops and look, add or change anything in shops, suspend shops, or manage discount codes, payments and prices. A change works at once. A superadmin can do everything and cannot change their own entry.
+- Every search, opening and change is recorded, and the owner can see when their shop was opened.
+- Choose **Discount codes** in the Admin console to give someone money off Azaria Plus. Type a code of 6 to 24 letters or numbers, the percent off, and how long it works: 30 days, 90 days, 1 year or for ever. You can also limit how many payments may use it.
+- Choose **Payments** in the Admin console to turn payments on or off for every shop at once. Payments start off: nobody is asked to pay and every shop uses everything for free. When you turn them on, every shop is asked to pay from that moment, and you are asked to confirm first. On the same screen you can change the price of each plan or stop offering one.
 - A 100% code turns Plus on with nothing to pay. Give such a code only to the person it is meant for, and limit it to one payment.
 - **Switch off** stops a code at once. Time a shop already got with the code stays.
 - The shop list shows until when each shop has Plus. You cannot turn Plus on for a shop yourself; give the owner a code.

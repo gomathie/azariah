@@ -761,6 +761,9 @@ isOneToOne: false
 "rpc_admin_open_business":
 { Args: { "p_business_id": string,"p_edit"?: boolean }; Returns: Json
                            },
+"rpc_admin_overview":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "rpc_admin_remove_admin":
 { Args: { "p_user_id": string }; Returns: Json
                            },

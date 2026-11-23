@@ -396,8 +396,7 @@
     "saved": "Argent du propriétaire enregistré"
   },
   "support": {
-    "console": "Console d'assistance",
-    "intro": "Trouvez une boutique à aider. Ce que vous pouvez faire dépend des droits que le superadministrateur vous a donnés. Chaque ouverture d’une boutique est enregistrée, et le propriétaire peut la voir.",
+    "console": "Console d’administration",
     "search": "Nom de la boutique ou e-mail du propriétaire",
     "searchAction": "Rechercher",
     "none": "Aucune boutique trouvée.",
@@ -521,7 +520,33 @@
     "shopPaymentsDefault": "Comme tout le monde",
     "shopPaymentsOn": "Cette boutique doit payer",
     "shopPaymentsOff": "Cette boutique est gratuite",
-    "shopPaymentsSaved": "Enregistré pour {name}."
+    "shopPaymentsSaved": "Enregistré pour {name}.",
+    "overview": "Vue d’ensemble",
+    "about": {
+      "overview": "Où en est Azaria aujourd’hui.",
+      "shops": "Trouvez une boutique à aider. Chaque ouverture d’une boutique est enregistrée, et le propriétaire peut la voir.",
+      "accounts": "Toutes les personnes inscrites, avec ou sans boutique.",
+      "discounts": "Des codes qui réduisent le prix d’Azaria Plus.",
+      "payments": "Activez ou désactivez les paiements pour tous, et fixez les prix.",
+      "admins": "Qui fait partie de l’équipe d’assistance et ce que chacun peut faire."
+    },
+    "stats": {
+      "shops": "Boutiques",
+      "thisWeek": "+{n} cette semaine",
+      "activeShops": "Boutiques actives",
+      "activeShopsNote": "Une écriture cette semaine",
+      "suspended": "Suspendues",
+      "accounts": "Comptes",
+      "noShop": "Sans boutique",
+      "noShopNote": "Inscrits, pas terminé",
+      "paid": "Boutiques qui ont payé",
+      "payments": "Paiements",
+      "on": "ACTIVÉS",
+      "off": "DÉSACTIVÉS",
+      "paymentsOnNote": "Les boutiques doivent payer",
+      "paymentsOffNote": "Gratuit pour tous",
+      "team": "Équipe"
+    }
   },
   "home": {
     "quickLabel": "Actions rapides",

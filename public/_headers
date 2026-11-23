@@ -1,8 +1,9 @@
 # Cloudflare Pages response headers. Docs: docs/DEPLOYMENT.md, "Cloudflare Pages".
 # The Supabase host in connect-src must match VITE_SUPABASE_URL. Change both together.
+# The sentry.io hosts in connect-src let the app send error reports (VITE_SENTRY_DSN).
 
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://zqxmlgeqvrmbczjsurtj.supabase.co wss://zqxmlgeqvrmbczjsurtj.supabase.co; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://zqxmlgeqvrmbczjsurtj.supabase.co wss://zqxmlgeqvrmbczjsurtj.supabase.co https://*.ingest.sentry.io https://*.ingest.us.sentry.io https://*.ingest.de.sentry.io; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin

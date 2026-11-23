@@ -1,6 +1,6 @@
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(75);
+select plan(81);
 
 create schema if not exists tests;
 grant usage on schema tests to anon, authenticated;
@@ -150,6 +150,19 @@ select is(public.rpc_admin_whoami() ->> 'is_platform_admin', 'false', 'a removed
 select is((select count(*) from public.transactions), 0::bigint, 'and reads nothing');
 select tests.clear_auth();
 
+-- 6b. Admins see created accounts -----------------------------------------------------------------------
+select tests.authenticate(:'nobody');
+select throws_like($$select public.rpc_admin_list_accounts()$$, '%AZ_FORBIDDEN%', 'an ordinary user cannot list accounts');
+select tests.clear_auth();
+select tests.authenticate(:'admin');
+select public.rpc_admin_list_accounts('nobody@example.test') as accounts \gset
+select is(jsonb_array_length((:'accounts')::jsonb), 1, 'admin finds an account by email, also one with no shop');
+select is(jsonb_array_length((:'accounts')::jsonb -> 0 -> 'shops'), 0, 'an account without a shop shows no shops');
+select ok(not ((:'accounts')::jsonb -> 0) ?| array['encrypted_password','password','phone','raw_user_meta_data'], 'account rows carry no password or profile data');
+select is((public.rpc_admin_list_accounts('owner-a@example.test') -> 0 -> 'shops' -> 0 ->> 'role'), 'owner', 'an account shows the shops it belongs to with the role');
+select is(jsonb_array_length(public.rpc_admin_list_accounts('_')), 0, 'an underscore in the search is matched literally');
+select tests.clear_auth();
+
 -- 7. Suspend and reactivate --------------------------------------------------------------------------
 select tests.authenticate(:'admin');
 select throws_like(format($$select public.rpc_admin_set_business_status(%L, 'suspended', '')$$, :'biz_b'), '%AZ_INVALID_INPUT%', 'suspending needs a reason');
@@ -173,8 +186,8 @@ select tests.clear_auth();
 select is((select count(*) from public.audit_events where business_id = :'biz_a' and action = 'support.viewed' and actor_id = :'admin'), 1::bigint, 'the look is logged against the admin');
 select is((select count(*) from public.audit_events where business_id = :'biz_a' and action = 'support.edit_opened' and actor_id = :'admin'), 2::bigint, 'each opening for changes is logged against the admin');
 select is((select count(*) from public.audit_events where business_id = :'biz_a' and action like 'support.%' and actor_id = :'helper'), 2::bigint, 'the helper''s openings are logged against the helper');
-select is((select count(*) from public.audit_events where action = 'admin.saved'), 3::bigint, 'every change of rights is logged');
-select is((select count(*) from public.audit_events where action = 'admin.removed'), 1::bigint, 'removing an admin is logged');
+select is((select count(*) from public.audit_events where action = 'admin.saved' and actor_id = :'admin'), 3::bigint, 'every change of rights is logged');
+select is((select count(*) from public.audit_events where action = 'admin.removed' and actor_id = :'admin'), 1::bigint, 'removing an admin is logged');
 select is((select count(*) from public.audit_events where business_id = :'biz_b' and action = 'support.status_changed'), 2::bigint, 'suspend and reactivate are logged');
 select ok((select count(*) from public.audit_events where action = 'support.searched' and actor_id = :'admin') >= 2, 'searches are logged');
 

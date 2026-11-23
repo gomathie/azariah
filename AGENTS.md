@@ -49,7 +49,7 @@ Tests: Vitest (jsdom), Playwright, Supabase SQL tests (`supabase/tests`). Backen
 
 See `docs/architecture/ADR.md`. Do not undo without the owner's agreement: minor-unit money (ADR-001),
 RPC-only mutations (ADR-002), derived balances (ADR-003), RLS + explicit grants (ADR-004).
-Support access is consent-based and read-only (ADR-009): a function or policy that writes must name the roles it accepts, and the shop list must ask only for the signed-in person's own memberships.
+Support access follows ADR-011 (it replaced the consent and read-only rules of ADR-009 on 2026-11-23): an admin opens a shop before reading or writing it, every opening is audited, rights per admin are set only by a superadmin, a new admin function names the right it needs, nobody signs in as another person, and the shop list must ask only for the signed-in person's own memberships.
 Azaria Plus is never granted by the browser (ADR-010): only `billing_apply_payment`, called by the service role after Paystack's verify call, marks a payment paid; payments are off for every shop until a platform admin turns them on; prices and discounts are set in the database; discount codes stay unlisted.
 
 ## Status checkpoint
@@ -68,6 +68,7 @@ Azaria Plus is never granted by the browser (ADR-010): only `billing_apply_payme
 - Domain: the site is served at `https://azariabooks.com` (use it as `APP_URL`); `www.azariabooks.com` does not answer. On 2026-11-23 the live build held no Supabase address, so the Cloudflare production variables were probably not set at build time.
 - Also on 2026-11-23: "salon" added as a kind of shop with its own starting categories. Migration `20261123000200_salon_business_type.sql` is local only (not on the cloud database), so the live site must not be redeployed with this option before it is pushed. SQL suite: 18 files, 296 tests, PASS. Unit: 17 files, 86 tests, PASS. Lint and type-check PASS.
 - Later on 2026-11-23: one switch for all payments, off by default (ADR-010). Migration `20261123000300_billing_switch.sql` (local only): while off, nobody can start a trial or a payment and every shop counts as having Plus; a platform admin turns it on and edits plan prices in the new Payments tab of the support console. SQL suite: 18 files, 314 tests, PASS. Unit: 17 files, 86 tests, PASS. Lint, type-check and build PASS; phone-size browser run 7 of 7. Local-only migrations now: `20261123000200` (salon) and `20261123000300` (switch); push both before the site is redeployed from a commit that holds them.
+- End of 2026-11-23: admin rights (ADR-011), accounts list, per-shop payments switch, Admin console redesign and Sentry error tracking (off until `VITE_SENTRY_DSN` is set). Migrations `20261123000300` to `20261123000700` are local only; `20261123000200` (salon) is committed but not on the cloud database either. Push all six, with a dry run and the owner's go-ahead, before the site is deployed from a commit that holds this work. SQL suite: 18 files, 359 tests, PASS. Unit: 18 files, 90 tests, PASS. Lint, type-check and build PASS. Phone and computer browser run 14 of 14. Not done: two-step sign-in for admins, a Playwright spec.
 - Next: turn the 2026-11-22 browser checks into Playwright specs. Task 19 still has no automated check. Task 20, the CI workflow, has not been run. Owner commits and pushes; agents do not.
 
 ## Rules for every runtime

@@ -97,4 +97,4 @@ The round button at the top right opens your menu: your shop, another shop if yo
 
 ## What you cannot do as staff
 
-Staff record sales, expenses, payments and transfers. Staff cannot undo an entry, record owner money, add people, download the whole business, or allow support access. Ask the owner or an admin.
+Staff record sales, expenses, payments and transfers. Staff cannot undo an entry, record owner money, add people, or download the whole business. Ask the owner or an admin.
