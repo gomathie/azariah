@@ -50,6 +50,11 @@ Payment status: `pending` when opened, `paid` once Paystack confirms it (or at o
 
 Audit actions added: `billing.trial_started`, `billing.paid`, `billing.discount_created`, `billing.discount_changed`.
 
+### Email confirmation (2026-11-23)
+
+- `email_confirmations`: one row per person whose email is proved. `user_id` (primary key, the Supabase Auth user), `email` (lower case; a row for an older address does not count), `confirmed_at`. Not tied to a shop. No grant and no policy: only `rpc_email_confirmation()` reads or writes it.
+- `rpc_email_confirmation()` returns `{confirmed, email}` for the signed-in person. It writes the row only when the signed session shows the person came in through a code or link sent to the mailbox, or when Supabase's own confirmation email was followed.
+
 ## Status
 
 - Transaction status: `posted` or `reversed`. A reversal is a new posted transaction of kind `reversal`. The original becomes `reversed`.

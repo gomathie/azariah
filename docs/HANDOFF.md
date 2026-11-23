@@ -214,3 +214,13 @@ Protected decisions are listed in `AGENTS.md`; design context is in `docs/archit
 - **How:** `is_member` passes role checks for an admin who has the shop open for changes and holds `edit_shops`. Existing admin functions got their right by swapping one line in place with `pg_get_functiondef` inside the migration.
 - **Watch:** an admin working in a shop is not a member, so a function that looks up the caller's own membership row would find none. The sale, reversal and billing paths are tested; others are not.
 - **Not done:** two-step sign-in for admins; a Playwright spec; the owner's Sentry DSN.
+
+## 2026-11-23: sign in first, confirm the email later
+
+- **What:** migration `20261123000800_email_confirmation.sql` (table `email_confirmations`, function `rpc_email_confirmation`), `src/features/auth/emailConfirm.ts`, `EmailConfirmReminder.vue` shown from `AppShell.vue`, a code in `supabase/templates/magic_link.html`. Sign-up now says so when the email already has an account.
+- **Why:** two people registered on the live site on 2026-11-23, confirmed their email and never got in. The owner chose to let people in first and remind them afterwards; the reminder must never block.
+- **How:** with "Confirm email" off Supabase marks every address confirmed, so the app keeps its own record. The code is sent with `signInWithOtp` (never creates an account) and checked with `verifyOtp`; the new session's signed `amr` claim is the proof the database accepts. "Later" hides the reminder for three days per person on that phone.
+- **Trade-off:** unconfirmed and mistyped addresses can use the app; see `docs/SECURITY.md`. The code email counts against the sender's hourly limit.
+- **Watch:** do not let the browser tell the database an email is confirmed. Do not turn the reminder into a block without the owner.
+- **Verification:** `0019_email_confirmation.test.sql` 11 of 11; `emailConfirm.spec.ts` 5 tests; phone-size browser run on the local stack 11 of 11 real checks (the send request was answered by the test because no local mail catcher runs, so no real email was seen).
+- **Rollback:** remove `<EmailConfirmReminder />` from `AppShell.vue` and turn "Confirm email" back on. The table can stay.

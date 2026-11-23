@@ -34,6 +34,15 @@ Rules for new code: never build SQL from text; never use `v-html`; put any new f
 
 Not covered: rate limiting and sign-in abuse controls are Supabase's defaults; two-step sign-in is not built; uploaded files do not exist yet.
 
+## Sign-up without waiting for an email
+
+People sign in straight after creating an account; the "Confirm email" switch in Supabase Auth is off on the cloud project by the owner's decision of 2026-11-23. The app then reminds them to confirm with a code, and they may put it off.
+
+- The app never takes the browser's word that an email is confirmed. `rpc_email_confirmation()` reads the signed session: only a session that began from a code or link sent to the mailbox counts. Checked by `supabase/tests/0019_email_confirmation.test.sql` (11 assertions).
+- What this costs: a person can register with an address they do not own or mistyped, and work in the app with it. The real owner of the address can take the account with "Forgot password?". No shop data is shared by email address, so nothing leaks to the address owner before that.
+- A mistyped address that is never confirmed cannot receive a password reset. The reminder exists to catch this.
+- Fake sign-ups need no mailbox. Supabase's rate limits are the only brake; a CAPTCHA is not set up.
+
 ## Support team access
 
 The support team can open any shop, by the owner's decision of 2026-11-23. See ADR-011, which replaces the consent rule of ADR-009.

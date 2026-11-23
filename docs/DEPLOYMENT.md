@@ -130,5 +130,7 @@ The emails Supabase sends are designed in `supabase/templates/`: `confirmation.h
 
 Also on the cloud project, Authentication, URL Configuration: Site URL `https://azariabooks.com` and redirect URL `https://azariabooks.com/**`. Without them the links in these emails go to `localhost`.
 
+Since 2026-11-23 people sign in without confirming first. On the cloud project: Authentication, Sign In / Providers, Email, turn off "Confirm email". Push migration `20261123000800_email_confirmation.sql` before deploying the app that holds the reminder; without it the reminder stays hidden and nothing breaks. The reminder's code travels in the "Magic link" email, so paste `magic_link.html` again (it now shows `{{ .Token }}`) and set its subject to "Your Azaria code". With the old template the email has only a link; tapping it also confirms.
+
 Supabase's built-in sender allows only a few emails an hour and sends from a Supabase address. Connect your own sender under Authentication, Emails, SMTP Settings before inviting many people.
 

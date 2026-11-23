@@ -7,6 +7,7 @@ Everything you can do in Azaria day to day. Read it in the app under Profile, Gu
 - **Create an account** with your email and a password of at least 8 characters.
 - **Sign in** on any phone or computer with the same email and password.
 - **Forgot your password?** Tap "Forgot password?" on the sign-in screen. A link is sent to your email.
+- **Confirm your email.** After you sign in, Azaria asks you to confirm your email. Tap "Send me the code", open the email, and type the code. You can tap "Later" and keep working; Azaria asks again after three days.
 - **Change language** in Profile. Azaria is in English and French.
 - **Put Azaria on your home screen**: open the round button at the top right, choose Settings, then "Add to home screen". It then opens like an app.
 

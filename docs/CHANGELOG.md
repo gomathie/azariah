@@ -8,6 +8,9 @@
 
 ### Changed
 
+- Create an account and start at once. Azaria no longer makes you open an email before you can sign in. It asks you to confirm your email with a short code afterwards, and you can tap "Later".
+- If you try to create an account with an email that already has one, Azaria now says so and points you to "Sign in".
+
 - The guides are easier to get around. On a phone, one section opens at a time, a "Jump to" list stays under the header, and you can search. On a computer, the contents stay at the side and show where you are.
 - Home opens with the money you have right now, then shortcuts for a sale, an expense, a payment and moving money, then your latest entries.
 - The daybook groups entries by day, shows money in with a plus and money out with a minus, and names the customer and the account. A credit sale shows what is not yet paid.
