@@ -83,7 +83,7 @@ watch(
       </li>
     </ul>
     <p class="text-sm text-slate-600">{{ reminder }}</p>
-    <a v-if="whatsAppHref" :href="whatsAppHref" class="text-brand-800 underline" target="_blank" rel="noopener">{{
+    <a v-if="whatsAppHref" :href="whatsAppHref" class="inline-block py-3 text-brand-800 underline" target="_blank" rel="noopener">{{
       t('customers.remind')
     }}</a>
   </section>

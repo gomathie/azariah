@@ -59,7 +59,7 @@ async function submit() {
     </form>
     <p class="text-sm text-center text-slate-600">
       {{ t('auth.haveAccount') }}
-      <RouterLink :to="{ name: 'login' }" class="text-brand-700 underline">{{ t('auth.signIn') }}</RouterLink>
+      <RouterLink :to="{ name: 'login' }" class="inline-block py-3 text-brand-700 underline">{{ t('auth.signIn') }}</RouterLink>
     </p>
   </AuthLayout>
 </template>

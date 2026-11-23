@@ -44,10 +44,10 @@ async function submit() {
       <AppButton type="submit" block :loading="loading">{{ t('auth.signIn') }}</AppButton>
     </form>
     <div class="text-sm text-center space-y-2">
-      <RouterLink :to="{ name: 'reset-password' }" class="text-brand-700 underline">{{ t('auth.forgot') }}</RouterLink>
+      <RouterLink :to="{ name: 'reset-password' }" class="inline-block py-3 text-brand-700 underline">{{ t('auth.forgot') }}</RouterLink>
       <p class="text-slate-600">
         {{ t('auth.noAccount') }}
-        <RouterLink :to="{ name: 'signup' }" class="text-brand-700 underline">{{ t('auth.signUp') }}</RouterLink>
+        <RouterLink :to="{ name: 'signup' }" class="inline-block py-3 text-brand-700 underline">{{ t('auth.signUp') }}</RouterLink>
       </p>
     </div>
   </AuthLayout>
