@@ -7,6 +7,7 @@ import AppAlert from '@/components/ui/AppAlert.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppInput from '@/components/ui/AppInput.vue'
 import DiscountCodesPanel from '@/features/support/DiscountCodesPanel.vue'
+import PaymentsPanel from '@/features/support/PaymentsPanel.vue'
 import { listShops, setShopStatus, type DirectoryShop } from '@/features/support/api'
 import { RpcError } from '@/lib/supabase/rpc'
 import { useBusinessStore } from '@/stores/business'
@@ -17,7 +18,7 @@ const { t, locale } = useI18n()
 const router = useRouter()
 const business = useBusinessStore()
 /** The console has two parts: the shop directory, and discount codes for Azaria Plus. */
-const tab = ref<'shops' | 'discounts'>('shops')
+const tab = ref<'shops' | 'discounts' | 'payments'>('shops')
 const search = ref('')
 const shops = ref<DirectoryShop[]>([])
 const hasMore = ref(false)
@@ -105,7 +106,7 @@ onMounted(() => void load(true))
       </AppAlert>
       <div class="flex gap-2" role="tablist">
         <button
-          v-for="name in ['shops', 'discounts'] as const"
+          v-for="name in ['shops', 'discounts', 'payments'] as const"
           :key="name"
           type="button"
           role="tab"
@@ -114,10 +115,11 @@ onMounted(() => void load(true))
           :class="tab === name ? 'bg-brand-700 text-white border-brand-700' : 'bg-white text-brand-800 border-brand-200'"
           @click="tab = name"
         >
-          {{ name === 'shops' ? t('support.shops') : t('support.discounts') }}
+          {{ t(`support.${name}`) }}
         </button>
       </div>
       <DiscountCodesPanel v-if="tab === 'discounts'" />
+      <PaymentsPanel v-else-if="tab === 'payments'" />
       <template v-else>
       <form class="flex gap-2 items-end" role="search" @submit.prevent="load(true)">
         <div class="flex-1">

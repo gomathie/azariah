@@ -466,7 +466,29 @@
     "discountSwitchOff": "Désactiver",
     "discountSwitchOn": "Réactiver",
     "discountInvalid": "Vérifiez le code, le pourcentage et la limite.",
-    "shops": "Boutiques"
+    "shops": "Boutiques",
+    "payments": "Paiements",
+    "paymentsOn": "Les paiements sont ACTIVÉS",
+    "paymentsOff": "Les paiements sont DÉSACTIVÉS",
+    "paymentsOnHelp": "Chaque boutique doit payer pour Azaria Plus. Une boutique qui n’a pas payé n’a pas Plus.",
+    "paymentsOffHelp": "Personne ne doit payer. Chaque boutique utilise tout gratuitement, et aucune n’entame son essai gratuit.",
+    "paymentsTurnOn": "Activer les paiements",
+    "paymentsTurnOff": "Désactiver les paiements",
+    "paymentsConfirmOn": "Chaque boutique devra payer à partir de maintenant. Celles qui n’ont pas payé perdent Azaria Plus tout de suite. La tenue des comptes reste gratuite.",
+    "paymentsConfirmOff": "Personne ne pourra payer, et chaque boutique aura tout gratuitement. Le temps déjà payé continue de courir.",
+    "paymentsYesOn": "Oui, activer",
+    "paymentsYesOff": "Oui, désactiver",
+    "paymentsNowOn": "Les paiements sont activés.",
+    "paymentsNowOff": "Les paiements sont désactivés.",
+    "plans": "Formules et prix",
+    "plansHelp": "Un nouveau prix s’applique au prochain paiement. Le temps déjà payé ne change pas.",
+    "planPrice": "Prix ({currency})",
+    "planPriceInvalid": "Saisissez un prix supérieur à zéro.",
+    "planSave": "Enregistrer le prix",
+    "planSaved": "Enregistré.",
+    "planStop": "Ne plus proposer",
+    "planOffer": "Proposer à nouveau",
+    "planNotOffered": "Non proposée"
   },
   "home": {
     "quickLabel": "Actions rapides",
@@ -533,6 +555,8 @@
     "returnPending": "Nous n'avons pas encore reçu le paiement. Si vous l'avez approuvé sur votre téléphone, attendez un instant et vérifiez à nouveau.",
     "returnFailed": "Le paiement n'a pas abouti. Vous pouvez réessayer.",
     "returnUnknown": "Nous n'avons pas trouvé ce paiement.",
-    "back": "Retour à Azaria Plus"
+    "back": "Retour à Azaria Plus",
+    "freeForNow": "Azaria est gratuit pour le moment. Vous n’avez rien à payer, et tout est ouvert à votre boutique.",
+    "freeForNowLater": "Quand le paiement commencera, vous verrez d’abord les prix ici."
   }
 }

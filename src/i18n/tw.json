@@ -466,7 +466,29 @@
     "discountSwitchOff": "Dum",
     "discountSwitchOn": "Sɔ",
     "discountInvalid": "Hwɛ koodu no, ɔha mu nkyɛmu no ne anohyeto no.",
-    "shops": "Sotɔɔ"
+    "shops": "Sotɔɔ",
+    "payments": "Akatua",
+    "paymentsOn": "Akatua no ABUE",
+    "paymentsOff": "Akatua no ATO MU",
+    "paymentsOnHelp": "Sotɔɔ biara bɛtua Azaria Plus ho ka. Sotɔɔ a entuaa ka no nni Plus.",
+    "paymentsOffHelp": "Obiara ntua hwee. Sotɔɔ biara de biribiara di dwuma kwa, na obiara nsɛe ne sɔhwɛ bere.",
+    "paymentsTurnOn": "Bue akatua",
+    "paymentsTurnOff": "To akatua mu",
+    "paymentsConfirmOn": "Efi seesei sotɔɔ biara bɛtua ka. Wɔn a wontuaa ka no bɛhwere Azaria Plus ntɛm ara. Nkontaabu da so yɛ kwa.",
+    "paymentsConfirmOff": "Obiara rentumi ntua ka, na sotɔɔ biara benya biribiara kwa. Bere a wɔatua ho ka dedaw no kɔ so.",
+    "paymentsYesOn": "Aane, bue",
+    "paymentsYesOff": "Aane, to mu",
+    "paymentsNowOn": "Akatua no abue.",
+    "paymentsNowOff": "Akatua no ato mu.",
+    "plans": "Nhyehyɛe ne bo",
+    "plansHelp": "Bo foforo no fa akatua a edi hɔ ho. Bere a wɔatua ho ka dedaw no nsesa.",
+    "planPrice": "Bo ({currency})",
+    "planPriceInvalid": "Kyerɛw bo a ɛboro hwee.",
+    "planSave": "Sie bo no",
+    "planSaved": "Wɔasie.",
+    "planStop": "Gyae de ma",
+    "planOffer": "San de ma",
+    "planNotOffered": "Wɔmfa mma"
   },
   "home": {
     "quickLabel": "Ntɛm dwumadi",
@@ -533,6 +555,8 @@
     "returnPending": "Yɛn nsa nkaa akatua no ɛ. Sɛ wopenee so wɔ wo fon so a, twɛn kakra na san hwɛ.",
     "returnFailed": "Akatua no ankɔ so. Wubetumi asan asɔ ahwɛ.",
     "returnUnknown": "Yɛanhu saa akatua yi.",
-    "back": "San kɔ Azaria Plus"
+    "back": "San kɔ Azaria Plus",
+    "freeForNow": "Azaria yɛ kwa seesei. Ɛho nhia sɛ wutua hwee, na biribiara abue ama wo sotɔɔ.",
+    "freeForNowLater": "Sɛ akatua fi ase a, wubehu bo no wɔ ha kan."
   }
 }

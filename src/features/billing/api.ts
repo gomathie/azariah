@@ -22,6 +22,8 @@ export interface BillingPayment {
 }
 
 export interface BillingStatus {
+  /** False until the platform admin turns payments on for everyone. */
+  payments_on: boolean
   plus_until: string | null
   has_plus: boolean
   in_grace: boolean

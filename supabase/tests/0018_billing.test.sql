@@ -1,6 +1,6 @@
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(53);
+select plan(71);
 
 create schema if not exists tests;
 grant usage on schema tests to anon, authenticated;
@@ -41,6 +41,37 @@ select (public.rpc_create_business_and_owner(gen_random_uuid(), 'Zqx Billing Sho
 select tests.clear_auth();
 insert into public.business_memberships (business_id, user_id, role, status) values (:'biz_a', :'staff', 'staff', 'active');
 select amount_minor as price_1m from public.billing_products where code = 'plus_1m' \gset
+
+-- 0. Payments are off until the platform admin turns them on ------------------------------------------
+select is(public.billing_payments_on(), false, 'payments start switched off');
+select tests.authenticate(:'owner_a');
+select is(public.has_plus(:'biz_a'), true, 'while payments are off every shop has Plus');
+select is((public.rpc_billing_status(:'biz_a') ->> 'payments_on')::boolean, false, 'the status says payments are off');
+select is((public.rpc_billing_status(:'biz_a') ->> 'can_pay')::boolean, false, 'while payments are off nobody is asked to pay');
+select throws_like(format($$select public.rpc_start_trial(gen_random_uuid(), %L)$$, :'biz_a'), '%AZ_PAYMENT_UNAVAILABLE%', 'no trial can be used up while payments are off');
+select throws_like(format($$select public.rpc_billing_start_payment(gen_random_uuid(), %L, 'plus_1m')$$, :'biz_a'), '%AZ_PAYMENT_UNAVAILABLE%', 'no payment can be started while payments are off');
+select throws_like($$select public.rpc_admin_set_payments_on(true)$$, '%AZ_FORBIDDEN%', 'an owner cannot turn payments on');
+select throws_like($$select public.rpc_admin_update_billing_product('plus_1m', 1, true)$$, '%AZ_FORBIDDEN%', 'an owner cannot change a plan');
+select throws_like($$select public.rpc_admin_billing_settings()$$, '%AZ_FORBIDDEN%', 'an owner cannot read the admin payment settings');
+select throws_ok($$select public.billing_payments_on()$$, '42501', null, 'the switch itself is closed to the API');
+select throws_ok($$update public.billing_settings set payments_on = true$$, '42501', null, 'the settings table is closed to the API');
+select tests.clear_auth();
+select tests.authenticate(:'admin');
+select throws_like($$select public.rpc_admin_update_billing_product('plus_1m', 0, true)$$, '%AZ_INVALID_INPUT%', 'a plan cannot be free or negative');
+select throws_like($$select public.rpc_admin_update_billing_product('nope', 100, true)$$, '%AZ_NOT_FOUND%', 'an unknown plan is refused');
+select public.rpc_admin_update_billing_product('plus_3m', 7500, false);
+select is((select jsonb_array_length(public.rpc_admin_billing_settings() -> 'products')), 3, 'the admin sees every plan, also one that is not offered');
+select public.rpc_admin_set_payments_on(true);
+select tests.clear_auth();
+select tests.authenticate(:'owner_a');
+select is(public.has_plus(:'biz_a'), false, 'once payments are on, a shop that has not paid has no Plus');
+select is((public.rpc_billing_status(:'biz_a') ->> 'can_pay')::boolean, true, 'once payments are on the owner can pay');
+select is((select jsonb_array_length(public.rpc_billing_status(:'biz_a') -> 'products')), 2, 'a plan the admin stopped is not offered');
+select tests.clear_auth();
+select tests.authenticate(:'admin');
+select public.rpc_admin_update_billing_product('plus_3m', 8000, true);
+select tests.clear_auth();
+select is((select count(*) from public.audit_events where action in ('billing.payments_switched', 'billing.product_changed')), 3::bigint, 'the switch and plan changes are written to the audit trail');
 
 -- 1. Tables are closed and row security is on ---------------------------------------------------------
 select ok((select bool_and(relrowsecurity) from pg_class where relname in

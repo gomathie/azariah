@@ -22,6 +22,8 @@
 
 ### Added
 
+- Azaria is free for every shop for now. The Azaria Plus screen says so and shows no prices until payment starts.
+- Support can turn payments on or off for every shop at once, and change the price of each plan, from a new Payments tab.
 - Salon is now a choice under "What do you do?" when you set up a shop. A new salon starts with its own lists: Hair, Nails and beauty, and Products sold for money coming in; Tools and repairs, and Towels and cleaning for spending; Hair and beauty supplies for stock.
 - Azaria Plus, under Settings. The owner can try it free for 14 days, then pay for 1, 3 or 12 months with Mobile Money or a card on Paystack's page. Recording sales, expenses and debts stays free. Not switched on for real payments yet.
 - A discount code from the Azaria team takes a percentage off the price of Azaria Plus.

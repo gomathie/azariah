@@ -129,6 +129,20 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"billing_settings": {
+                  Row: {
+                    "id": boolean,"payments_on": boolean,"updated_at": string,"updated_by": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "id"?: boolean,"payments_on"?: boolean,"updated_at"?: string,"updated_by"?: string | null
+                  }
+                  Update: {
+                    "id"?: boolean,"payments_on"?: boolean,"updated_at"?: string,"updated_by"?: string | null
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"business_entitlements": {
                   Row: {
                     "business_id": string,"plus_until": string | null,"trial_used": boolean,"updated_at": string
@@ -636,6 +650,9 @@ isOneToOne: false
 "billing_mark_paid":
 { Args: { "p_channel": string,"p_paid_at": string,"p_payment_id": string }; Returns: Json
                            },
+"billing_payments_on":
+{ Args: Record<PropertyKey, never>; Returns: boolean
+                           },
 "billing_record_event":
 { Args: { "p_event_key": string,"p_event_type": string,"p_payload": Json,"p_reference": string }; Returns: boolean
                            },
@@ -669,6 +686,9 @@ isOneToOne: false
 "rpc_add_shop_person":
 { Args: { "p_business_id": string,"p_client_operation_id": string,"p_device_name": string,"p_name": string,"p_role": string }; Returns: Json
                            },
+"rpc_admin_billing_settings":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "rpc_admin_create_discount_code":
 { Args: { "p_code": string,"p_max_uses"?: number,"p_note"?: string,"p_percent_off": number,"p_valid_days"?: number }; Returns: Json
                            },
@@ -686,6 +706,12 @@ isOneToOne: false
                            },
 "rpc_admin_set_discount_code_active":
 { Args: { "p_active": boolean,"p_id": string }; Returns: Json
+                           },
+"rpc_admin_set_payments_on":
+{ Args: { "p_on": boolean }; Returns: Json
+                           },
+"rpc_admin_update_billing_product":
+{ Args: { "p_active": boolean,"p_amount_minor": number,"p_code": string }; Returns: Json
                            },
 "rpc_admin_whoami":
 { Args: Record<PropertyKey, never>; Returns: Json

@@ -4,6 +4,7 @@ import { discountedMinor, isPaymentReference, type BillingStatus } from '@/featu
 import { useBillingStore } from '@/stores/billing'
 
 const status = (over: Partial<BillingStatus>): BillingStatus => ({
+  payments_on: true,
   plus_until: null,
   has_plus: false,
   in_grace: false,

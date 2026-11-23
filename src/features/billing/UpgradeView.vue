@@ -168,7 +168,12 @@ watch(() => business.current?.id, () => void load(), { immediate: true })
     <AppAlert v-if="notice" kind="success">{{ notice }}</AppAlert>
     <p v-if="loading && !status" class="text-slate-600">{{ t('app.loading') }}</p>
 
-    <template v-if="status">
+    <template v-if="status && !status.payments_on">
+      <AppAlert kind="success">{{ t('plus.freeForNow') }}</AppAlert>
+      <p class="text-slate-700">{{ t('plus.freeForNowLater') }}</p>
+    </template>
+
+    <template v-else-if="status">
       <AppAlert :kind="status.in_grace ? 'warning' : status.has_plus ? 'success' : 'info'">{{ statusLine }}</AppAlert>
 
       <AppAlert v-if="!status.can_pay" kind="info">{{ t('plus.ownerOnly') }}</AppAlert>

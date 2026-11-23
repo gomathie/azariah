@@ -466,7 +466,29 @@
     "discountSwitchOff": "Switch off",
     "discountSwitchOn": "Switch on",
     "discountInvalid": "Check the code, the percent and the limit.",
-    "shops": "Shops"
+    "shops": "Shops",
+    "payments": "Payments",
+    "paymentsOn": "Payments are ON",
+    "paymentsOff": "Payments are OFF",
+    "paymentsOnHelp": "Every shop is asked to pay for Azaria Plus. A shop that has not paid does not have Plus.",
+    "paymentsOffHelp": "Nobody is asked to pay. Every shop uses everything for free, and no shop uses up its free trial.",
+    "paymentsTurnOn": "Turn payments on",
+    "paymentsTurnOff": "Turn payments off",
+    "paymentsConfirmOn": "Every shop will be asked to pay from now. Shops that have not paid lose Azaria Plus at once. Bookkeeping stays free.",
+    "paymentsConfirmOff": "Nobody will be able to pay, and every shop gets everything for free. Time that shops already paid for keeps running.",
+    "paymentsYesOn": "Yes, turn on",
+    "paymentsYesOff": "Yes, turn off",
+    "paymentsNowOn": "Payments are on.",
+    "paymentsNowOff": "Payments are off.",
+    "plans": "Plans and prices",
+    "plansHelp": "A new price applies to the next payment. Time already paid for does not change.",
+    "planPrice": "Price ({currency})",
+    "planPriceInvalid": "Enter a price above zero.",
+    "planSave": "Save price",
+    "planSaved": "Saved.",
+    "planStop": "Stop offering",
+    "planOffer": "Offer again",
+    "planNotOffered": "Not offered"
   },
   "home": {
     "quickLabel": "Quick actions",
@@ -533,6 +555,8 @@
     "returnPending": "We have not received the payment yet. If you approved it on your phone, wait a moment and check again.",
     "returnFailed": "The payment did not go through. You can try again.",
     "returnUnknown": "We could not find this payment.",
-    "back": "Back to Azaria Plus"
+    "back": "Back to Azaria Plus",
+    "freeForNow": "Azaria is free for now. You do not need to pay, and everything is open to your shop.",
+    "freeForNowLater": "When payment starts, you will see the prices here first."
   }
 }

@@ -84,6 +84,7 @@ This part is for platform support staff.
 - Every search, look and status change is recorded and the owner can see it.
 - New support staff are added by the person who holds the database, not in the app.
 - Choose **Discount codes** in the Support console to give someone money off Azaria Plus. Type a code of 6 to 24 letters or numbers, the percent off, and how long it works: 30 days, 90 days, 1 year or for ever. You can also limit how many payments may use it.
+- Choose **Payments** in the Support console to turn payments on or off for every shop at once. Payments start off: nobody is asked to pay and every shop uses everything for free. When you turn them on, every shop is asked to pay from that moment, and you are asked to confirm first. On the same screen you can change the price of each plan or stop offering one.
 - A 100% code turns Plus on with nothing to pay. Give such a code only to the person it is meant for, and limit it to one payment.
 - **Switch off** stops a code at once. Time a shop already got with the code stays.
 - The shop list shows until when each shop has Plus. You cannot turn Plus on for a shop yourself; give the owner a code.

@@ -69,6 +69,7 @@ Scaffolded with `create-vue` so the Vite/Vue/Vitest/Playwright versions are mutu
 ## ADR-010 Azaria Plus is prepaid time, paid through Paystack, and never granted by the browser
 
 - A shop buys 1, 3 or 12 months of Azaria Plus. `business_entitlements.plus_until` holds the date. Plus is on while that date plus 7 days of grace is in the future. No "is paid" flag is stored.
+- One switch, `billing_settings.payments_on`, covers every shop and starts off. While it is off nobody can start a trial or a payment and every shop counts as having Plus. Only a platform admin can change it or a plan's price, through `rpc_admin_set_payments_on` and `rpc_admin_update_billing_product`; both are audited. Why: the owner wants shops to use Azaria free at first and to start charging everyone on a day of his choosing.
 - Why prepaid and not a subscription: in Ghana, Paystack cannot charge Mobile Money again without the customer approving each payment, and most shops pay by Mobile Money.
 - The browser can open a payment (`rpc_billing_start_payment`, owner only) but cannot mark one paid. Only `billing_apply_payment` does that, and only the service role may call it, from the Edge Functions `paystack-webhook` and `billing-verify`, after Paystack's verify call confirms the amount and currency.
 - The price and any discount are worked out in the database from `billing_products` and `discount_codes`. Nothing about the amount is read from the request.

@@ -47,6 +47,7 @@ Auth redirects in `supabase/config.toml` allow localhost and 127.0.0.1 on ports 
 Nothing here has been done on the cloud project. Each step needs the owner.
 
 1. **Prices.** The migration seeds placeholder prices: GHS 30, 80 and 300 for 1, 3 and 12 months. Set the real ones before taking money, in minor units (pesewas):
+   Prices can also be changed, and payments turned on or off for every shop, from the **Payments** tab of the Support console. Payments are off after the migration; nobody can pay until a platform admin turns them on.
 
 ```sql
 update public.billing_products set amount_minor = 3000 where code = 'plus_1m';

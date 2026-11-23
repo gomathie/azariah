@@ -74,3 +74,30 @@ export function createDiscountCode(input: NewDiscountCode) {
 export function setDiscountCodeActive(id: string, active: boolean) {
   return callRpc<{ id: string; active: boolean }>('rpc_admin_set_discount_code_active', { p_id: id, p_active: active })
 }
+
+export interface AdminBillingProduct {
+  code: string
+  months: number
+  amount_minor: number
+  currency_code: string
+  active: boolean
+}
+
+export interface AdminBillingSettings {
+  payments_on: boolean
+  updated_at: string | null
+  products: AdminBillingProduct[]
+}
+
+/** The switch for all payments and every plan, also plans that are not offered. Platform admin only. */
+export const getBillingSettings = () => callRpc<AdminBillingSettings>('rpc_admin_billing_settings', {})
+
+export const setPaymentsOn = (on: boolean) =>
+  callRpc<{ payments_on: boolean }>('rpc_admin_set_payments_on', { p_on: on })
+
+export const updateBillingProduct = (code: string, amountMinor: number, active: boolean) =>
+  callRpc<{ code: string }>('rpc_admin_update_billing_product', {
+    p_code: code,
+    p_amount_minor: amountMinor,
+    p_active: active,
+  })

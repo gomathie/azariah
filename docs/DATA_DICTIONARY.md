@@ -42,6 +42,7 @@ Audit actions added: `support.granted`, `support.revoked`, `support.viewed`, `su
 | `billing_payments` | `business_id`, `product_code`, `months`, `reference` (unique, `azp-` and 32 hex characters), `list_amount_minor`, `discount_code_id`, `percent_off`, `amount_minor`, `currency_code`, `status`, `channel`, `paid_at`, `created_by`. One row per attempt to pay. Owner and manager can read. |
 | `discount_codes` | `code` (capitals and digits, 6 to 24), `percent_off` (1 to 100), `valid_until` (null means for ever), `max_uses` (null means no limit), `note`, `active`, `created_by`. Not readable through the API. |
 | `billing_events` | `event_key` (unique), `event_type`, `reference`, `payload`, `received_at`, `processed_at`. What Paystack sent. The payload holds the payer's email and masked card or phone details, so no API role can read it. |
+| `billing_settings` | One row. `payments_on` (false until the platform admin turns payments on for every shop), `updated_at`, `updated_by`. Not readable through the API; `rpc_billing_status` reports the switch. |
 
 Payment status: `pending` when opened, `paid` once Paystack confirms it (or at once for a 100% code). `failed` is reserved; an abandoned checkout stays `pending` and is hidden from the owner after a day.
 
