@@ -26,8 +26,10 @@ async function submit() {
   }
   loading.value = true
   try {
-    const { needsEmailConfirmation } = await auth.signUp(email.value.trim(), password.value)
-    if (needsEmailConfirmation) {
+    const { needsEmailConfirmation, alreadyRegistered } = await auth.signUp(email.value.trim(), password.value)
+    if (alreadyRegistered) {
+      error.value = t('auth.alreadyRegistered')
+    } else if (needsEmailConfirmation) {
       info.value = t('auth.checkEmail')
     } else {
       await router.replace({ name: 'onboarding' })

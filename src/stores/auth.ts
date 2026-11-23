@@ -40,7 +40,13 @@ export const useAuthStore = defineStore('auth', () => {
     })
     if (error) throw error
     /** When email confirmation is off (local dev), a session is returned immediately. */
-    return { needsEmailConfirmation: data.session === null }
+    /**
+     * For an address that already has an account, Supabase answers as if all went well, sends no
+     * email, and returns a person with no identities. Saying "check your email" then leaves the
+     * person waiting for a message that never comes.
+     */
+    const alreadyRegistered = data.session === null && data.user?.identities?.length === 0
+    return { needsEmailConfirmation: data.session === null, alreadyRegistered }
   }
 
   async function resetPassword(email: string) {

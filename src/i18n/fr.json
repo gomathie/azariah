@@ -53,6 +53,7 @@
     "newPassword": "Nouveau mot de passe",
     "updatePassword": "Mettre à jour",
     "checkEmail": "Vérifiez votre e-mail pour confirmer votre compte, puis connectez-vous.",
+    "alreadyRegistered": "Cet e-mail a déjà un compte. Touchez Se connecter ci-dessous. Si vous avez oublié votre mot de passe, touchez Mot de passe oublié sur l'écran de connexion.",
     "language": "Langue"
   },
   "onboarding": {

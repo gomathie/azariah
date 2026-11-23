@@ -53,6 +53,7 @@
     "newPassword": "New password",
     "updatePassword": "Update password",
     "checkEmail": "Check your email to confirm your account, then sign in.",
+    "alreadyRegistered": "This email already has an account. Tap Sign in below. If you forgot your password, tap Forgot password on the sign-in screen.",
     "language": "Language"
   },
   "onboarding": {
