@@ -23,6 +23,10 @@
 - A sale saved without a connection says so on the same screen. The daybook opens when the connection is back.
 - Recording a payment waits until the amount the customer owes has loaded, so the exact amount owed is accepted.
 
+### Fixed
+
+- The link in a "Forgot password?" email now works in any browser or phone. Before, it only worked in the same browser you asked from, and otherwise showed the email form again.
+
 ### Added
 
 - The Azaria support team can now open a shop to help without you allowing it first. Settings, Privacy and data lists each time they did. Anything support adds or corrects is saved under their name.

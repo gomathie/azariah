@@ -43,6 +43,10 @@ People sign in straight after creating an account; the "Confirm email" switch in
 - A mistyped address that is never confirmed cannot receive a password reset. The reminder exists to catch this.
 - Fake sign-ups need no mailbox. Supabase's rate limits are the only brake; a CAPTCHA is not set up.
 
+## Links in emails
+
+The reset and sign-in emails link to the app with a one-time token (`token_hash`). `src/features/auth/emailLink.ts` accepts only a known kind and a plain token, the app hands it to Supabase's verify call, and the router then removes it from the address. A token works once and expires after an hour. A used or old link shows "That link is too old" and the email form. Checked by `emailLink.spec.ts` and a browser run on 2026-11-24.
+
 ## Support team access
 
 The support team can open any shop, by the owner's decision of 2026-11-23. See ADR-011, which replaces the consent rule of ADR-009.

@@ -132,5 +132,7 @@ Also on the cloud project, Authentication, URL Configuration: Site URL `https://
 
 Since 2026-11-23 people sign in without confirming first. On the cloud project: Authentication, Sign In / Providers, Email, turn off "Confirm email". Push migration `20261123000800_email_confirmation.sql` before deploying the app that holds the reminder; without it the reminder stays hidden and nothing breaks. The reminder's code travels in the "Magic link" email, so paste `magic_link.html` again (it now shows `{{ .Token }}`) and set its subject to "Your Azaria code". With the old template the email has only a link; tapping it also confirms.
 
+Since 2026-11-24 the links in `recovery.html` and `magic_link.html` point at the app itself (`{{ .SiteURL }}/reset-password?token_hash={{ .TokenHash }}&type=recovery`), not at Supabase's redirect. The app trades the token for a session, so the link works in any browser. Paste both files again after deploying the app that reads `token_hash`; the old template keeps working with the old app but only in the browser that asked. Site URL must have no trailing slash or dot.
+
 Supabase's built-in sender allows only a few emails an hour and sends from a Supabase address. Connect your own sender under Authentication, Emails, SMTP Settings before inviting many people.
 

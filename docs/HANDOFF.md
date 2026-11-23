@@ -224,3 +224,13 @@ Protected decisions are listed in `AGENTS.md`; design context is in `docs/archit
 - **Watch:** do not let the browser tell the database an email is confirmed. Do not turn the reminder into a block without the owner.
 - **Verification:** `0019_email_confirmation.test.sql` 11 of 11; `emailConfirm.spec.ts` 5 tests; phone-size browser run on the local stack 11 of 11 real checks (the send request was answered by the test because no local mail catcher runs, so no real email was seen).
 - **Rollback:** remove `<EmailConfirmReminder />` from `AppShell.vue` and turn "Confirm email" back on. The table can stay.
+
+## 2026-11-24: email links that work in any browser
+
+- **What:** `src/features/auth/emailLink.ts`, a few lines in `src/stores/auth.ts` (`ready`), the router guard, `ResetPasswordView.vue`, and the links in `supabase/templates/recovery.html` and `magic_link.html`.
+- **Why:** a live test on 2026-11-24 opened a reset link in a browser other than the one that asked for it. The page showed the email form again. The client uses the PKCE flow, whose secret stays in the asking browser; mail apps and home-screen apps often open links elsewhere.
+- **How:** the email carries `token_hash` and `type`; on start the app calls `verifyOtp` with them before reading the session, and the router strips them from the address.
+- **Trade-off:** a mail scanner that runs page scripts could use up a link before the person does; they would see "That link is too old" and ask again.
+- **Watch:** keep `flowType: 'pkce'`; do not go back to `{{ .ConfirmationURL }}` in these two templates. `confirmation.html`, `invite.html` and `email_change.html` still use it and have the same limit; confirmation is unused while "Confirm email" is off.
+- **Verification:** `emailLink.spec.ts` (5 tests); local browser run in fresh browsers: reset link, used link, sign-in with the new password, "Open Azaria" link. Not yet run on the live site.
+- **Rollback:** put `{{ .ConfirmationURL }}` back in the two templates; the app code can stay.
