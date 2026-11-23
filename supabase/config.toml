@@ -262,6 +262,16 @@ otp_expiry = 3600
 # admin_email = "admin@email.com"
 # sender_name = "Admin"
 
+# Azaria's own emails. The cloud project does not read this file: paste each HTML file into the
+# Supabase dashboard, Authentication > Emails > Templates (see docs/DEPLOYMENT.md).
+[auth.email.template.confirmation]
+subject = "Confirm your email for Azaria"
+content_path = "./supabase/templates/confirmation.html"
+
+[auth.email.template.recovery]
+subject = "Reset your Azaria password"
+content_path = "./supabase/templates/recovery.html"
+
 # Uncomment to customize email template
 # [auth.email.template.invite]
 # subject = "You have been invited"
