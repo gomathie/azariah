@@ -2,7 +2,6 @@
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageHeader from '@/components/ui/PageHeader.vue'
-import InstallApp from '@/components/ui/InstallApp.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppAlert from '@/components/ui/AppAlert.vue'
 import { exportBusiness } from '@/features/settings/api'
@@ -61,7 +60,6 @@ async function download() {
         class="rounded-xl border border-slate-200 bg-white px-4 min-h-14 flex items-center font-medium"
         >{{ t(link.label) }}</RouterLink
       >
-      <InstallApp />
     </nav>
     <AppButton v-if="business.current?.role === 'owner'" type="button" block :loading="loading" @click="download">
       {{ t('settings.export') }}

@@ -18,9 +18,12 @@ export async function signUpAndCreateBusiness(page: Page, businessName = "Ama's 
   await page.getByLabel('Business name').fill(businessName)
   await page.getByRole('button', { name: 'Create business' }).click()
 
-  await expect(page.getByRole('heading', { name: 'People and phones' })).toBeVisible()
-  await page.getByRole('button', { name: 'Go to my shop' }).click()
+  // Set-up asks only for the name and the kind of shop, then goes straight to Home.
   await expect(page).toHaveURL(/\/$/)
   await expect(page.getByRole('heading', { name: 'Home' })).toBeVisible()
+  // A new account is reminded to confirm its email. Put it off so it does not cover the screen.
+  const reminder = page.getByRole('dialog')
+  await reminder.waitFor({ timeout: 8000 }).catch(() => {})
+  if (await reminder.isVisible()) await reminder.getByRole('button', { name: 'Later', exact: true }).click()
   return { email }
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import AuthLayout from '@/features/auth/AuthLayout.vue'
@@ -9,7 +9,6 @@ import AppButton from '@/components/ui/AppButton.vue'
 import AppAlert from '@/components/ui/AppAlert.vue'
 import { useBusinessStore, type CreateBusinessInput } from '@/stores/business'
 import { useAuthStore } from '@/stores/auth'
-import { COUNTRIES, CURRENCIES } from '@/utils/locales'
 import { RpcError } from '@/lib/supabase/rpc'
 
 const { t } = useI18n()
@@ -19,30 +18,16 @@ const router = useRouter()
 
 const name = ref('')
 const businessType = ref<CreateBusinessInput['businessType']>('retail')
-const countryCode = ref('GH')
-const currencyCode = ref('GHS')
-const timezone = ref('Africa/Accra')
+// Ghana only for now, by the owner's decision of 2026-11-24: set-up asks two things, not five.
+// The database and `src/utils/locales.ts` still know the other countries; to open them again,
+// bring back the country, currency and time zone choices here.
+const HOME = { countryCode: 'GH', currencyCode: 'GHS', timezone: 'Africa/Accra' } as const
 const error = ref<string | null>(null)
 const loading = ref(false)
 
 const typeOptions = computed(() =>
   (['retail', 'food', 'services', 'salon', 'other'] as const).map((v) => ({ value: v, label: t(`onboarding.types.${v}`) })),
 )
-const countryOptions = COUNTRIES.map((c) => ({ value: c.code, label: c.name }))
-const currencyOptions = CURRENCIES.map((c) => ({ value: c.code, label: `${c.code} — ${c.name}` }))
-const timezoneOptions = computed(() => {
-  const list = 'supportedValuesOf' in Intl ? Intl.supportedValuesOf('timeZone') : ['Africa/Accra', 'UTC']
-  return list.map((z) => ({ value: z, label: z }))
-})
-
-// Country only *suggests* currency and timezone; the user can change both (spec §3.2).
-watch(countryCode, (code) => {
-  const c = COUNTRIES.find((x) => x.code === code)
-  if (c) {
-    currencyCode.value = c.currency
-    timezone.value = c.timezone
-  }
-})
 
 async function submit() {
   error.value = null
@@ -55,11 +40,10 @@ async function submit() {
     await business.createBusiness({
       name: name.value.trim(),
       businessType: businessType.value,
-      countryCode: countryCode.value,
-      currencyCode: currencyCode.value,
-      timezone: timezone.value,
+      ...HOME,
     })
-    await router.replace({ name: 'members', query: { first: '1' } })
+    // Straight to the books. Adding people to the shop can wait; it is under Settings.
+    await router.replace({ name: 'home' })
   } catch (e) {
     error.value = e instanceof RpcError ? t(e.i18nKey) : e instanceof Error ? e.message : t('errors.generic')
   } finally {
@@ -86,9 +70,6 @@ async function signOut() {
         required
       />
       <AppSelect v-model="businessType" :label="t('onboarding.businessType')" :options="typeOptions" />
-      <AppSelect v-model="countryCode" :label="t('onboarding.country')" :options="countryOptions" />
-      <AppSelect v-model="currencyCode" :label="t('onboarding.currency')" :options="currencyOptions" />
-      <AppSelect v-model="timezone" :label="t('onboarding.timezone')" :options="timezoneOptions" />
       <AppAlert v-if="error" kind="error">{{ error }}</AppAlert>
       <AppButton type="submit" block size="lg" :loading="loading">{{ t('onboarding.create') }}</AppButton>
     </form>

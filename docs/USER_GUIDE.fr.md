@@ -9,7 +9,7 @@ Tout ce que vous pouvez faire dans Azaria au quotidien. Lisez-le dans l'applicat
 - **Mot de passe oublié ?** Touchez « Mot de passe oublié ? » sur l'écran de connexion. Un lien est envoyé à votre e-mail.
 - **Confirmez votre e-mail.** Après la connexion, Azaria vous demande de confirmer votre e-mail. Touchez « Envoyez-moi le code », ouvrez l'e-mail et tapez le code. Vous pouvez toucher « Plus tard » et continuer ; Azaria redemande après trois jours.
 - **Changez de langue** dans Profil. Azaria existe en anglais et en français.
-- **Mettez Azaria sur votre écran d'accueil** : ouvrez le bouton rond en haut à droite, choisissez Paramètres, puis « Ajouter à l'écran d'accueil ». Azaria s'ouvre alors comme une application.
+- **Mettez Azaria sur votre écran d'accueil** : ouvrez le bouton rond en haut à droite, puis touchez « Ajouter à l'écran d'accueil ». Azaria s'ouvre alors comme une application.
 
 ## Accueil
 

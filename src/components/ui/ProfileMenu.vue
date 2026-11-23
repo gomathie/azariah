@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { onClickOutside, onKeyStroke } from '@vueuse/core'
 import { useAuthStore } from '@/stores/auth'
 import { useBusinessStore } from '@/stores/business'
+import InstallApp from '@/components/ui/InstallApp.vue'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -100,6 +101,7 @@ async function signOut() {
           >{{ t(link.label) }}</RouterLink
         >
       </nav>
+      <InstallApp />
       <div class="border-t border-slate-200 pt-1">
         <button type="button" class="w-full text-left rounded-xl px-3 min-h-12 text-red-700 font-medium hover:bg-red-50" @click="signOut">
           {{ t('nav.signOut') }}

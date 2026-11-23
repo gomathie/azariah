@@ -14,15 +14,15 @@ async function install() {
 }
 </script>
 
-<!-- A row in the Settings menu. Hidden once Azaria runs as an installed app. -->
+<!-- A row in the profile menu. Hidden once Azaria runs as an installed app. -->
 <template>
-  <div v-if="!appInstalled" class="space-y-2">
+  <div v-if="!appInstalled" class="space-y-2 border-t border-slate-200 py-1">
     <button
       type="button"
-      class="w-full text-left rounded-xl border border-slate-200 bg-white px-4 min-h-14 flex flex-col justify-center hover:bg-slate-50"
+      class="w-full text-left rounded-xl px-3 py-2 min-h-12 flex flex-col justify-center hover:bg-slate-100"
       @click="install"
     >
-      <span class="font-medium">{{ t('install.action') }}</span>
+      <span>{{ t('install.action') }}</span>
       <span class="text-sm text-slate-600">{{ t('install.hint') }}</span>
     </button>
     <AppAlert v-if="help === 'ios'" kind="info">{{ t('install.ios') }}</AppAlert>
