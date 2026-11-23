@@ -18,7 +18,7 @@ One cloud Supabase project exists. Do not create another, and do not push migrat
 - The CLI labels this project "production". The spec asks for separate staging and production projects. Only this one exists, and the owner has not yet said which it is. Treat it as production: synthetic test data does not go in it.
 - Migrations `20261116000100` through `20261116001500` were applied on 2026-11-22. `npx supabase migration list --remote` showed all 15 matching.
 - The database password is held by the owner. It is not in the repository. Commands that need it read `SUPABASE_DB_PASSWORD` from the shell.
-- The frontend reads the cloud URL and publishable key from `.env.production.local`, which is gitignored and used by `npm run build`. `.env` stays on the local stack so `npm run dev` and the tests never touch the cloud project.
+- The project has one env file, `.env` (gitignored), with `.env.example` as its committed sample. Its active values stay on the local stack, so `npm run dev`, a local `npm run build` and the tests never touch the cloud project. The cloud URL and publishable key reach the deployed site through the Cloudflare Pages variables; `.env` keeps a commented copy of them ready to paste.
 - No frontend is deployed. Auth redirect URLs, email (SMTP) and backups on the cloud project are still at Supabase defaults.
 
 ### Pushing a migration
@@ -65,7 +65,7 @@ npx supabase secrets set PAYSTACK_SECRET_KEY=sk_test_... APP_URL=https://your-ap
 6. **Try it.** With the test key, pay with Paystack's test Mobile Money number and test card. Plus must turn on through the webhook alone (close the browser tab before returning) and through the return screen alone.
 7. **Go live.** Swap in the live secret key with `supabase secrets set` and make one real payment of the shortest period.
 
-Local trial of the functions: put `PAYSTACK_SECRET_KEY` and `APP_URL=http://localhost:5173` in a file outside the repository and run `npx supabase functions serve --env-file <that file>`. Paystack cannot reach a local webhook without a tunnel; the return screen works without one.
+Local trial of the functions: put the Paystack test key in `PAYSTACK_SECRET_KEY` in `.env` (gitignored; `APP_URL=http://localhost:5173` is already there) and run `npx supabase functions serve --env-file .env`. The key has no `VITE_` prefix, so the build never puts it in the browser code. It does not go to Cloudflare either. Paystack cannot reach a local webhook without a tunnel; the return screen works without one.
 
 If an owner says they paid and Plus is off: ask them to open Settings, Azaria Plus and tap **Check my payment**. If that fails, find the reference in the Paystack dashboard and compare it with `billing_payments`. Refunds are made in the Paystack dashboard; the app does not shorten Plus by itself.
 
@@ -80,7 +80,7 @@ The frontend is a static build. The owner connects the GitHub repository in the 
 | Build output directory | `dist` |
 | Production branch | `main` |
 
-Production variables (Settings, Variables and Secrets). `.env.cloudflare` in the project root holds the same four lines ready to copy. It is gitignored, so each machine keeps its own copy.
+Production variables (Settings, Variables and Secrets). Section 2 of `.env` holds the same four lines, commented, ready to copy; `.env.example` shows the layout. The Paystack secret key is not one of them: it is a Supabase function secret (see "Azaria Plus payments").
 
 | Variable | Value |
 |---|---|

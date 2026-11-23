@@ -93,7 +93,7 @@ be tempted to undo. Format: Why / How / Benefit / Trade-off / Verification / Rol
 ## 2026-11-22 — Local `.env` stays on the local stack after the cloud project was linked
 
 - **Why:** the Playwright tests and manual dev sign-ups create throwaway users and shops. In the cloud project they would sit beside real traders' data.
-- **How:** the cloud URL and publishable key live in `.env.production.local`, read only by `npm run build`. `.env` keeps the local values. The CLI needs `--remote` to touch the cloud database.
+- **How:** `.env` keeps the local values. The cloud URL and publishable key are set as Cloudflare Pages variables (a commented copy sits in `.env`). On 2026-11-23 `.env.cloudflare` and `.env.production.local` were merged into `.env`, so a local `npm run build` now also targets the local stack. The CLI needs `--remote` to touch the cloud database.
 - **Benefit:** no test or dev session can write to the cloud project by accident.
 - **Trade-off:** trying the app against the cloud database needs a production build, or a deliberate temporary env override.
 - **Verification:** on 2026-11-22 an anonymous REST request to nine cloud tables, including `audit_events` and `documents`, returned 401 with code 42501. `migration list --remote` showed 15 of 15 matching.

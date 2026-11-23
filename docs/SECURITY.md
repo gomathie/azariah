@@ -76,7 +76,7 @@ See ADR-010.
 - `billing-checkout` and `billing-verify` need the signed-in person's token and act as that person, so row security applies. They accept calls from one origin, `APP_URL`.
 - The checkout address must be on `paystack.com`, or the function refuses to return it. The return screen accepts a reference only in our own format.
 - Paystack receives the owner's sign-in email, the amount, and the shop's id and product code. It receives nothing from the books.
-- Secrets: `PAYSTACK_SECRET_KEY` is set with `supabase secrets set`. It is never in the repository and never in a `VITE_` variable.
+- Secrets: `PAYSTACK_SECRET_KEY` is set with `supabase secrets set`. It is never in the repository and never in a `VITE_` variable. For a local trial it may sit in the gitignored `.env`; it is never a Cloudflare Pages variable.
 - Known limit: a signed-in owner can try discount codes one after another. Codes are at least six characters and are never listed, but there is no rate limit yet. Give out codes that are hard to guess.
 - Checked by `supabase/tests/0018_billing.test.sql` (53 assertions), `src/features/billing/__tests__` (16 tests), and a local run of the three functions with a dummy key on 2026-11-23.
 
