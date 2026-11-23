@@ -1,6 +1,8 @@
 # Azaria Plus: easy mode as a paid upgrade, with Paystack
 
-Written 2026-11-23. Status: proposed, nothing built. This plan is separate from the MVP plan
+Written 2026-11-23. Status: phases 1 and 2 (billing and Paystack) and discount codes are built and checked locally
+on 2026-11-23, at the owner's request, with the section 2 recommendations assumed and placeholder prices. No payment
+has been made against Paystack yet (task 2.3). Phases 3 to 7 are not started. This plan is separate from the MVP plan
 (`2026-11-16-azaria-mvp.md`); do not start it until the owner has answered the decisions in section 2.
 
 ## 1. Goal
@@ -137,22 +139,30 @@ Each task ends with its check. Follow the project skill for migrations, RPCs and
 
 ### Phase 1: billing backend
 
-- [ ] 1.1 Migration: four tables, RLS, grants, indexes, seed three products (prices from D1).
-- [ ] 1.2 `has_plus`, `rpc_billing_status`, `rpc_start_trial`, `billing_apply_payment`.
-- [ ] 1.3 pgTAP file `supabase/tests/0018_billing.sql`: a member cannot write any billing table; a cashier cannot start a trial; the trial works once; applying the same reference twice extends once; renewing early adds to the existing date; another shop's rows are invisible; grace boundary is correct.
-- [ ] 1.4 Regenerate `src/types/database.ts`.
-- [ ] 1.5 Add ADR-010 and update `docs/DATA_DICTIONARY.md` and `docs/SECURITY.md`.
+- [x] 1.1 Migration: four tables, RLS, grants, indexes, seed three products (prices from D1).
+- [x] 1.2 `has_plus`, `rpc_billing_status`, `rpc_start_trial`, `billing_apply_payment`.
+- [x] 1.3 pgTAP file `supabase/tests/0018_billing.sql`: a member cannot write any billing table; a cashier cannot start a trial; the trial works once; applying the same reference twice extends once; renewing early adds to the existing date; another shop's rows are invisible; grace boundary is correct.
+- [x] 1.4 Regenerate `src/types/database.ts`.
+- [x] 1.5 Add ADR-010 and update `docs/DATA_DICTIONARY.md` and `docs/SECURITY.md`.
 - Check: `npx supabase test db` passes with the new file.
 
 ### Phase 2: Paystack
 
-- [ ] 2.1 `billing-checkout`, `paystack-webhook`, `billing-verify`, with shared signature and verify helpers.
-- [ ] 2.2 Unit tests for the helpers (Deno): a good signature passes; a changed body fails; a wrong amount or currency is refused; a replayed event is ignored.
+- [x] 2.1 `billing-checkout`, `paystack-webhook`, `billing-verify`, with shared signature and verify helpers.
+- [x] 2.2 Unit tests for the helpers (Deno): a good signature passes; a changed body fails; a wrong amount or currency is refused; a replayed event is ignored.
 - [ ] 2.3 Local run against Paystack **test** keys with `supabase functions serve` and a tunnel for the webhook. Pay with Paystack's test Mobile Money number and test card.
-- [ ] 2.4 Billing store, upgrade screen, return screen, menu entries, three languages.
+- [x] 2.4 Billing store, upgrade screen, return screen, menu entries, three languages.
 - [ ] 2.5 Vitest for the store (grace, offline cache, expiry) and Playwright for the upgrade screen with the functions mocked.
-- [ ] 2.6 `docs/DEPLOYMENT.md`: secrets, webhook address, how to switch test and live keys. `docs/ADMIN_GUIDE.md`: how to check a payment and what to do when a customer says they paid.
+- [x] 2.6 `docs/DEPLOYMENT.md`: secrets, webhook address, how to switch test and live keys. `docs/ADMIN_GUIDE.md`: how to check a payment and what to do when a customer says they paid.
 - Check: a test payment turns Plus on locally through the webhook alone, and separately through the return screen alone.
+
+Notes on what was built, where it differs from the lines above:
+
+- The SQL test file is `supabase/tests/0018_billing.test.sql`. The owner opens a payment through `rpc_billing_start_payment`, which `billing-checkout` calls as the signed-in person; there is no separate service-role insert.
+- 2.2: the helpers use web-standard APIs only and are tested with Vitest (`src/features/billing/__tests__/paystack.spec.ts`), not Deno.
+- 2.3 is open: it needs a Paystack account and test key.
+- 2.5 is half done: Vitest covers the store and price maths. There is no Playwright spec; a one-off phone-size script was run. The Dexie offline cache of the entitlement is not built, because no Plus feature exists yet to keep on while offline.
+- Added at the owner's request: **discount codes**. A platform admin makes a code in the Support console (percent off; 30 days, 90 days, 1 year or for ever; optional limit on payments). The owner types it on the upgrade screen. A 100% code turns Plus on with no payment. See ADR-010.
 
 ### Phase 3: Listen
 

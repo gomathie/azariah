@@ -22,6 +22,9 @@
 
 ### Added
 
+- Azaria Plus, under Settings. The owner can try it free for 14 days, then pay for 1, 3 or 12 months with Mobile Money or a card on Paystack's page. Recording sales, expenses and debts stays free. Not switched on for real payments yet.
+- A discount code from the Azaria team takes a percentage off the price of Azaria Plus.
+
 - An About page with the story behind Azaria and where the name comes from. Anyone can read it, signed in or not.
 - A user guide and an admin guide inside the app, under Profile, Guides. Everyone sees the user guide. Owners, admins and the support team also see the admin guide.
 - Twi as a third language, next to English and French. The Twi wording still needs a check by a native speaker, and the guides are in English and French only.

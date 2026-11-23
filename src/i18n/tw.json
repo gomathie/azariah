@@ -268,7 +268,8 @@
     "business": "Adwuma no nhyehyɛe",
     "members": "Nnipa ne fon",
     "privacy": "Kokoamsɛm ne nsɛm a wɔakora",
-    "export": "Twe me nsɛm nyinaa"
+    "export": "Twe me nsɛm nyinaa",
+    "plus": "Azaria Plus"
   },
   "businessSettings": {
     "title": "Adwuma no nhyehyɛe",
@@ -364,7 +365,11 @@
     "AZ_ALREADY_REVERSED": "Wɔatwa eyi mu dedaw.",
     "AZ_NOT_FOUND": "Yɛanhu saa nsɛm no.",
     "AZ_NO_MONEY_RECEIVED": "Sika biara amma eyi ho, enti risiti nni hɔ.",
-    "AZ_SUPPORT_NOT_GRANTED": "Wura no mmaa mmoafo kwan wɔ sotɔɔ yi ho, anaa bere no atwam."
+    "AZ_SUPPORT_NOT_GRANTED": "Wura no mmaa mmoafo kwan wɔ sotɔɔ yi ho, anaa bere no atwam.",
+    "AZ_TRIAL_USED": "Saa sotɔɔ yi de ne sɔhwɛ kwa no adi dwuma dedaw.",
+    "AZ_DISCOUNT_INVALID": "Koodu yi nyɛ papa, anaa ne bere atwam.",
+    "AZ_DISCOUNT_EXISTS": "Saa koodu no wɔ hɔ dedaw. Paw foforo.",
+    "AZ_PAYMENT_UNAVAILABLE": "Akatua ntumi nkɔ so seesei. San sɔ hwɛ kakra akyi."
   },
   "add": {
     "everyday": "Da biara",
@@ -433,7 +438,34 @@
       "viewed": "Mmoafo buee sotɔɔ yi",
       "status_changed": "Mmoafo sesaa sotɔɔ yi tebea",
       "searched": "Mmoafo hwehwɛe"
-    }
+    },
+    "plusUntil": "Plus kɔsi {date}",
+    "noPlus": "Plus nni hɔ",
+    "discounts": "Ntewsoɔ koodu",
+    "discountsIntro": "Yɛ koodu na fa tew Azaria Plus bo so ma obi. Koodu no yɛ adwuma bere bi anaa daa. Koodu a ɛyɛ 100% sɔ Plus a obiara ntua hwee.",
+    "discountCode": "Koodu (nkyerɛwde anaa nɔma 6 kosi 24)",
+    "discountPercent": "Ɔha mu nkyɛmu a wɔtew so (1 kosi 100)",
+    "discountPeriod": "Ɛyɛ adwuma",
+    "periodForever": "Daa",
+    "period30": "Nnafua 30",
+    "period90": "Nnafua 90",
+    "period365": "Afe 1",
+    "discountMaxUses": "Akatua dodow a ɛsɛ sɛ ɛde di dwuma",
+    "discountMaxUsesHint": "Gyaw hɔ hunu sɛ anohyeto biara nni hɔ a.",
+    "discountNote": "Nkrato ma kuw no",
+    "discountCreate": "Yɛ koodu",
+    "discountCreated": "Koodu {code} asiesie; wubetumi de ama.",
+    "discountNone": "Koodu biara nni hɔ ɛ.",
+    "discountForever": "Ne bere ntwam da",
+    "discountUntil": "Ɛyɛ adwuma kɔsi {date}",
+    "discountEnded": "Ne bere twaam {date}",
+    "discountUses": "Wɔde adi dwuma mpɛn {n}",
+    "discountUsesOf": "Wɔde adi dwuma mpɛn {n} wɔ {max} mu",
+    "discountOff": "Wɔadum",
+    "discountSwitchOff": "Dum",
+    "discountSwitchOn": "Sɔ",
+    "discountInvalid": "Hwɛ koodu no, ɔha mu nkyɛmu no ne anohyeto no.",
+    "shops": "Sotɔɔ"
   },
   "home": {
     "quickLabel": "Ntɛm dwumadi",
@@ -465,5 +497,41 @@
   "about": {
     "title": "Azaria ho nsɛm",
     "hint": "App no abakɔsɛm ne nea egyina ma"
+  },
+  "plus": {
+    "title": "Azaria Plus",
+    "intro": "Azaria Plus de mmoa foforo ka wo nkontaabuo ho. Adetɔn, ka ne aka a wokyerɛw no yɛ kwa daa, sɛ wowɔ Plus anaa wonni bi.",
+    "onUntil": "Plus reyɛ adwuma kɔsi {date}.",
+    "graceUntil": "Wo Plus bere no baa awiei {date}. Plus bɛyɛ adwuma nna kakra bio. Tua seesei na ɛnkɔ so.",
+    "ended": "Wo Plus bere no baa awiei {date}.",
+    "off": "Plus nyɛ adwuma wɔ saa sotɔɔ yi mu.",
+    "choose": "Paw bere tenten",
+    "months": "Bosome 1 | Abosome {n}",
+    "was": "Kan no na ɛyɛ {price}",
+    "trial": "Sɔ Plus hwɛ kwa nnafua 14",
+    "trialStarted": "Wo sɔhwɛ kwa no ahyɛ ase.",
+    "code": "Ntewsoɔ koodu",
+    "codeHint": "Sɛ obi a ɔwɔ Azaria maa wo koodu a, kyerɛw wɔ ha.",
+    "applyCode": "Fa koodu no di dwuma",
+    "codeApplied": "Wɔatew {percent}% so de koodu {code}.",
+    "removeCode": "Yi koodu no",
+    "pay": "Tua {price}",
+    "payFree": "Sɔ Plus, biribiara nni hɔ a wobɛtua",
+    "payHint": "Wobɛtua wɔ Paystack kratafa so de Mobile Money anaa kaad, na afei woasan aba ha.",
+    "privacy": "Paystack nsa bɛka wo email ne akatua no. Ɛrenhu wo nkrataa.",
+    "ownerOnly": "Sotɔɔ wura nko ara na ɔtumi tua Plus ho ka.",
+    "paidNow": "Plus reyɛ adwuma. Meda wo ase.",
+    "history": "Akatua",
+    "statusPaid": "Wɔatua",
+    "statusPending": "Ɛnwiei",
+    "statusFailed": "Ankɔ so",
+    "check": "Hwɛ me akatua",
+    "returnTitle": "Wo akatua",
+    "checking": "Yɛrehwɛ wo akatua…",
+    "returnPaid": "Yɛn nsa aka akatua no. Plus reyɛ adwuma kɔsi {date}.",
+    "returnPending": "Yɛn nsa nkaa akatua no ɛ. Sɛ wopenee so wɔ wo fon so a, twɛn kakra na san hwɛ.",
+    "returnFailed": "Akatua no ankɔ so. Wubetumi asan asɔ ahwɛ.",
+    "returnUnknown": "Yɛanhu saa akatua yi.",
+    "back": "San kɔ Azaria Plus"
   }
 }

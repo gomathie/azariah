@@ -42,6 +42,33 @@ Never run `supabase db reset --linked` or `--remote`.
 
 Auth redirects in `supabase/config.toml` allow localhost and 127.0.0.1 on ports 5173 and 4173. A stack restart is required after that file changes.
 
+## Azaria Plus payments (Paystack)
+
+Nothing here has been done on the cloud project. Each step needs the owner.
+
+1. **Prices.** The migration seeds placeholder prices: GHS 30, 80 and 300 for 1, 3 and 12 months. Set the real ones before taking money, in minor units (pesewas):
+
+```sql
+update public.billing_products set amount_minor = 3000 where code = 'plus_1m';
+```
+
+2. **Migration.** `20261123000100_billing.sql` goes to the cloud the same way as any other: dry run, then push with the owner's go-ahead.
+3. **Secrets.** In the Paystack dashboard, copy the secret key (test key first). Then:
+
+```
+npx supabase secrets set PAYSTACK_SECRET_KEY=sk_test_... APP_URL=https://your-app-address --project-ref <ref>
+```
+
+   `APP_URL` is the app's public address with no slash at the end. It is the only origin allowed to call the functions and the place Paystack sends the owner back to.
+4. **Functions.** `npx supabase functions deploy billing-checkout billing-verify paystack-webhook --project-ref <ref>`. `supabase/config.toml` turns sign-in checking off for `paystack-webhook` only.
+5. **Webhook.** In the Paystack dashboard, Settings, API Keys and Webhooks, set the webhook address to `https://<ref>.supabase.co/functions/v1/paystack-webhook`.
+6. **Try it.** With the test key, pay with Paystack's test Mobile Money number and test card. Plus must turn on through the webhook alone (close the browser tab before returning) and through the return screen alone.
+7. **Go live.** Swap in the live secret key with `supabase secrets set` and make one real payment of the shortest period.
+
+Local trial of the functions: put `PAYSTACK_SECRET_KEY` and `APP_URL=http://localhost:5173` in a file outside the repository and run `npx supabase functions serve --env-file <that file>`. Paystack cannot reach a local webhook without a tunnel; the return screen works without one.
+
+If an owner says they paid and Plus is off: ask them to open Settings, Azaria Plus and tap **Check my payment**. If that fails, find the reference in the Paystack dashboard and compare it with `billing_payments`. Refunds are made in the Paystack dashboard; the app does not shorten Plus by itself.
+
 ## Cloudflare Pages
 
 The frontend is a static build. The owner connects the GitHub repository in the Cloudflare dashboard; agents do not deploy. As of 2026-11-22 no deployment has been made.

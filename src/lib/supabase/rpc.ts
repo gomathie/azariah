@@ -13,6 +13,10 @@ export type AzariaErrorCode =
   | 'AZ_ALREADY_REVERSED'
   | 'AZ_NOT_FOUND'
   | 'AZ_NO_MONEY_RECEIVED'
+  | 'AZ_TRIAL_USED'
+  | 'AZ_DISCOUNT_INVALID'
+  | 'AZ_DISCOUNT_EXISTS'
+  | 'AZ_PAYMENT_UNAVAILABLE'
 
 export class RpcError extends Error {
   constructor(

@@ -65,3 +65,17 @@ Scaffolded with `create-vue` so the Vite/Vue/Vitest/Playwright versions are mutu
 - Why: spec principle 5 says administrators do not automatically get access to an entrepreneur's finances, and §6.1 says platform support does not bypass business-level privacy. Support still has to be possible when something breaks.
 - Ruled out: a role that reads every shop; support writes of any kind; a service-role key in a support tool; impersonating the owner.
 - Rule for later work: a new function that only reads may call `is_member(p_business_id)` or `assert_member(p_business_id)` without roles. A function or policy that writes must name roles. `supabase/tests/0016_support_access.test.sql` fails if a write opens to support.
+
+## ADR-010 Azaria Plus is prepaid time, paid through Paystack, and never granted by the browser
+
+- A shop buys 1, 3 or 12 months of Azaria Plus. `business_entitlements.plus_until` holds the date. Plus is on while that date plus 7 days of grace is in the future. No "is paid" flag is stored.
+- Why prepaid and not a subscription: in Ghana, Paystack cannot charge Mobile Money again without the customer approving each payment, and most shops pay by Mobile Money.
+- The browser can open a payment (`rpc_billing_start_payment`, owner only) but cannot mark one paid. Only `billing_apply_payment` does that, and only the service role may call it, from the Edge Functions `paystack-webhook` and `billing-verify`, after Paystack's verify call confirms the amount and currency.
+- The price and any discount are worked out in the database from `billing_products` and `discount_codes`. Nothing about the amount is read from the request.
+- A payment counts once: `billing_payments.reference` is unique and a paid row is never applied again.
+- The browser goes to Paystack's hosted page by redirect. No Paystack script or frame is loaded, so the Content Security Policy is unchanged.
+- Discount codes are made by a platform admin: a percentage off, valid for a number of days or for ever, with an optional limit on how many payments may use it. A 100% code turns Plus on with no payment. Codes cannot be listed through the API; a wrong, ended, used-up or switched-off code all give the same answer.
+- Making a discount code is a write by a platform admin. It does not touch any shop's books, so ADR-009 still holds: support cannot write to a shop, cannot start a trial or a payment for one, and cannot read a shop's payments.
+- Plus features are aids, not locks. No bookkeeping action is refused because a shop has not paid.
+- The Paystack secret key lives only in Edge Function secrets.
+- Ruled out: Paystack's pop-up script; trusting the return address or the webhook body without the verify call; a boolean entitlement; letting support grant Plus by hand.

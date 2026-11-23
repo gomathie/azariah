@@ -83,3 +83,7 @@ Cette partie s'adresse au personnel d'assistance de la plateforme.
 - **Suspendre la boutique** ferme une boutique à ses membres. **Réactiver la boutique** la rouvre. Les deux demandent un motif.
 - Chaque recherche, consultation et changement de statut est enregistré et le propriétaire peut le voir.
 - Le nouveau personnel d'assistance est ajouté par la personne qui détient la base de données, pas dans l'application.
+- Choisissez **Codes de réduction** dans la Console d'assistance pour offrir une réduction sur Azaria Plus. Tapez un code de 6 à 24 lettres ou chiffres, le pourcentage de réduction et sa durée : 30 jours, 90 jours, 1 an ou pour toujours. Vous pouvez aussi limiter le nombre de paiements qui peuvent l'utiliser.
+- Un code à 100 % active Plus sans rien à payer. Ne donnez un tel code qu'à la personne concernée, et limitez-le à un seul paiement.
+- **Désactiver** arrête un code tout de suite. Le temps qu'une boutique a déjà obtenu avec le code reste acquis.
+- La liste des boutiques montre jusqu'à quand chaque boutique a Plus. Vous ne pouvez pas activer Plus vous-même pour une boutique ; donnez un code au propriétaire.

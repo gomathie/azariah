@@ -13,6 +13,8 @@ export interface DirectoryShop {
   member_count: number
   last_entry_date: string | null
   support_expires_at: string | null
+  /** Until when the shop has Azaria Plus. Missing on a database without the billing migration. */
+  plus_until?: string | null
 }
 
 export async function listShops(search: string | null, before: string | null = null): Promise<DirectoryShop[]> {
@@ -30,4 +32,45 @@ export async function setShopStatus(businessId: string, status: 'active' | 'susp
     p_status: status,
     p_reason: reason,
   })
+}
+
+export interface DiscountCode {
+  id: string
+  code: string
+  percent_off: number
+  /** null means the code never runs out. */
+  valid_until: string | null
+  max_uses: number | null
+  note: string | null
+  active: boolean
+  created_at: string
+  /** Payments that used the code and went through. */
+  uses: number
+}
+
+export async function listDiscountCodes(): Promise<DiscountCode[]> {
+  return (await callRpc<DiscountCode[]>('rpc_admin_list_discount_codes', {})) ?? []
+}
+
+export interface NewDiscountCode {
+  code: string
+  percentOff: number
+  /** null for a code that never runs out. */
+  validDays: number | null
+  maxUses: number | null
+  note: string | null
+}
+
+export function createDiscountCode(input: NewDiscountCode) {
+  return callRpc<{ id: string; code: string }>('rpc_admin_create_discount_code', {
+    p_code: input.code,
+    p_percent_off: input.percentOff,
+    p_valid_days: input.validDays,
+    p_max_uses: input.maxUses,
+    p_note: input.note,
+  })
+}
+
+export function setDiscountCodeActive(id: string, active: boolean) {
+  return callRpc<{ id: string; active: boolean }>('rpc_admin_set_discount_code_active', { p_id: id, p_active: active })
 }

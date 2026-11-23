@@ -410,6 +410,10 @@ deno_version = 2
 # [edge_runtime.secrets]
 # secret_key = "env(SECRET_VALUE)"
 
+# Paystack calls this address with no sign-in. The function checks Paystack's signature itself.
+[functions.paystack-webhook]
+verify_jwt = false
+
 [analytics]
 # Off: the app does not use analytics, and Windows reserves its old port 54327.
 enabled = false

@@ -268,7 +268,8 @@
     "business": "Paramètres de l'entreprise",
     "members": "Personnes et téléphones",
     "privacy": "Confidentialité et données",
-    "export": "Télécharger toutes mes données"
+    "export": "Télécharger toutes mes données",
+    "plus": "Azaria Plus"
   },
   "businessSettings": {
     "title": "Paramètres de l'entreprise",
@@ -364,7 +365,11 @@
     "AZ_ALREADY_REVERSED": "Cette entrée a déjà été annulée.",
     "AZ_NOT_FOUND": "Enregistrement introuvable.",
     "AZ_NO_MONEY_RECEIVED": "Aucun argent reçu sur cette entrée, donc pas de reçu.",
-    "AZ_SUPPORT_NOT_GRANTED": "Le propriétaire n'a pas autorisé l'assistance pour cette boutique, ou l'accès est terminé."
+    "AZ_SUPPORT_NOT_GRANTED": "Le propriétaire n'a pas autorisé l'assistance pour cette boutique, ou l'accès est terminé.",
+    "AZ_TRIAL_USED": "Cette boutique a déjà utilisé son essai gratuit.",
+    "AZ_DISCOUNT_INVALID": "Ce code n'est pas valable, ou il a expiré.",
+    "AZ_DISCOUNT_EXISTS": "Ce code existe déjà. Choisissez-en un autre.",
+    "AZ_PAYMENT_UNAVAILABLE": "Le paiement n'est pas disponible pour le moment. Réessayez dans un instant."
   },
   "add": {
     "everyday": "Tous les jours",
@@ -433,7 +438,34 @@
       "viewed": "L'assistance a ouvert cette boutique",
       "status_changed": "L'assistance a changé le statut de cette boutique",
       "searched": "L'assistance a effectué une recherche"
-    }
+    },
+    "plusUntil": "Plus jusqu'au {date}",
+    "noPlus": "Pas de Plus",
+    "discounts": "Codes de réduction",
+    "discountsIntro": "Créez un code pour offrir une réduction sur Azaria Plus. Le code marche pendant une durée fixée ou pour toujours. Un code à 100 % active Plus sans rien à payer.",
+    "discountCode": "Code (6 à 24 lettres ou chiffres)",
+    "discountPercent": "Pourcentage de réduction (1 à 100)",
+    "discountPeriod": "Valable",
+    "periodForever": "Pour toujours",
+    "period30": "30 jours",
+    "period90": "90 jours",
+    "period365": "1 an",
+    "discountMaxUses": "Nombre maximal de paiements qui peuvent l'utiliser",
+    "discountMaxUsesHint": "Laissez vide pour ne pas limiter.",
+    "discountNote": "Note pour l'équipe",
+    "discountCreate": "Créer le code",
+    "discountCreated": "Le code {code} est prêt à être partagé.",
+    "discountNone": "Aucun code pour le moment.",
+    "discountForever": "N'expire jamais",
+    "discountUntil": "Valable jusqu'au {date}",
+    "discountEnded": "A expiré le {date}",
+    "discountUses": "Utilisé {n} fois",
+    "discountUsesOf": "Utilisé {n} fois sur {max}",
+    "discountOff": "Désactivé",
+    "discountSwitchOff": "Désactiver",
+    "discountSwitchOn": "Réactiver",
+    "discountInvalid": "Vérifiez le code, le pourcentage et la limite.",
+    "shops": "Boutiques"
   },
   "home": {
     "quickLabel": "Actions rapides",
@@ -465,5 +497,41 @@
   "about": {
     "title": "À propos d'Azaria",
     "hint": "L'histoire de l'application et ses valeurs"
+  },
+  "plus": {
+    "title": "Azaria Plus",
+    "intro": "Azaria Plus ajoute une aide en plus de votre comptabilité. Noter les ventes, les dépenses et les dettes reste gratuit, avec ou sans Plus.",
+    "onUntil": "Plus est actif jusqu'au {date}.",
+    "graceUntil": "Votre temps Plus a pris fin le {date}. Plus reste actif encore quelques jours. Payez maintenant pour le garder.",
+    "ended": "Votre temps Plus a pris fin le {date}.",
+    "off": "Plus n'est pas actif pour cette boutique.",
+    "choose": "Choisissez la durée",
+    "months": "1 mois | {n} mois",
+    "was": "Avant : {price}",
+    "trial": "Essayer Plus gratuitement pendant 14 jours",
+    "trialStarted": "Votre essai gratuit a commencé.",
+    "code": "Code de réduction",
+    "codeHint": "Si quelqu'un d'Azaria vous a donné un code, tapez-le ici.",
+    "applyCode": "Utiliser le code",
+    "codeApplied": "{percent} % de réduction avec le code {code}.",
+    "removeCode": "Retirer le code",
+    "pay": "Payer {price}",
+    "payFree": "Activer Plus, rien à payer",
+    "payHint": "Vous payez sur la page de Paystack avec Mobile Money ou une carte, puis vous revenez ici.",
+    "privacy": "Paystack reçoit votre adresse e-mail et le paiement. Il ne reçoit pas vos données.",
+    "ownerOnly": "Seul le propriétaire de la boutique peut payer Plus.",
+    "paidNow": "Plus est actif. Merci.",
+    "history": "Paiements",
+    "statusPaid": "Payé",
+    "statusPending": "Pas terminé",
+    "statusFailed": "N'a pas abouti",
+    "check": "Vérifier mon paiement",
+    "returnTitle": "Votre paiement",
+    "checking": "Vérification de votre paiement…",
+    "returnPaid": "Paiement reçu. Plus est actif jusqu'au {date}.",
+    "returnPending": "Nous n'avons pas encore reçu le paiement. Si vous l'avez approuvé sur votre téléphone, attendez un instant et vérifiez à nouveau.",
+    "returnFailed": "Le paiement n'a pas abouti. Vous pouvez réessayer.",
+    "returnUnknown": "Nous n'avons pas trouvé ce paiement.",
+    "back": "Retour à Azaria Plus"
   }
 }

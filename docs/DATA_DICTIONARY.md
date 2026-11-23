@@ -33,6 +33,20 @@ Amounts are minor units (`bigint`). GHS uses 2, so 100.00 is stored as 10000. A 
 
 Audit actions added: `support.granted`, `support.revoked`, `support.viewed`, `support.status_changed`, `support.searched`.
 
+### Billing tables (2026-11-23)
+
+| Table | What it holds |
+|---|---|
+| `billing_products` | `code` (`plus_1m`, `plus_3m`, `plus_12m`), `months`, `amount_minor`, `currency_code`, `active`, `sort_order`. The periods on sale. Readable by any signed-in user; changed with SQL only. The seeded prices are placeholders. |
+| `business_entitlements` | `business_id`, `plus_until`, `trial_used`, `updated_at`. One row per shop that ever had Plus. Members can read their own shop's row. Nobody can write it through the API. |
+| `billing_payments` | `business_id`, `product_code`, `months`, `reference` (unique, `azp-` and 32 hex characters), `list_amount_minor`, `discount_code_id`, `percent_off`, `amount_minor`, `currency_code`, `status`, `channel`, `paid_at`, `created_by`. One row per attempt to pay. Owner and manager can read. |
+| `discount_codes` | `code` (capitals and digits, 6 to 24), `percent_off` (1 to 100), `valid_until` (null means for ever), `max_uses` (null means no limit), `note`, `active`, `created_by`. Not readable through the API. |
+| `billing_events` | `event_key` (unique), `event_type`, `reference`, `payload`, `received_at`, `processed_at`. What Paystack sent. The payload holds the payer's email and masked card or phone details, so no API role can read it. |
+
+Payment status: `pending` when opened, `paid` once Paystack confirms it (or at once for a 100% code). `failed` is reserved; an abandoned checkout stays `pending` and is hidden from the owner after a day.
+
+Audit actions added: `billing.trial_started`, `billing.paid`, `billing.discount_created`, `billing.discount_changed`.
+
 ## Status
 
 - Transaction status: `posted` or `reversed`. A reversal is a new posted transaction of kind `reversal`. The original becomes `reversed`.

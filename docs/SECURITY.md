@@ -58,7 +58,27 @@ select id, 'who and why' from auth.users where email = 'person@example.com';
 ```
 
   Remove one with `delete from public.platform_admins where user_id = ...`. Keep this list short, and give each admin a strong password. Two-step sign-in for admins is not built yet.
-- Checked by `supabase/tests/0016_support_access.test.sql` (47 assertions) and a browser run on 2026-11-22.
+- Checked by `supabase/tests/0016_support_access.test.sql` (49 assertions) and a browser run on 2026-11-22.
+
+## Payments and discount codes
+
+See ADR-010.
+
+| Who | Can | Cannot |
+|---|---|---|
+| Owner | Start the free trial, open a payment, check a discount code, see the shop's payments | Mark a payment paid, set a price, write any billing table |
+| Manager | See whether Plus is on and the shop's payments | Pay or start a trial |
+| Staff | See whether Plus is on | See payments, pay |
+| Platform admin | Make, list and switch off discount codes; see until when a shop has Plus | Give a shop Plus directly, read a shop's payments, pay for a shop |
+| Paystack webhook | Report a payment | Change anything unless its signature is right and Paystack's verify call agrees on amount and currency |
+
+- `paystack-webhook` is the only address in the project that takes no sign-in. It accepts POST only, checks the `x-paystack-signature` header (HMAC-SHA512 of the raw body with the secret key) before parsing, and logs the event type and reference, never the payload.
+- `billing-checkout` and `billing-verify` need the signed-in person's token and act as that person, so row security applies. They accept calls from one origin, `APP_URL`.
+- The checkout address must be on `paystack.com`, or the function refuses to return it. The return screen accepts a reference only in our own format.
+- Paystack receives the owner's sign-in email, the amount, and the shop's id and product code. It receives nothing from the books.
+- Secrets: `PAYSTACK_SECRET_KEY` is set with `supabase secrets set`. It is never in the repository and never in a `VITE_` variable.
+- Known limit: a signed-in owner can try discount codes one after another. Codes are at least six characters and are never listed, but there is no rate limit yet. Give out codes that are hard to guess.
+- Checked by `supabase/tests/0018_billing.test.sql` (53 assertions), `src/features/billing/__tests__` (16 tests), and a local run of the three functions with a dummy key on 2026-11-23.
 
 ## Isolation
 

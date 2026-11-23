@@ -6,6 +6,7 @@ import PageHeader from '@/components/ui/PageHeader.vue'
 import AppAlert from '@/components/ui/AppAlert.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppInput from '@/components/ui/AppInput.vue'
+import DiscountCodesPanel from '@/features/support/DiscountCodesPanel.vue'
 import { listShops, setShopStatus, type DirectoryShop } from '@/features/support/api'
 import { RpcError } from '@/lib/supabase/rpc'
 import { useBusinessStore } from '@/stores/business'
@@ -15,6 +16,8 @@ const PAGE = 25
 const { t, locale } = useI18n()
 const router = useRouter()
 const business = useBusinessStore()
+/** The console has two parts: the shop directory, and discount codes for Azaria Plus. */
+const tab = ref<'shops' | 'discounts'>('shops')
 const search = ref('')
 const shops = ref<DirectoryShop[]>([])
 const hasMore = ref(false)
@@ -100,6 +103,22 @@ onMounted(() => void load(true))
           t('guide.admin')
         }}</RouterLink>
       </AppAlert>
+      <div class="flex gap-2" role="tablist">
+        <button
+          v-for="name in ['shops', 'discounts'] as const"
+          :key="name"
+          type="button"
+          role="tab"
+          :aria-selected="tab === name"
+          class="flex-1 min-h-12 rounded-xl border font-semibold"
+          :class="tab === name ? 'bg-brand-700 text-white border-brand-700' : 'bg-white text-brand-800 border-brand-200'"
+          @click="tab = name"
+        >
+          {{ name === 'shops' ? t('support.shops') : t('support.discounts') }}
+        </button>
+      </div>
+      <DiscountCodesPanel v-if="tab === 'discounts'" />
+      <template v-else>
       <form class="flex gap-2 items-end" role="search" @submit.prevent="load(true)">
         <div class="flex-1">
           <AppInput v-model="search" :label="t('support.search')" inputmode="search" autocomplete="off" />
@@ -128,6 +147,13 @@ onMounted(() => void load(true))
             <dt class="text-slate-600">{{ t('support.members') }}</dt>
             <dd class="text-slate-900">{{ shop.member_count }} · {{ shop.country_code }} · {{ shop.currency_code }}</dd>
           </dl>
+          <p class="text-sm text-slate-600">
+            {{
+              shop.plus_until && new Date(shop.plus_until) > new Date()
+                ? t('support.plusUntil', { date: day(shop.plus_until) })
+                : t('support.noPlus')
+            }}
+          </p>
           <p class="text-sm" :class="shop.support_expires_at ? 'text-emerald-800' : 'text-slate-600'">
             {{
               shop.support_expires_at
@@ -162,6 +188,7 @@ onMounted(() => void load(true))
       <AppButton v-if="hasMore" type="button" variant="secondary" block :loading="loading" @click="load(false)">
         {{ t('support.more') }}
       </AppButton>
+      </template>
     </section>
   </div>
 </template>

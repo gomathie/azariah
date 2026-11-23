@@ -69,6 +69,86 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"billing_events": {
+                  Row: {
+                    "event_key": string,"event_type": string,"id": string,"payload": NonNullable<Json>,"processed_at": string | null,"received_at": string,"reference": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "event_key": string,"event_type": string,"id"?: string,"payload": NonNullable<Json>,"processed_at"?: string | null,"received_at"?: string,"reference"?: string | null
+                  }
+                  Update: {
+                    "event_key"?: string,"event_type"?: string,"id"?: string,"payload"?: NonNullable<Json>,"processed_at"?: string | null,"received_at"?: string,"reference"?: string | null
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"billing_payments": {
+                  Row: {
+                    "amount_minor": number,"business_id": string,"channel": string | null,"created_at": string,"created_by": string | null,"currency_code": string,"discount_code_id": string | null,"id": string,"list_amount_minor": number,"months": number,"paid_at": string | null,"percent_off": number,"product_code": string,"reference": string,"status": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "amount_minor": number,"business_id": string,"channel"?: string | null,"created_at"?: string,"created_by"?: string | null,"currency_code": string,"discount_code_id"?: string | null,"id"?: string,"list_amount_minor": number,"months": number,"paid_at"?: string | null,"percent_off"?: number,"product_code": string,"reference": string,"status"?: string
+                  }
+                  Update: {
+                    "amount_minor"?: number,"business_id"?: string,"channel"?: string | null,"created_at"?: string,"created_by"?: string | null,"currency_code"?: string,"discount_code_id"?: string | null,"id"?: string,"list_amount_minor"?: number,"months"?: number,"paid_at"?: string | null,"percent_off"?: number,"product_code"?: string,"reference"?: string,"status"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "billing_payments_business_id_fkey"
+      columns: ["business_id"]
+isOneToOne: false
+      referencedRelation: "businesses"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "billing_payments_discount_code_id_fkey"
+      columns: ["discount_code_id"]
+isOneToOne: false
+      referencedRelation: "discount_codes"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "billing_payments_product_code_fkey"
+      columns: ["product_code"]
+isOneToOne: false
+      referencedRelation: "billing_products"
+      referencedColumns: ["code"]
+    }
+                  ]
+                },"billing_products": {
+                  Row: {
+                    "active": boolean,"amount_minor": number,"code": string,"currency_code": string,"months": number,"sort_order": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "active"?: boolean,"amount_minor": number,"code": string,"currency_code"?: string,"months": number,"sort_order"?: number
+                  }
+                  Update: {
+                    "active"?: boolean,"amount_minor"?: number,"code"?: string,"currency_code"?: string,"months"?: number,"sort_order"?: number
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"business_entitlements": {
+                  Row: {
+                    "business_id": string,"plus_until": string | null,"trial_used": boolean,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "business_id": string,"plus_until"?: string | null,"trial_used"?: boolean,"updated_at"?: string
+                  }
+                  Update: {
+                    "business_id"?: string,"plus_until"?: string | null,"trial_used"?: boolean,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "business_entitlements_business_id_fkey"
+      columns: ["business_id"]
+isOneToOne: true
+      referencedRelation: "businesses"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"business_memberships": {
                   Row: {
                     "business_id": string,"created_at": string,"id": string,"invited_email": string | null,"role": Database["public"]['Enums']["business_role"],"status": Database["public"]['Enums']["membership_status"],"updated_at": string,"user_id": string
@@ -194,6 +274,20 @@ isOneToOne: false
       referencedRelation: "transactions"
       referencedColumns: ["id"]
     }
+                  ]
+                },"discount_codes": {
+                  Row: {
+                    "active": boolean,"code": string,"created_at": string,"created_by": string | null,"id": string,"max_uses": number | null,"note": string | null,"percent_off": number,"valid_until": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "active"?: boolean,"code": string,"created_at"?: string,"created_by"?: string | null,"id"?: string,"max_uses"?: number | null,"note"?: string | null,"percent_off": number,"valid_until"?: string | null
+                  }
+                  Update: {
+                    "active"?: boolean,"code"?: string,"created_at"?: string,"created_by"?: string | null,"id"?: string,"max_uses"?: number | null,"note"?: string | null,"percent_off"?: number,"valid_until"?: string | null
+                  }
+                  Relationships: [
+                    
                   ]
                 },"document_counters": {
                   Row: {
@@ -512,6 +606,39 @@ isOneToOne: false
 "audit":
 { Args: { "p_action": string,"p_business_id": string,"p_data"?: Json,"p_entity_id": string,"p_entity_type": string }; Returns: undefined
                            },
+"billing_apply_payment":
+{ Args: { "p_amount_minor": number,"p_channel"?: string,"p_currency_code": string,"p_paid_at"?: string,"p_reference": string }; Returns: Json
+                           },
+"billing_event_processed":
+{ Args: { "p_event_key": string }; Returns: undefined
+                           },
+"billing_find_discount":
+{ Args: { "p_code": string }; Returns: {
+              "active": boolean,
+"code": string,
+"created_at": string,
+"created_by": string | null,
+"id": string,
+"max_uses": number | null,
+"note": string | null,
+"percent_off": number,
+"valid_until": string | null
+            }
+                          SetofOptions: {
+        from: "*"
+        to: "discount_codes"
+        isOneToOne: true
+        isSetofReturn: false
+      } },
+"billing_grace":
+{ Args: Record<PropertyKey, never>; Returns: string
+                           },
+"billing_mark_paid":
+{ Args: { "p_channel": string,"p_paid_at": string,"p_payment_id": string }; Returns: Json
+                           },
+"billing_record_event":
+{ Args: { "p_event_key": string,"p_event_type": string,"p_payload": Json,"p_reference": string }; Returns: boolean
+                           },
 "business_local_date":
 { Args: { "p_business_id": string,"p_occurred_at": string }; Returns: string
                            },
@@ -523,6 +650,9 @@ isOneToOne: false
                            },
 "document_payload":
 { Args: { "p_id": string }; Returns: Json
+                           },
+"has_plus":
+{ Args: { "p_business_id": string }; Returns: boolean
                            },
 "has_support_access":
 { Args: { "p_business_id": string }; Returns: boolean
@@ -539,8 +669,14 @@ isOneToOne: false
 "rpc_add_shop_person":
 { Args: { "p_business_id": string,"p_client_operation_id": string,"p_device_name": string,"p_name": string,"p_role": string }; Returns: Json
                            },
+"rpc_admin_create_discount_code":
+{ Args: { "p_code": string,"p_max_uses"?: number,"p_note"?: string,"p_percent_off": number,"p_valid_days"?: number }; Returns: Json
+                           },
 "rpc_admin_list_businesses":
 { Args: { "p_before"?: string,"p_limit"?: number,"p_search"?: string }; Returns: Json
+                           },
+"rpc_admin_list_discount_codes":
+{ Args: Record<PropertyKey, never>; Returns: Json
                            },
 "rpc_admin_open_business":
 { Args: { "p_business_id": string }; Returns: Json
@@ -548,11 +684,23 @@ isOneToOne: false
 "rpc_admin_set_business_status":
 { Args: { "p_business_id": string,"p_reason": string,"p_status": string }; Returns: Json
                            },
+"rpc_admin_set_discount_code_active":
+{ Args: { "p_active": boolean,"p_id": string }; Returns: Json
+                           },
 "rpc_admin_whoami":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
+"rpc_billing_start_payment":
+{ Args: { "p_business_id": string,"p_client_operation_id": string,"p_discount_code"?: string,"p_product_code": string }; Returns: Json
+                           },
+"rpc_billing_status":
+{ Args: { "p_business_id": string }; Returns: Json
+                           },
 "rpc_change_membership":
 { Args: { "p_business_id": string,"p_client_operation_id": string,"p_membership_id": string,"p_role"?: string,"p_status"?: string }; Returns: Json
+                           },
+"rpc_check_discount_code":
+{ Args: { "p_business_id": string,"p_code": string }; Returns: Json
                            },
 "rpc_create_business_and_owner":
 { Args: { "p_business_type": string,"p_client_operation_id": string,"p_country_code": string,"p_currency_code": string,"p_name": string,"p_timezone": string }; Returns: Json
@@ -628,6 +776,9 @@ isOneToOne: false
                            },
 "rpc_revoke_support_access":
 { Args: { "p_business_id": string }; Returns: Json
+                           },
+"rpc_start_trial":
+{ Args: { "p_business_id": string,"p_client_operation_id": string }; Returns: Json
                            },
 "rpc_transfer_between_accounts":
 { Args: { "p_amount_minor": number,"p_business_id": string,"p_client_operation_id": string,"p_from_account_id": string,"p_note"?: string,"p_occurred_at": string,"p_to_account_id": string }; Returns: Json

@@ -3,6 +3,15 @@
 Change-rationale entries for guards, constraints, refusals and defaults that a later agent might
 be tempted to undo. Format: Why / How / Benefit / Trade-off / Verification / Rollback. Newest first.
 
+## 2026-11-23 — Only the server can turn Azaria Plus on; discount codes are never listed
+
+- **Why:** the owner asked for Paystack payments, then discount codes that a super admin gives out as a percentage, for a period or for ever. A payment system that trusts the browser, the return address or an unsigned webhook can be made to give Plus for nothing.
+- **How:** `20261123000100_billing.sql` and three Edge Functions (ADR-010). The owner opens a payment with `rpc_billing_start_payment`; the price and discount are set there. `billing_apply_payment` is granted to the service role alone and is called only after Paystack's verify call. The webhook checks the signature before parsing. Discount codes have no grants; `billing_find_discount` gives one answer for every kind of bad code. A 100% code skips Paystack and is applied inside the same owner-only function.
+- **Benefit:** a forged webhook, a changed amount, a replayed event and a made-up return address all do nothing. Support can give a shop a discount but cannot touch its books or grant Plus by hand.
+- **Trade-off:** no automatic renewal; the owner pays again each period. Refunds do not shorten Plus. Discount guesses are not rate limited. Prices are changed with SQL. The owner's reading of "for a period or for ever" was taken to mean how long the code works; if it should mean how long a shop keeps the discount after first using it, the code table needs a per-shop redemption row.
+- **Verification:** `0018_billing.test.sql` (53), two added refusals in `0016_support_access.test.sql`, `paystack.spec.ts` and `billing.spec.ts` (16), a local run of the functions with a dummy key, and a phone-size browser run. No payment has been made against Paystack, test or live.
+- **Rollback:** remove the Settings link and the two routes; the tables can stay empty.
+
 ## 2026-11-22 — Text is cleaned in triggers as well as in the browser
 
 - **Why:** the owner asked that all input be safe from injection and stored as text. The browser can be bypassed with a forged request, so the database must clean too.

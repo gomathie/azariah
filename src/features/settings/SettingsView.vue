@@ -19,6 +19,7 @@ const links = [
   { name: 'business-settings', label: 'settings.business' },
   { name: 'members', label: 'settings.members' },
   { name: 'accounts', label: 'nav.accounts' },
+  { name: 'plus', label: 'settings.plus' },
   { name: 'sync', label: 'nav.sync' },
   { name: 'profile', label: 'nav.profile' },
   { name: 'privacy', label: 'settings.privacy' },

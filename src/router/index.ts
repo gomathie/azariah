@@ -207,6 +207,18 @@ const router = createRouter({
           meta: { titleKey: 'profile.title' },
         },
         {
+          path: 'settings/plus',
+          name: 'plus',
+          component: () => import('@/features/billing/UpgradeView.vue'),
+          meta: { titleKey: 'plus.title' },
+        },
+        {
+          path: 'settings/plus/return',
+          name: 'plus-return',
+          component: () => import('@/features/billing/PaymentReturnView.vue'),
+          meta: { titleKey: 'plus.returnTitle' },
+        },
+        {
           path: 'help',
           name: 'help',
           component: () => import('@/features/help/HelpView.vue'),

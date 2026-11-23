@@ -268,7 +268,8 @@
     "business": "Business settings",
     "members": "People and phones",
     "privacy": "Privacy and data",
-    "export": "Download all my data"
+    "export": "Download all my data",
+    "plus": "Azaria Plus"
   },
   "businessSettings": {
     "title": "Business settings",
@@ -364,7 +365,11 @@
     "AZ_ALREADY_REVERSED": "This entry was already reversed.",
     "AZ_NOT_FOUND": "We could not find that record.",
     "AZ_NO_MONEY_RECEIVED": "There is no money received on this entry, so there is no receipt.",
-    "AZ_SUPPORT_NOT_GRANTED": "The owner has not given support access to this shop, or it has ended."
+    "AZ_SUPPORT_NOT_GRANTED": "The owner has not given support access to this shop, or it has ended.",
+    "AZ_TRIAL_USED": "This shop has already used its free trial.",
+    "AZ_DISCOUNT_INVALID": "This code is not valid, or it has run out.",
+    "AZ_DISCOUNT_EXISTS": "That code already exists. Choose another.",
+    "AZ_PAYMENT_UNAVAILABLE": "Payment is not available right now. Please try again in a moment."
   },
   "add": {
     "everyday": "Every day",
@@ -433,7 +438,34 @@
       "viewed": "Support opened this shop",
       "status_changed": "Support changed this shop's status",
       "searched": "Support searched"
-    }
+    },
+    "plusUntil": "Plus until {date}",
+    "noPlus": "No Plus",
+    "discounts": "Discount codes",
+    "discountsIntro": "Make a code to give someone money off Azaria Plus. The code works for a set time or for ever. A 100% code turns Plus on with nothing to pay.",
+    "discountCode": "Code (6 to 24 letters or numbers)",
+    "discountPercent": "Percent off (1 to 100)",
+    "discountPeriod": "Works for",
+    "periodForever": "For ever",
+    "period30": "30 days",
+    "period90": "90 days",
+    "period365": "1 year",
+    "discountMaxUses": "Most payments that may use it",
+    "discountMaxUsesHint": "Leave empty for no limit.",
+    "discountNote": "Note for the team",
+    "discountCreate": "Make code",
+    "discountCreated": "Code {code} is ready to share.",
+    "discountNone": "No codes yet.",
+    "discountForever": "Never runs out",
+    "discountUntil": "Works until {date}",
+    "discountEnded": "Ran out on {date}",
+    "discountUses": "Used {n} times",
+    "discountUsesOf": "Used {n} of {max} times",
+    "discountOff": "Switched off",
+    "discountSwitchOff": "Switch off",
+    "discountSwitchOn": "Switch on",
+    "discountInvalid": "Check the code, the percent and the limit.",
+    "shops": "Shops"
   },
   "home": {
     "quickLabel": "Quick actions",
@@ -465,5 +497,41 @@
   "about": {
     "title": "About Azaria",
     "hint": "The story behind the app and what it stands for"
+  },
+  "plus": {
+    "title": "Azaria Plus",
+    "intro": "Azaria Plus adds extra help on top of your bookkeeping. Recording sales, expenses and debts stays free, with or without Plus.",
+    "onUntil": "Plus is on until {date}.",
+    "graceUntil": "Your Plus time ended on {date}. Plus stays on for a few more days. Pay now to keep it.",
+    "ended": "Your Plus time ended on {date}.",
+    "off": "Plus is not on for this shop.",
+    "choose": "Choose how long",
+    "months": "1 month | {n} months",
+    "was": "Was {price}",
+    "trial": "Try Plus free for 14 days",
+    "trialStarted": "Your free trial has started.",
+    "code": "Discount code",
+    "codeHint": "If someone from Azaria gave you a code, type it here.",
+    "applyCode": "Use code",
+    "codeApplied": "{percent}% off with code {code}.",
+    "removeCode": "Remove code",
+    "pay": "Pay {price}",
+    "payFree": "Turn on Plus, nothing to pay",
+    "payHint": "You pay on Paystack's page with Mobile Money or a card, then you come back here.",
+    "privacy": "Paystack receives your email address and the payment. It does not receive your records.",
+    "ownerOnly": "Only the shop owner can pay for Plus.",
+    "paidNow": "Plus is on. Thank you.",
+    "history": "Payments",
+    "statusPaid": "Paid",
+    "statusPending": "Not finished",
+    "statusFailed": "Did not go through",
+    "check": "Check my payment",
+    "returnTitle": "Your payment",
+    "checking": "Checking your payment…",
+    "returnPaid": "Payment received. Plus is on until {date}.",
+    "returnPending": "We have not received the payment yet. If you approved it on your phone, wait a moment and check again.",
+    "returnFailed": "The payment did not go through. You can try again.",
+    "returnUnknown": "We could not find this payment.",
+    "back": "Back to Azaria Plus"
   }
 }

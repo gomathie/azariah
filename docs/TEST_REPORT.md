@@ -39,6 +39,19 @@ Date: 2026-11-16. This file records runs that actually happened. A file existing
 | AUDIT | `npm audit --omit=dev` | 0 vulnerabilities. |
 | BROWSER-3 | Scripted Chromium run: hostile sign-in redirect, guides from Profile, hostile customer name and phone, Twi on Home, guide fallback note | PASS. No console errors. Not kept as a spec file. |
 
+## Azaria Plus billing and discount codes (2026-11-23)
+
+| ID | Steps | Expected | Actual | Result |
+|---|---|---|---|---|
+| BILL-1 | `npx supabase test db` | 18 files, 291 tests pass, including `0018_billing.test.sql` (53) | As expected | PASS |
+| BILL-2 | `npm run test:unit -- --run` | 17 files, 86 tests, including signature, reference and price tests | As expected | PASS |
+| BILL-3 | `npm run type-check`, `npm run lint`, `npm run build` | Clean | Clean | PASS |
+| BILL-4 | `supabase functions serve` with a dummy Paystack key; one-off script | Unsigned, wrongly signed and altered webhooks get 401; a signed event is stored; another shop's owner gets 403; an `amount_minor` in the request is ignored; unknown and malformed references are refused | As expected | PASS |
+| BILL-5 | Phone-size browser run, 360 wide: support makes a 50% and a 100% code; the owner applies them | Price halves; 100% code turns Plus on; wrong code refused; no sideways scroll; no console errors | 13 of 13 checks | PASS |
+| BILL-6 | A real payment through Paystack, test or live key, by webhook and by return screen | Plus turns on | Not run: no Paystack account or key yet | BLOCKED |
+
+BILL-4 and BILL-5 were one-off scripts; there is no spec file for them yet.
+
 ## Not run
 
 | ID | What is on disk | Status |

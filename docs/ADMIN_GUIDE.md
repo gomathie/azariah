@@ -83,3 +83,7 @@ This part is for platform support staff.
 - **Suspend shop** closes a shop to its members. **Reactivate shop** opens it again. Both need a reason.
 - Every search, look and status change is recorded and the owner can see it.
 - New support staff are added by the person who holds the database, not in the app.
+- Choose **Discount codes** in the Support console to give someone money off Azaria Plus. Type a code of 6 to 24 letters or numbers, the percent off, and how long it works: 30 days, 90 days, 1 year or for ever. You can also limit how many payments may use it.
+- A 100% code turns Plus on with nothing to pay. Give such a code only to the person it is meant for, and limit it to one payment.
+- **Switch off** stops a code at once. Time a shop already got with the code stays.
+- The shop list shows until when each shop has Plus. You cannot turn Plus on for a shop yourself; give the owner a code.

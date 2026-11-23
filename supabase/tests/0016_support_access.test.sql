@@ -1,6 +1,6 @@
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(47);
+select plan(49);
 
 create schema if not exists tests;
 grant usage on schema tests to anon, authenticated;
@@ -92,6 +92,8 @@ select throws_like(format($$select public.rpc_reverse_transaction(gen_random_uui
 select throws_like(format($$select public.rpc_record_owner_movement(gen_random_uuid(), %L, now(), 100, %L, 'withdrawal', null)$$, :'biz_a', :'cash_a'), '%AZ_FORBIDDEN%', 'admin cannot move owner money');
 select throws_like(format($$select public.rpc_export_business_data(%L)$$, :'biz_a'), '%AZ_FORBIDDEN%', 'admin cannot download the whole shop');
 select throws_like(format($$select public.rpc_grant_support_access(%L, 24, null)$$, :'biz_a'), '%AZ_FORBIDDEN%', 'admin cannot extend their own access');
+select throws_like(format($$select public.rpc_start_trial(gen_random_uuid(), %L)$$, :'biz_a'), '%AZ_FORBIDDEN%', 'admin cannot start a Plus trial for the shop');
+select throws_like(format($$select public.rpc_billing_start_payment(gen_random_uuid(), %L, 'plus_1m')$$, :'biz_a'), '%AZ_FORBIDDEN%', 'admin cannot start a payment for the shop');
 select throws_ok(format($$insert into public.contacts (business_id, name) values (%L, 'Planted')$$, :'biz_a'), '42501', null, 'admin cannot add a customer');
 select lives_ok(format($$update public.businesses set name = 'Renamed' where id = %L$$, :'biz_a'), 'rename attempt by admin runs');
 select tests.clear_auth();
