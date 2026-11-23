@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="ak">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      :root { --teal: #0f766e; --teal-dark: #115e59; --deep: #0b3b37; --soft: #ccfbf1; --amber: #fbbf24; --ink: #0f172a; --paper: #f1f5f9; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: var(--deep); }
+      #root { position: relative; width: 100%; height: 100%; font-family: Inter, sans-serif; }
+      .scene { position: absolute; inset: 0; overflow: hidden; }
+      .fill { position: absolute; inset: 0; }
+      .tag { position: absolute; top: 290px; left: 120px; display: flex; align-items: center; gap: 16px; font-size: 40px; font-weight: 900; }
+      .tag img { width: 64px; height: 64px; border-radius: 16px; }
+      .w, .cw { display: inline-block; }
+
+      #hook-q { position: absolute; top: 400px; left: 120px; right: 210px; font-size: 112px; line-height: 1.08; font-weight: 900; letter-spacing: -2px; color: #fff; }
+      #hook-till { position: absolute; top: 1000px; left: 120px; width: 780px; padding: 44px 50px; border-radius: 44px; background: #15514c; border: 3px solid #2f6f69; display: flex; align-items: center; justify-content: space-between; }
+      #hook-amount { font-size: 104px; font-weight: 900; color: var(--amber); font-variant-numeric: tabular-nums; }
+      #hook-badge { width: 120px; height: 120px; border-radius: 60px; background: var(--amber); display: flex; align-items: center; justify-content: center; }
+
+      #brand-flood { background: var(--teal); }
+      #brand-stack { position: absolute; top: 540px; left: 0; right: 0; display: flex; flex-direction: column; align-items: center; gap: 56px; }
+      #brand-logo { width: 340px; height: 340px; border-radius: 84px; box-shadow: 0 30px 80px rgba(0,0,0,0.3); }
+      #brand-line { font-size: 100px; font-weight: 900; letter-spacing: -3px; color: #fff; }
+
+      #app-paper { background: var(--paper); }
+      .hl { position: absolute; top: 390px; left: 120px; right: 190px; display: flex; align-items: center; gap: 28px; }
+      .hl .badge { flex: none; width: 124px; height: 124px; border-radius: 62px; background: var(--teal); display: flex; align-items: center; justify-content: center; }
+      .hl h2 { font-size: 72px; line-height: 1.08; font-weight: 900; letter-spacing: -1.5px; color: var(--ink); }
+      #phone { position: absolute; left: 220px; top: 730px; width: 640px; height: 1280px; border-radius: 72px; background: var(--ink); padding: 16px; box-shadow: 0 50px 120px rgba(15,23,42,0.4); }
+      #phone-glass { position: relative; width: 100%; height: 100%; border-radius: 58px; overflow: hidden; background: #f8fafc; }
+      .screen { position: absolute; inset: 0; overflow: hidden; background: #f8fafc; }
+      .screen img { display: block; width: 100%; }
+      .ring { position: absolute; border: 8px solid var(--amber); border-radius: 30px; box-shadow: 0 0 0 2000px rgba(15,23,42,0.28); }
+
+      #trust-night { background: var(--deep); }
+      #trust-stack { position: absolute; top: 470px; left: 210px; right: 210px; display: flex; flex-direction: column; align-items: center; gap: 56px; }
+      #trust-badge { width: 300px; height: 300px; border-radius: 150px; background: var(--soft); display: flex; align-items: center; justify-content: center; }
+      #trust-line { font-size: 88px; line-height: 1.08; font-weight: 900; letter-spacing: -2px; color: #fff; text-align: center; }
+      #trust-pill { display: flex; align-items: center; gap: 20px; padding: 22px 40px; border-radius: 999px; background: #1d5650; border: 2px solid #3a7a73; font-size: 36px; font-weight: 700; color: #fff; }
+
+      #close-flood { background: var(--teal); }
+      #close-stack { position: absolute; top: 320px; left: 210px; right: 210px; display: flex; flex-direction: column; align-items: center; gap: 54px; }
+      #close-logo { width: 210px; height: 210px; border-radius: 62px; box-shadow: 0 30px 80px rgba(0,0,0,0.3); }
+      #close-name { font-size: 76px; font-weight: 900; color: #fff; }
+      #close-line { font-size: 88px; line-height: 1.08; font-weight: 900; letter-spacing: -2px; color: #fff; text-align: center; }
+      #close-cta { padding: 30px 54px; border-radius: 999px; background: var(--amber); color: var(--ink); font-size: 44px; font-weight: 900; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+      #bar { position: absolute; top: 0; left: 0; width: 1080px; height: 10px; background: var(--amber); transform-origin: left center; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="20.6" data-width="1080" data-height="1920">
+      <div id="s-hook" class="clip scene" data-start="0" data-duration="2.46" data-track-index="0" data-track-kind="graphics" style="z-index: 1; background: var(--deep)">
+        <div class="tag" style="color: #fff"><img src="assets/azaria-icon.png" alt="" />Azaria</div>
+        <div id="hook-q"><span class="w hw">Sika</span> <span class="w hw">ahe</span> <span class="w hw">na</span> <span class="w hw">wo</span> <span class="w hw">sotɔɔ</span> <span class="w hw">nyae</span> <span class="w hw">ɛnnɛ?</span></div>
+        <div id="hook-till"><span id="hook-amount">GH₵0,000</span><div id="hook-badge"><svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 9a3.5 3.5 0 1 1 5.6 2.8c-1.2.9-2.1 1.5-2.1 3.2"/><path d="M12 18.5h.01"/></svg></div></div>
+      </div>
+
+      <div id="s-brand" class="clip scene" data-start="2.46" data-duration="1.64" data-track-index="0" data-track-kind="graphics" style="z-index: 2; background: var(--deep)">
+        <div id="brand-flood" class="fill"></div>
+        <div id="brand-stack"><img id="brand-logo" src="assets/azaria-icon.png" alt="" /><div id="brand-line">Hyia Azaria.</div></div>
+      </div>
+
+      <div id="s-app" class="clip scene" data-start="4.1" data-duration="9.54" data-track-index="0" data-track-kind="graphics" style="z-index: 3; background: var(--teal)">
+        <div id="app-paper" class="fill"></div>
+        <div class="tag" style="color: var(--teal-dark)"><img src="assets/azaria-icon.png" alt="" />Azaria</div>
+        <div id="hl-money" class="hl" data-layout-allow-overlap><div class="badge"><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5h15a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/><path d="M3.5 7.5l11-3.5v3.5"/><path d="M16.5 13.5h.01"/></svg></div><h2 data-layout-allow-overlap>Wo sika nyinaa wɔ baabi koro.</h2></div>
+        <div id="hl-record" class="hl" data-layout-allow-overlap><div class="badge"><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 11.5 5H19v7.5L11.5 20z"/><path d="M15 9h.01"/></svg></div><h2 data-layout-allow-overlap>Kyerɛw adetɔn ntɛm ara.</h2></div>
+        <div id="hl-debts" class="hl" data-layout-allow-overlap><div class="badge"><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/><path d="M2.5 20c0-3.3 2.9-5.5 6.5-5.5s6.5 2.2 6.5 5.5"/><path d="M16 4.3a3.5 3.5 0 0 1 0 6.4"/><path d="M18 14.8c2 .7 3.5 2.4 3.5 5.2"/></svg></div><h2 data-layout-allow-overlap>Hu wɔn a wɔde wo ka.</h2></div>
+        <div id="hl-reports" class="hl" data-layout-allow-overlap><div class="badge"><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 20V4"/><path d="M4.5 20h15"/><path d="M8.5 16v-4"/><path d="M12.5 16V8"/><path d="M16.5 16v-6"/></svg></div><h2 data-layout-allow-overlap>Amanneɛbɔ sɛ PDF anaa Excel.</h2></div>
+        <div id="phone" data-layout-allow-overflow><div id="phone-glass">
+          <div id="sc-money" class="screen" data-layout-ignore><img id="img-money" src="assets/shots/home.png" alt="" /></div>
+          <div id="sc-record" class="screen" data-layout-ignore><img id="img-record" src="assets/shots/sale.png" alt="" /></div>
+          <div id="sc-debts" class="screen" data-layout-ignore><img id="img-debts" src="assets/shots/customers.png" alt="" /></div>
+          <div id="sc-reports" class="screen" data-layout-ignore><img id="img-reports" src="assets/shots/reports.png" alt="" /></div>
+          <div id="ring-money" class="ring" style="left: 17px; top: 118px; width: 574px; height: 328px"></div>
+          <div id="ring-debts" class="ring" style="left: 18px; top: 213px; width: 572px; height: 123px"></div>
+        </div></div>
+      </div>
+
+      <div id="s-trust" class="clip scene" data-start="13.64" data-duration="2.18" data-track-index="0" data-track-kind="graphics" style="z-index: 4; background: var(--paper)">
+        <div id="trust-night" class="fill"></div>
+        <div class="tag" style="color: #fff"><img src="assets/azaria-icon.png" alt="" />Azaria</div>
+        <div id="trust-stack">
+          <div id="trust-badge"><svg width="180" height="180" viewBox="0 0 24 24" fill="none" stroke="#115e59" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18"/><path d="M5 12.5a10 10 0 0 1 4-2.6"/><path d="M15 9.9a10 10 0 0 1 4 2.6"/><path d="M8.5 16a5 5 0 0 1 7 0"/><path d="M2 9a15 15 0 0 1 4.5-3"/><path d="M12 5a15 15 0 0 1 10 4"/><path d="M12 19.5h.01"/></svg></div>
+          <div id="trust-line">Ɛyɛ adwuma a intanɛt nni hɔ.</div>
+          <div id="trust-pill"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h12v9H6z"/><path d="M8.5 11V8a3.5 3.5 0 0 1 7 0v3"/><path d="M12 15v2"/></svg><span>Wo nsɛm yɛ kokoam</span></div>
+        </div>
+      </div>
+
+      <div id="s-close" class="clip scene" data-start="15.82" data-duration="4.78" data-track-index="0" data-track-kind="graphics" style="z-index: 5; background: var(--deep)">
+        <div id="close-flood" class="fill"></div>
+        <div id="close-stack">
+          <img id="close-logo" src="assets/azaria-icon.png" alt="" />
+          <div id="close-name">Azaria</div>
+          <div id="close-line"><span class="cw">Kyerɛw</span> <span class="cw">ɛnnɛ.</span> <span class="cw">Nyin</span> <span class="cw">ɔkyena.</span></div>
+          <div id="close-cta">Fi ase ne Azaria ɛnnɛ</div>
+        </div>
+      </div>
+
+      <div id="s-bar" class="clip" data-start="0" data-duration="20.6" data-track-index="1" data-track-kind="graphics" data-layout-ignore style="z-index: 9; position: absolute; top: 0; left: 0"><div id="bar"></div></div>
+
+      <audio id="music" class="clip" data-start="0" data-duration="20.6" data-track-index="3" data-volume="0.2" data-fade-in="0.1" data-fade-out="1" src="assets/music/happy-beats-business-moves-vol-10-by-ende-dot-app.mp3"></audio>
+      <audio id="sfx-drop" class="clip" data-start="2.46" data-duration="0.19" data-track-index="4" data-volume="0.5" src="assets/sfx/interface/drop_002.ogg"></audio>
+      <audio id="sfx-click" class="clip" data-start="18.01" data-duration="0.1" data-track-index="4" data-volume="0.5" src="assets/sfx/interface/click_001.ogg"></audio>
+      <audio id="vo-hook" class="clip" data-start="0.12" data-duration="2.27" data-track-index="5" data-volume="1" src="assets/voice/hook.wav"></audio>
+      <audio id="vo-brand" class="clip" data-start="2.58" data-duration="0.81" data-track-index="5" data-volume="1" src="assets/voice/brand.wav"></audio>
+      <audio id="vo-money" class="clip" data-start="4.22" data-duration="1.46" data-track-index="5" data-volume="1" src="assets/voice/money.wav"></audio>
+      <audio id="vo-record" class="clip" data-start="6.40" data-duration="1.06" data-track-index="5" data-volume="1" src="assets/voice/record.wav"></audio>
+      <audio id="vo-debts" class="clip" data-start="8.85" data-duration="1.04" data-track-index="5" data-volume="1" src="assets/voice/debts.wav"></audio>
+      <audio id="vo-reports" class="clip" data-start="11.05" data-duration="2.12" data-track-index="5" data-volume="1" src="assets/voice/reports.wav"></audio>
+      <audio id="vo-trust" class="clip" data-start="13.76" data-duration="1.56" data-track-index="5" data-volume="1" src="assets/voice/trust.wav"></audio>
+      <audio id="vo-close" class="clip" data-start="15.94" data-duration="3.53" data-track-index="5" data-volume="1" src="assets/voice/close.wav"></audio>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const T = {"hook":0,"brand":2.46,"money":4.1,"record":6.28,"debts":8.73,"reports":10.93,"trust":13.64,"close":15.82,"cta":18.01,"end":20.6};
+      const blurIn = (target, at, extra = {}) => tl.fromTo(target, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power4.out", ...extra }, at);
+      const blurOut = (target, at) => tl.to(target, { opacity: 0, filter: "blur(8px)", duration: 0.13, ease: "power2.in" }, at);
+
+      tl.fromTo("#bar", { scaleX: 0 }, { scaleX: 1, duration: T.end, ease: "none" }, 0);
+
+      // Hook: the question arrives word by word; the till cannot settle on a figure.
+      tl.fromTo(".hw", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.13, stagger: 0.067, ease: "power4.out" }, 0.05);
+      tl.fromTo("#hook-till", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, 0.3);
+      const amount = document.getElementById("hook-amount");
+      tl.to({ v: 0 }, { v: 1, duration: T.brand - 0.3, ease: "none", onUpdate() {
+        const n = Math.floor(this.progress() * 30);
+        amount.textContent = "GH₵" + (((n * 7919 + 137) % 9000) + 100).toLocaleString("en-US");
+      } }, 0.3);
+      tl.to("#hook-q", { opacity: 0, filter: "blur(8px)", duration: 0.13, ease: "power2.in" }, T.brand - 0.14);
+
+      // Brand: teal opens from the question badge. beat-locked: 2.46s
+      tl.fromTo("#brand-flood", { clipPath: "circle(0% at 74% 56%)" }, { clipPath: "circle(150% at 74% 56%)", duration: 0.4, ease: "power2.inOut" }, T.brand);
+      tl.fromTo("#brand-logo", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.4)" }, T.brand + 0.08);
+      blurIn("#brand-line", T.brand + 0.28);
+      tl.to("#brand-stack", { opacity: 0, scale: 1.12, duration: 0.16, ease: "power3.in" }, T.money - 0.17);
+
+      // The app: one phone, four screens. The paper rises with the phone; screens slide like app pages.
+      tl.fromTo("#app-paper", { yPercent: 100 }, { yPercent: 0, duration: 0.4, ease: "power2.inOut" }, T.money);
+      tl.fromTo("#phone", { y: 700, rotation: 5 }, { y: 0, rotation: 0, duration: 0.6, ease: "expo.out" }, T.money + 0.05);
+      const shots = ["money", "record", "debts", "reports"];
+      shots.forEach((id, i) => {
+        const at = T[id];
+        const next = shots[i + 1] ? T[shots[i + 1]] : T.trust;
+        // beat-grid: money 4.10s, record 6.28s, debts 8.73s, reports 10.93s
+        if (i === 0) {
+          tl.set("#sc-" + id, { xPercent: 0, opacity: 1 }, 0);
+        } else {
+          tl.fromTo("#sc-" + id, { xPercent: 100 }, { xPercent: 0, duration: 0.3, ease: "power3.out" }, at);
+          tl.fromTo("#sc-" + shots[i - 1], { xPercent: 0 }, { xPercent: -30, duration: 0.3, ease: "power3.out", immediateRender: false }, at);
+        }
+        blurIn("#hl-" + id, at + (i === 0 ? 0.3 : 0.12));
+        if (shots[i + 1]) blurOut("#hl-" + id, next - 0.14);
+      });
+      tl.set(".hl", { opacity: 0 }, 0);
+      tl.fromTo("#ring-money", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: 0.35, ease: "expo.out" }, T.money + 0.75);
+      tl.to("#ring-money", { opacity: 0, duration: 0.12 }, T.record - 0.12);
+      tl.fromTo("#img-record", { y: 0 }, { y: -170, duration: 1.6, ease: "power2.inOut" }, T.record + 0.55);
+      tl.fromTo("#ring-debts", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: 0.35, ease: "expo.out" }, T.debts + 0.5);
+      tl.to("#ring-debts", { opacity: 0, duration: 0.12 }, T.reports - 0.12);
+      tl.fromTo("#img-reports", { y: 0 }, { y: -200, duration: 1.8, ease: "power2.inOut" }, T.reports + 0.55);
+      tl.to("#phone", { y: 1400, duration: 0.22, ease: "power3.in" }, T.trust - 0.22);
+
+      // Trust: night falls from the middle of the frame.
+      tl.fromTo("#trust-night", { clipPath: "circle(0% at 50% 60%)" }, { clipPath: "circle(150% at 50% 60%)", duration: 0.4, ease: "power2.inOut" }, T.trust);
+      tl.fromTo("#trust-badge", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.4)" }, T.trust + 0.1);
+      blurIn("#trust-line", T.trust + 0.25);
+      tl.fromTo("#trust-pill", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.4, ease: "expo.out" }, T.trust + 0.45);
+      tl.to("#trust-stack", { opacity: 0, filter: "blur(8px)", duration: 0.14, ease: "power2.in" }, T.close - 0.15);
+
+      // Close: the ground floods teal and the mark lands. beat-locked: 15.82s; the button lands on 18.01s.
+      tl.fromTo("#close-flood", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.inOut" }, T.close);
+      tl.fromTo("#close-logo", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.4)" }, T.close + 0.05);
+      blurIn("#close-name", T.close + 0.3);
+      tl.fromTo(".cw", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.13, stagger: 0.09, ease: "power4.out" }, T.close + 0.5);
+      tl.fromTo("#close-cta", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.6)" }, T.cta - 0.1);
+
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

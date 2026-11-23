@@ -11,6 +11,24 @@
 
 All are vertical (1080 × 1920). Each has a voice-over, captions, background music, icons and illustrations, and real screenshots of the app with sample data.
 
+### Short "brag" cuts
+
+`brag-output/` holds two newer cuts of about 19 seconds, made with the brag-slim skill: `azaria-brag-english.mp4` and `azaria-brag-twi.mp4`, each with a poster image, plus `brag-plan.md` and `share-copy.txt`.
+
+- One claim per scene, each shown on a real screenshot, with every cut on a beat of the music.
+- The voice is faster than in the ads above: English at Kokoro speed 1.3, Twi sped up 1.25 times with the pitch kept.
+- Source: `ad-video/src/Brag.tsx` and `src/brag.json`. Voices: `scripts/make-brag-voice.mjs` (one run per language, then `npx remotion ffmpeg -i x.raw.wav -filter:a atempo=1.25 x.wav` for each Twi line). Music and scene lengths: `node scripts/make-brag-music.mjs`.
+- Render: `npx remotion render AzariaBragEnglish ../brag-output/azaria-brag-english.mp4`, and the same with `AzariaBragTwi`.
+
+### Hyperframes cuts (full brag workflow)
+
+`brag-output-2026-11-23-full/` holds the same idea built with the full `/brag` workflow on Hyperframes: `azaria-brag-english.mp4` and `azaria-brag-twi.mp4`, 20.6 seconds each, with posters, `brag-plan.md`, `composition-brief.md` and `share-copy.txt`.
+
+- One phone stays on screen while four real screens slide through it. Cuts follow the beat grid of the bundled music track.
+- The voice files are the faster ones from the short cuts above.
+- **Music credit is required** wherever these two are posted: "Music: Sascha Ende, ende.app (CC BY 4.0)". The other videos in this folder use music written in code and need no credit.
+- Source: `work/build.mjs` writes `en/index.html` and `tw/index.html` and copies their assets. Run `node work/build.mjs <path to the brag skill folder>`, then `npx hyperframes check` and `npx hyperframes render --quality delivery -o out.mp4` inside `en/` or `tw/`. Rendering needs FFmpeg and takes about 15 minutes per video on the owner's laptop.
+
 ### Why they look the way they do
 
 A short review of current advice on vertical video ads, applied here:

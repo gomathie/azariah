@@ -1,0 +1,22 @@
+{
+  "en": [
+    { "id": "hook", "line": "How much did your shop make today?", "say": "How much did your shop make today?" },
+    { "id": "brand", "line": "Meet Azaria.", "say": "Meet Azaria!" },
+    { "id": "money", "line": "All your money, in one place.", "say": "All your money, in one place.", "shot": "home", "icon": "wallet" },
+    { "id": "record", "line": "Record a sale in seconds.", "say": "Record a sale in seconds.", "shot": "sale", "icon": "tag" },
+    { "id": "debts", "line": "Know exactly who owes you.", "say": "Know exactly who owes you.", "shot": "customers", "icon": "people" },
+    { "id": "reports", "line": "Reports, as PDF or Excel.", "say": "Reports, as P D F or Excel.", "shot": "reports", "icon": "chart" },
+    { "id": "trust", "line": "Works without internet.", "sub": "Your records stay private", "say": "It works without internet." },
+    { "id": "close", "line": "Record today. Grow tomorrow.", "cta": "Start with Azaria today", "say": "Record today. Grow tomorrow! Start with Azaria, today." }
+  ],
+  "tw": [
+    { "id": "hook", "line": "Sika ahe na wo sotɔɔ nyae ɛnnɛ?", "say": "Sika ahe, na wo sotɔɔ nyae ɛnnɛ?" },
+    { "id": "brand", "line": "Hyia Azaria.", "say": "Hyia Asaria." },
+    { "id": "money", "line": "Wo sika nyinaa wɔ baabi koro.", "say": "Wo sika nyinaa, wɔ baabi koro.", "shot": "home", "icon": "wallet" },
+    { "id": "record", "line": "Kyerɛw adetɔn ntɛm ara.", "say": "Kyerɛw adetɔn, ntɛm ara.", "shot": "sale", "icon": "tag" },
+    { "id": "debts", "line": "Hu wɔn a wɔde wo ka.", "say": "Hu wɔn a wɔde wo ka.", "shot": "customers", "icon": "people" },
+    { "id": "reports", "line": "Amanneɛbɔ sɛ PDF anaa Excel.", "say": "Amanneɛbɔ, sɛ pi di ɛf, anaa ɛksɛl.", "shot": "reports", "icon": "chart" },
+    { "id": "trust", "line": "Ɛyɛ adwuma a intanɛt nni hɔ.", "sub": "Wo nsɛm yɛ kokoam", "say": "Ɛyɛ adwuma, a intanɛt nni hɔ." },
+    { "id": "close", "line": "Kyerɛw ɛnnɛ. Nyin ɔkyena.", "cta": "Fi ase ne Azaria ɛnnɛ", "say": "Kyerɛw ɛnnɛ. Nyin ɔkyena. Fi ase ne Asaria, ɛnnɛ." }
+  ]
+}

@@ -52,3 +52,8 @@ dev-dist
 # Ad video project: dependencies and rendered files
 marketing/ad-video/node_modules
 marketing/ad-video/out
+
+# Hyperframes video projects: caches, history and intermediate renders
+marketing/brag-output*/**/.hyperframes
+marketing/brag-output*/work/*.mp4
+marketing/brag-output*/work/*.jpg
