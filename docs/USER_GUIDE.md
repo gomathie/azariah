@@ -51,7 +51,7 @@ The part not paid is added to what that customer owes.
 - **See what a customer owes**: tap their name. You see each credit sale, each payment, and what they still owe.
 - **Record a payment**: on the customer's page tap **Record payment**, or tap **Add**, then **Record payment** and choose the customer. Enter the amount and where the money went.
 - A payment lowers what the customer owes. It is not a new sale, so your sales do not go up twice.
-- You cannot record more than the customer owes.
+- You cannot record more than the customer owes. If you type more, Azaria asks two questions: whether the amount is right, and what the extra is for. You can then change the amount, record only what they owe, or add the new sale they bought.
 - **Send a reminder**: if the customer has a phone number, "Send reminder" opens WhatsApp with a polite message. You decide whether to send it.
 
 ## Move money between accounts

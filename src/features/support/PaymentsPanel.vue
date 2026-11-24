@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import AppAlert from '@/components/ui/AppAlert.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppInput from '@/components/ui/AppInput.vue'
+import AppSwitch from '@/components/ui/AppSwitch.vue'
 import {
   getBillingSettings,
   setPaymentsOn,
@@ -99,10 +100,15 @@ onMounted(() => void load())
           {{ paymentsOn ? t('support.paymentsOn') : t('support.paymentsOff') }}
         </p>
         <p class="text-slate-700">{{ paymentsOn ? t('support.paymentsOnHelp') : t('support.paymentsOffHelp') }}</p>
-        <AppButton v-if="!confirming" type="button" :variant="paymentsOn ? 'secondary' : 'primary'" @click="confirming = true">
-          {{ paymentsOn ? t('support.paymentsTurnOff') : t('support.paymentsTurnOn') }}
-        </AppButton>
-        <div v-else class="space-y-2">
+        <!-- The switch touches every shop, so a tap asks first and the switch moves only after "Yes". -->
+        <AppSwitch
+          :model-value="paymentsOn"
+          :label="paymentsOn ? t('support.paymentsTurnOff') : t('support.paymentsTurnOn')"
+          :state-text="paymentsOn ? t('support.stats.on') : t('support.stats.off')"
+          :disabled="confirming"
+          @toggle="confirming = true"
+        />
+        <div v-if="confirming" class="space-y-2">
           <AppAlert kind="warning">
             {{ paymentsOn ? t('support.paymentsConfirmOff') : t('support.paymentsConfirmOn') }}
           </AppAlert>

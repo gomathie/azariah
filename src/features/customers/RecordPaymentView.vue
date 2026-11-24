@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageHeader from '@/components/ui/PageHeader.vue'
@@ -48,6 +48,30 @@ watch(
   { immediate: true },
 )
 
+/**
+ * A payment above the debt is never saved; the database refuses it too (AZ_EXCEEDS_DEBT).
+ * Two questions, not a bare error, so the person sees what they typed against what is owed
+ * and picks what they meant: fix the amount, record only the debt, or add the sale they forgot.
+ */
+const overStep = ref<0 | 1 | 2>(0)
+const overPanel = ref<HTMLElement | null>(null)
+const customerName = computed(
+  () => catalog.contacts.find((c) => c.id === contactId.value)?.name ?? t('collection.theCustomer'),
+)
+const money = (minor: bigint) => formatMoney(minor, currency.value, locale.value)
+const overWords = computed(() => ({
+  name: customerName.value,
+  owed: money(outstanding.value),
+  typed: money(amount.value ?? 0n),
+  extra: money((amount.value ?? 0n) - outstanding.value),
+}))
+
+async function showOver(step: 1 | 2) {
+  overStep.value = step
+  await nextTick()
+  overPanel.value?.focus()
+}
+
 async function submit() {
   error.value = null
   const current = business.current
@@ -57,14 +81,21 @@ async function submit() {
   }
   if (debtReady.value) await debtReady.value
   if (!accountId.value && catalog.accounts[0]) accountId.value = catalog.accounts[0].id
-  if (amount.value > outstanding.value) {
-    error.value = t('errors.AZ_EXCEEDS_DEBT')
-    return
-  }
   if (!accountId.value) {
     error.value = t('errors.required')
     return
   }
+  if (amount.value > outstanding.value) {
+    await showOver(1)
+    return
+  }
+  await save(amount.value)
+}
+
+async function save(amountMinor: bigint) {
+  const current = business.current
+  if (!current) return
+  overStep.value = 0
   loading.value = true
   try {
     await recordCollection({
@@ -72,7 +103,7 @@ async function submit() {
       businessId: current.id,
       occurredAt: new Date(when.value).toISOString(),
       contactId: contactId.value,
-      amountMinor: amount.value,
+      amountMinor,
       moneyAccountId: accountId.value,
       note: note.value.trim() || null,
     })
@@ -108,4 +139,41 @@ function nowLocalInput(): string {
     <AppAlert v-if="error" kind="error">{{ error }}</AppAlert>
     <AppButton type="submit" block size="lg" :loading="loading">{{ t('app.save') }}</AppButton>
   </form>
+
+  <div
+    v-if="overStep"
+    class="no-print fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/50 p-0 sm:p-4"
+    @keydown.esc="overStep = 0"
+  >
+    <div
+      ref="overPanel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="over-title"
+      tabindex="-1"
+      class="w-full sm:max-w-md bg-white rounded-t-2xl sm:rounded-2xl p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] space-y-4 shadow-xl outline-none"
+    >
+      <p class="text-sm text-slate-600">{{ t('collection.overStep', { n: overStep }) }}</p>
+      <template v-if="overStep === 1">
+        <h2 id="over-title" class="text-lg font-semibold text-slate-900">{{ t('collection.overQ1', overWords) }}</h2>
+        <p class="text-slate-700">
+          {{ outstanding > 0n ? t('collection.overOwes', overWords) : t('collection.overOwesNothing', overWords) }}
+          {{ t('collection.overTyped', overWords) }}
+        </p>
+        <AppButton block @click="overStep = 0">{{ t('collection.overFix') }}</AppButton>
+        <AppButton block variant="secondary" @click="showOver(2)">{{ t('collection.overYes', overWords) }}</AppButton>
+      </template>
+      <template v-else>
+        <h2 id="over-title" class="text-lg font-semibold text-slate-900">{{ t('collection.overQ2', overWords) }}</h2>
+        <p class="text-slate-700">{{ t('collection.overWhy') }}</p>
+        <AppButton v-if="outstanding > 0n" block @click="save(outstanding)">
+          {{ t('collection.overOnlyOwed', overWords) }}
+        </AppButton>
+        <AppButton block variant="secondary" @click="router.push({ name: 'add-sale' })">
+          {{ t('collection.overNewSale') }}
+        </AppButton>
+        <AppButton block variant="ghost" @click="overStep = 0">{{ t('collection.overBack') }}</AppButton>
+      </template>
+    </div>
+  </div>
 </template>

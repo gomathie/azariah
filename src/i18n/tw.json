@@ -138,7 +138,20 @@
     "account": "Ɛkɔɔ he",
     "outstanding": "Odetɔni no de ka",
     "saved": "Wɔakyerɛw akatua no",
-    "note": "Nkyerɛwee"
+    "note": "Nkyerɛwee",
+    "theCustomer": "Odetɔni no",
+    "overStep": "Asɛmmisa {n} wɔ 2 mu",
+    "overQ1": "Ampa sɛ {name} maa wo {typed}?",
+    "overOwes": "{name} de ka {owed}.",
+    "overOwesNothing": "{name} nne ka biara.",
+    "overTyped": "Wokyerɛw {typed}. Ɛboro so {extra}.",
+    "overFix": "Dabi, mɛsesa sika no",
+    "overYes": "Aane, minyaa {typed}",
+    "overQ2": "{extra} a ɛboro so no yɛ dɛn ho sika?",
+    "overWhy": "Akatua tumi tua ka a odetɔni no de nko ara. Nea ɛboro so no, wɔnkyerɛw no sɛ akatua. Sɛ ɔtɔɔ ade foforo a, fa ka ho sɛ adetɔn.",
+    "overOnlyOwed": "Kyerɛw {owed} a ɔde no nko ara",
+    "overNewSale": "Ɔtɔɔ ade foforo. Fa saa adetɔn no ka ho",
+    "overBack": "San kɔ akyi"
   },
   "transfer": {
     "title": "Yi sika kɔ baabi",
@@ -539,6 +552,10 @@
     "shopPaymentsOn": "Ɛsɛ sɛ sotɔɔ yi tua ka",
     "shopPaymentsOff": "Sotɔɔ yi yɛ kwa",
     "shopPaymentsSaved": "Wɔasie ama {name}.",
+    "shopPays": "Ɛsɛ sɛ otua",
+    "shopFree": "Kwa",
+    "shopPaymentsSwitch": "{name} akatua",
+    "shopPaymentsFollow": "San kɔ nea obiara wɔ so",
     "overview": "Nhwɛso",
     "about": {
       "overview": "Sɛnea Azaria rekɔ so nnɛ.",

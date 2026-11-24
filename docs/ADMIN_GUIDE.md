@@ -81,7 +81,7 @@ This part is for platform support staff.
 - **Open to make changes** lets you do what the owner can do. What you add or change is saved under your own name. You see this button only if you have the right.
 - A shop stays open for two hours, or until you tap **Leave** or reload the page.
 - **Suspend shop** closes a shop to its members. **Reactivate shop** opens it again. Both need a reason.
-- **Payments for this shop** sets one shop apart from the general switch: it must pay, or it is free.
+- **Payments for this shop** is an on/off switch. On means this shop must pay; off means it is free. A shop you have not touched follows the general switch and says "Same as everyone". One tap sets the shop apart; **Go back to the same as everyone** removes that.
 - **Accounts** lists everyone who signed up, newest first, with their shops. Search by email.
 - **Team** is for the superadmin. Add a person by the email of their Azaria account and tick what they may do: open shops and look, add or change anything in shops, suspend shops, or manage discount codes, payments and prices. A change works at once. A superadmin can do everything and cannot change their own entry.
 - Every search, opening and change is recorded, and the owner can see when their shop was opened.

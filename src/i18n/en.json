@@ -138,7 +138,20 @@
     "account": "Received into",
     "outstanding": "Customer owes",
     "saved": "Payment recorded",
-    "note": "Note"
+    "note": "Note",
+    "theCustomer": "The customer",
+    "overStep": "Question {n} of 2",
+    "overQ1": "Did {name} really give you {typed}?",
+    "overOwes": "{name} owes {owed}.",
+    "overOwesNothing": "{name} owes nothing.",
+    "overTyped": "You typed {typed}. That is {extra} more.",
+    "overFix": "No, let me change the amount",
+    "overYes": "Yes, I received {typed}",
+    "overQ2": "What is the extra {extra} for?",
+    "overWhy": "A payment can only cover what the customer owes. The extra is not saved as a payment. If they bought something new, add it as a sale.",
+    "overOnlyOwed": "Record only the {owed} they owe",
+    "overNewSale": "They bought something new. Add that sale",
+    "overBack": "Go back"
   },
   "transfer": {
     "title": "Move money",
@@ -539,6 +552,10 @@
     "shopPaymentsOn": "This shop must pay",
     "shopPaymentsOff": "This shop is free",
     "shopPaymentsSaved": "Saved for {name}.",
+    "shopPays": "Must pay",
+    "shopFree": "Free",
+    "shopPaymentsSwitch": "Payments for {name}",
+    "shopPaymentsFollow": "Go back to the same as everyone",
     "overview": "Overview",
     "about": {
       "overview": "How Azaria is doing today.",

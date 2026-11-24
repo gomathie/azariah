@@ -5,8 +5,9 @@ import { useI18n } from 'vue-i18n'
 import AppAlert from '@/components/ui/AppAlert.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppInput from '@/components/ui/AppInput.vue'
-import AppSelect from '@/components/ui/AppSelect.vue'
+import AppSwitch from '@/components/ui/AppSwitch.vue'
 import {
+  getBillingSettings,
   listShops,
   setShopPayments,
   setShopStatus,
@@ -65,14 +66,14 @@ async function open(shop: DirectoryShop, edit: boolean) {
 }
 
 const notice = ref<string | null>(null)
-const paymentOptions = computed(() => [
-  { value: 'default', label: t('support.shopPaymentsDefault') },
-  { value: 'on', label: t('support.shopPaymentsOn') },
-  { value: 'off', label: t('support.shopPaymentsOff') },
-])
+/** The switch for everyone. A shop with no setting of its own follows it. */
+const generalOn = ref(false)
+const canBill = computed(() => business.can('billing'))
+/** Whether this shop is asked to pay right now: its own setting, otherwise the general switch. */
+const shopPays = (shop: DirectoryShop) =>
+  shop.payments_mode === 'on' || (shop.payments_mode !== 'off' && generalOn.value)
 
-async function changePayments(shop: DirectoryShop, mode: string) {
-  if (mode !== 'default' && mode !== 'on' && mode !== 'off') return
+async function changePayments(shop: DirectoryShop, mode: PaymentsMode) {
   const previous: PaymentsMode = shop.payments_mode ?? 'default'
   if (mode === previous) return
   error.value = null
@@ -115,7 +116,14 @@ async function confirmStatus(shop: DirectoryShop) {
 const day = (iso: string | null) =>
   iso ? friendlyDate(iso, locale.value, { today: t('app.today'), yesterday: t('app.yesterday') }) : t('support.never')
 
-onMounted(() => void load(true))
+onMounted(() => {
+  void load(true)
+  // Only an admin with the billing right sees the switches, and only they may read the general one.
+  if (canBill.value)
+    getBillingSettings()
+      .then((s) => (generalOn.value = s.payments_on))
+      .catch((e) => (error.value = message(e)))
+})
 </script>
 
 <template>
@@ -157,13 +165,28 @@ onMounted(() => void load(true))
               : t('support.noPlus')
           }}
         </p>
-        <AppSelect
-          v-if="business.can('billing')"
-          :model-value="shop.payments_mode ?? 'default'"
-          :label="t('support.shopPayments')"
-          :options="paymentOptions"
-          @update:model-value="changePayments(shop, String($event))"
-        />
+        <div v-if="canBill" class="rounded-lg bg-slate-50 px-3 py-1">
+          <div class="flex items-center justify-between gap-3">
+            <span class="text-slate-900">{{ t('support.shopPayments') }}</span>
+            <AppSwitch
+              :model-value="shopPays(shop)"
+              :label="t('support.shopPaymentsSwitch', { name: shop.name })"
+              :state-text="shopPays(shop) ? t('support.shopPays') : t('support.shopFree')"
+              @toggle="changePayments(shop, $event ? 'on' : 'off')"
+            />
+          </div>
+          <p v-if="(shop.payments_mode ?? 'default') === 'default'" class="pb-2 text-sm text-slate-600">
+            {{ t('support.shopPaymentsDefault') }}
+          </p>
+          <button
+            v-else
+            type="button"
+            class="min-h-12 text-sm text-brand-700 underline"
+            @click="changePayments(shop, 'default')"
+          >
+            {{ t('support.shopPaymentsFollow') }}
+          </button>
+        </div>
         <div class="flex flex-wrap gap-2">
           <AppButton
             v-if="business.can('view_shops') || business.can('edit_shops')"

@@ -243,3 +243,14 @@ Protected decisions are listed in `AGENTS.md`; design context is in `docs/archit
 - **Trade-off:** a shop outside Ghana gets cedis and Accra time and cannot change them at set-up. The "People and phones" first-visit text in `MembersView.vue` (`?first=1`) is no longer reached from set-up.
 - **Verification:** phone-size browser run on the local stack: two fields, straight to Home, shop stored as GH, GHS, Africa/Accra, install row in the profile menu and gone from Settings. The Playwright specs were edited but not run.
 - **Rollback:** restore the three `AppSelect` rows and the `members` redirect in `CreateBusinessView.vue`.
+
+## 2026-11-24: on/off switches for payments, and two questions on a payment above the debt
+
+- **What:** new `src/components/ui/AppSwitch.vue`; `PaymentsPanel.vue` and `ShopsPanel.vue` use it; `RecordPaymentView.vue` shows a two-step dialog. Copy in all three language files (Twi unreviewed).
+- **Why:** the owner asked for an on/off button so an admin can see at a glance whether shops pay, and for two pop-up questions when someone records more than a customer owes, so they understand what they are doing.
+- **How (switches):** no database change. The switch for everyone still asks "Yes, turn on/off" before it moves, because it touches every shop. A shop's switch shows what is true for that shop now (its own setting, otherwise the general switch) and one tap writes `on` or `off` through `rpc_admin_set_business_payments`; "Go back to the same as everyone" writes `default`. `ShopsPanel` reads the general switch with `rpc_admin_billing_settings`, only for an admin with the billing right.
+- **How (questions):** question 1 shows what is owed, what was typed and the difference, and asks if the amount is right. Question 2 asks what the extra is for: record only the debt, add a new sale, or go back. Nothing above the debt is ever saved; `rpc_record_collection` still raises `AZ_EXCEEDS_DEBT`.
+- **Trade-off:** money paid ahead (a deposit) still cannot be kept for a customer. That needs a change to the money model and the owner's decision. A shop's switch has three stored states behind two positions; the line under it says which.
+- **Watch:** do not make the dialog save the full typed amount. Do not remove the confirm step from the switch for everyone.
+- **Verification:** phone-size browser run on the local stack, 12 of 12 (both questions, each button, the switch for everyone, a shop's switch, reload, back to default). Lint, type-check, unit tests and build.
+- **Rollback:** restore the `AppButton` in `PaymentsPanel.vue`, the `AppSelect` in `ShopsPanel.vue`, and the `AZ_EXCEEDS_DEBT` error line in `RecordPaymentView.vue`.

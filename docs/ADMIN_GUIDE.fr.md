@@ -81,7 +81,7 @@ Cette partie s'adresse au personnel d'assistance de la plateforme.
 - **Ouvrir pour modifier** vous permet de faire ce que le propriétaire peut faire. Ce que vous ajoutez ou modifiez est enregistré sous votre nom. Vous voyez ce bouton seulement si vous en avez le droit.
 - Une boutique reste ouverte deux heures, ou jusqu'à ce que vous touchiez **Quitter** ou rechargiez la page.
 - **Suspendre la boutique** ferme une boutique à ses membres. **Réactiver la boutique** la rouvre. Les deux demandent un motif.
-- **Paiements pour cette boutique** met une boutique à part du réglage général : elle doit payer, ou elle est gratuite.
+- **Paiements pour cette boutique** est un interrupteur. Activé, cette boutique doit payer ; désactivé, elle est gratuite. Une boutique que vous n’avez pas touchée suit le réglage général et affiche « Comme tout le monde ». Un appui met la boutique à part ; **Revenir au réglage de tout le monde** annule ce choix.
 - **Comptes** liste toutes les personnes inscrites, les plus récentes d'abord, avec leurs boutiques. Cherchez par e-mail.
 - **Équipe** est réservée au superadministrateur. Ajoutez une personne par l'e-mail de son compte Azaria et cochez ce qu'elle peut faire : ouvrir les boutiques et consulter, ajouter ou modifier tout dans les boutiques, suspendre des boutiques, ou gérer les codes de réduction, les paiements et les prix. Un changement s'applique tout de suite. Un superadministrateur peut tout faire et ne peut pas modifier sa propre entrée.
 - Chaque recherche, ouverture et modification est enregistrée, et le propriétaire peut voir quand sa boutique a été ouverte.

@@ -51,7 +51,7 @@ La partie non payée s'ajoute à ce que ce client doit.
 - **Voir ce qu'un client doit** : touchez son nom. Vous voyez chaque vente à crédit, chaque paiement et ce qu'il doit encore.
 - **Enregistrer un paiement** : sur la page du client touchez **Enregistrer un paiement**, ou touchez **Ajouter**, puis **Enregistrer un paiement** et choisissez le client. Saisissez le montant et le compte qui a reçu l'argent.
 - Un paiement réduit ce que le client doit. Ce n'est pas une nouvelle vente, donc vos ventes ne comptent pas deux fois.
-- Vous ne pouvez pas enregistrer plus que ce que le client doit.
+- Vous ne pouvez pas enregistrer plus que ce que le client doit. Si vous écrivez plus, Azaria pose deux questions : le montant est-il juste, et à quoi sert le surplus. Vous pouvez alors changer le montant, enregistrer seulement ce qui est dû, ou ajouter la nouvelle vente.
 - **Envoyer un rappel** : si le client a un numéro de téléphone, « Envoyer un rappel » ouvre WhatsApp avec un message poli. Vous décidez de l'envoyer ou non.
 
 ## Déplacer de l'argent entre comptes

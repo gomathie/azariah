@@ -138,7 +138,20 @@
     "account": "Reçu sur",
     "outstanding": "Le client doit",
     "saved": "Paiement enregistré",
-    "note": "Note"
+    "note": "Note",
+    "theCustomer": "Le client",
+    "overStep": "Question {n} sur 2",
+    "overQ1": "{name} vous a vraiment donné {typed} ?",
+    "overOwes": "{name} doit {owed}.",
+    "overOwesNothing": "{name} ne doit rien.",
+    "overTyped": "Vous avez écrit {typed}. C’est {extra} de plus.",
+    "overFix": "Non, je change le montant",
+    "overYes": "Oui, j’ai reçu {typed}",
+    "overQ2": "À quoi servent les {extra} en plus ?",
+    "overWhy": "Un paiement ne peut couvrir que ce que le client doit. Le surplus n’est pas enregistré comme paiement. S’il a acheté autre chose, ajoutez une vente.",
+    "overOnlyOwed": "Enregistrer seulement les {owed} dus",
+    "overNewSale": "Il a acheté autre chose. Ajouter cette vente",
+    "overBack": "Retour"
   },
   "transfer": {
     "title": "Déplacer de l'argent",
@@ -539,6 +552,10 @@
     "shopPaymentsOn": "Cette boutique doit payer",
     "shopPaymentsOff": "Cette boutique est gratuite",
     "shopPaymentsSaved": "Enregistré pour {name}.",
+    "shopPays": "Doit payer",
+    "shopFree": "Gratuite",
+    "shopPaymentsSwitch": "Paiements pour {name}",
+    "shopPaymentsFollow": "Revenir au réglage de tout le monde",
     "overview": "Vue d’ensemble",
     "about": {
       "overview": "Où en est Azaria aujourd’hui.",
