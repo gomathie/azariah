@@ -234,3 +234,12 @@ Protected decisions are listed in `AGENTS.md`; design context is in `docs/archit
 - **Watch:** keep `flowType: 'pkce'`; do not go back to `{{ .ConfirmationURL }}` in these two templates. `confirmation.html`, `invite.html` and `email_change.html` still use it and have the same limit; confirmation is unused while "Confirm email" is off.
 - **Verification:** `emailLink.spec.ts` (5 tests); local browser run in fresh browsers: reset link, used link, sign-in with the new password, "Open Azaria" link. Not yet run on the live site.
 - **Rollback:** put `{{ .ConfirmationURL }}` back in the two templates; the app code can stay.
+
+## 2026-11-24: shorter set-up, install row in the profile menu
+
+- **What:** `CreateBusinessView.vue` asks only for the shop's name and kind, sends Ghana, GHS and Africa/Accra, and goes to Home. `InstallApp.vue` is rendered by `ProfileMenu.vue`, not `SettingsView.vue`. `e2e/helpers.ts` follows the new path and puts off the email reminder.
+- **Why:** the owner reported that people found registering too long and were bored before reaching the books. He chose Ghana only for now; other countries come back later.
+- **How:** the three choices were removed from the screen only. `rpc_create_business_and_owner`, `src/utils/locales.ts` and the database still accept every country, so nothing needs migrating to open them again.
+- **Trade-off:** a shop outside Ghana gets cedis and Accra time and cannot change them at set-up. The "People and phones" first-visit text in `MembersView.vue` (`?first=1`) is no longer reached from set-up.
+- **Verification:** phone-size browser run on the local stack: two fields, straight to Home, shop stored as GH, GHS, Africa/Accra, install row in the profile menu and gone from Settings. The Playwright specs were edited but not run.
+- **Rollback:** restore the three `AppSelect` rows and the `members` redirect in `CreateBusinessView.vue`.

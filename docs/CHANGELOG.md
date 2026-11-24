@@ -8,6 +8,8 @@
 
 ### Changed
 
+- Setting up your shop is shorter: type the shop's name, choose what you do, and you are on Home. Azaria no longer asks for country, currency and time zone (it is set for Ghana for now), and no longer stops at "People and phones" first. Add people later under Settings.
+- "Add to home screen" is now in the round menu at the top right, not under Settings.
 - Create an account and start at once. Azaria no longer makes you open an email before you can sign in. It asks you to confirm your email with a short code afterwards, and you can tap "Later".
 - If you try to create an account with an email that already has one, Azaria now says so and points you to "Sign in".
 
